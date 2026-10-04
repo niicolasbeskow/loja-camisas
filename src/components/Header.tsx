@@ -64,7 +64,7 @@ export default function Header() {
                 <>
                   <span className="text-sm text-amber-200">Olá, {session.user?.name ?? 'Usuário'}</span>
                   <button
-                    onClick={() => signOut({ redirectTo: '/' })}
+                    onClick={() => signOut({ redirect: '/' })}
                     className="ml-2 text-sm text-amber-300 hover:text-amber-200 underline"
                   >
                     Sair

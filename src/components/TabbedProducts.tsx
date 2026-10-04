@@ -8,7 +8,7 @@ interface Product {
   nome: string;
   preco: number;
   tipo: string;
-  imagem?: string;
+  imagem: string | null;
   artista: {
     nome: string;
     imagem_perfil?: string;

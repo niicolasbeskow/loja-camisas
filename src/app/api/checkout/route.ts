@@ -63,7 +63,7 @@ export async function POST(request: Request) {
     })
 
     // Create a map for quick lookup
-    const productMap = {}
+    const productMap: Record<number, typeof products[number]> = {}
     products.forEach(product => {
       productMap[product.id] = product
     })

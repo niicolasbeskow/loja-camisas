@@ -14,7 +14,7 @@ export default function AddToCartButton({ id, name, price }: AddToCartButtonProp
   return (
     <button
       onClick={() => {
-        addItem({ id, name, price, quantity: 1 }); // quantity will be handled in addItem
+        addItem({ id, name, price }); // quantity will be handled in addItem
       }}
       className="w-full bg-gray-700 text-gray-200 py-2 px-4 rounded hover:bg-gray-600 transition-colors"
     >
