@@ -10,7 +10,7 @@ interface Product {
   imagem: string | null;
   artista: {
     nome: string;
-    imagem_perfil?: string;
+    imagem_perfil: string | null;
   } | null;
 }
 

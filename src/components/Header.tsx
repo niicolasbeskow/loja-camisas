@@ -64,7 +64,7 @@ export default function Header() {
                 <>
                   <span className="text-sm text-amber-200">Olá, {session.user?.name ?? 'Usuário'}</span>
                   <button
-                    onClick={() => signOut({ redirect: '/' })}
+                    onClick={() => signOut({ callbackUrl: '/' })}
                     className="ml-2 text-sm text-amber-300 hover:text-amber-200 underline"
                   >
                     Sair
@@ -72,7 +72,7 @@ export default function Header() {
                 </>
               ) : (
                 <button
-                  onClick={() => signIn({ callbackUrl: '/' })}
+                  onClick={() => signIn(undefined, { callbackUrl: '/' })}
                   className="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold text-xs rounded"
                 >
                   LOGIN

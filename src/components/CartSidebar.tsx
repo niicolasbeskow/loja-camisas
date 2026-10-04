@@ -20,7 +20,7 @@ export default function CartSidebar() {
 
     if (!session) {
       // User not authenticated, redirect to login
-      await signIn({ callbackUrl: '/' });
+      await signIn(undefined, { callbackUrl: '/' });
       return;
     }
 
