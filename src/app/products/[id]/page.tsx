@@ -1,9 +1,18 @@
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
+export default async function ProductPage(
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params
+  const productId = parseInt(id)
+
+  if (isNaN(productId)) {
+    notFound()
+  }
+
   const product = await prisma.product.findUnique({
-    where: { id: Number(params.id) },
+    where: { id: productId },
     include: { artista: true },
   })
 

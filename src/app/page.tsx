@@ -41,7 +41,7 @@ export default async function Home() {
 
       {/* Diferenciais da Marca */}
       <section className="bg-gray-800 text-white py-12 border-t border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-3 items-center">
             <div className="flex flex-col items-center">
               <div className="w-12 h-12 bg-amber-500 text-gray-900 rounded flex items-center justify-center mb-4 font-bold text-xl">
@@ -71,9 +71,10 @@ export default async function Home() {
           <h2 className="text-3xl font-bold mb-10 text-center text-gray-900 tracking-tighter">O Drop Atual</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => (
-              <div
+              <Link
                 key={product.id}
-                className="bg-white rounded p-6 flex flex-col hover:shadow-lg transition-shadow border border-gray-200"
+                href={`/produto/${product.id}`}
+                className="block hover:shadow-lg transition-shadow border border-gray-200 rounded p-6 bg-white flex flex-col"
               >
                 <div className="mb-4">
                   <span className="inline-block px-2 py-1 text-xs font-bold bg-gray-900 text-white rounded mb-3">
@@ -96,7 +97,7 @@ export default async function Home() {
                     price={product.preco}
                   />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
