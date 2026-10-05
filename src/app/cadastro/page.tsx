@@ -41,7 +41,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-amber-300 mb-2">Loja de Camisas</h1>
+          <h1 className="text-3xl font-bold text-amber-300 mb-2">B.SKW</h1>
           <p className="text-gray-300">Crie sua conta</p>
         </div>
 
