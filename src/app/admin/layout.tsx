@@ -54,7 +54,7 @@ export default function AdminLayout({
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 p-6 overflow-y-auto min-h-screen w-full bg-gray-50 text-gray-900">
           <div className="max-w-7xl mx-auto">{children}</div>
         </main>
       </body>
