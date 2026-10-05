@@ -77,8 +77,24 @@ export default async function AdminArtists() {
                       <button
                         onClick={() => {
                           if (window.confirm('Tem certeza que deseja excluir este artista?')) {
-                            // In a real app, you would make a DELETE request here
-                            alert('Funcionalidade de exclusão seria implementada com chamada DELETE para /api/artistas/${artist.id}');
+                            // Call the DELETE API
+                            fetch(`/api/artistas/${artist.id}`, {
+                              method: 'DELETE',
+                            })
+                            .then(async (response) => {
+                              if (response.ok) {
+                                alert('Artista excluído com sucesso!');
+                                // Reload the page to reflect the change
+                                window.location.reload();
+                              } else {
+                                const errorData = await response.json();
+                                alert('Erro ao excluir artista: ' + (errorData.error || 'Erro desconhecido'));
+                              }
+                            })
+                            .catch((error) => {
+                              console.error('Error:', error);
+                              alert('Erro ao excluir artista. Por favor, tente novamente.');
+                            });
                           }
                         }}
                         className="text-sm text-red-600 hover:text-red-900"

@@ -92,12 +92,41 @@ export default async function AdminProducts() {
                     {product.artista?.nome || 'Sem artista'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <Link
-                      href={`/admin/produtos/${product.id}/editar`}
-                      className="text-sm text-indigo-600 hover:text-indigo-900"
-                    >
-                      Editar
-                    </Link>
+                    <div className="flex space-x-3">
+                      <Link
+                        href={`/admin/produtos/${product.id}/editar`}
+                        className="text-sm text-indigo-600 hover:text-indigo-900"
+                      >
+                        Editar
+                      </Link>
+                      <button
+                        onClick={() => {
+                          if (window.confirm('Tem certeza que deseja excluir este produto?')) {
+                            // Call the DELETE API
+                            fetch(`/api/produtos/${product.id}`, {
+                              method: 'DELETE',
+                            })
+                            .then(async (response) => {
+                              if (response.ok) {
+                                alert('Produto excluído com sucesso!');
+                                // Reload the page to reflect the change
+                                window.location.reload();
+                              } else {
+                                const errorData = await response.json();
+                                alert('Erro ao excluir produto: ' + (errorData.error || 'Erro desconhecido'));
+                              }
+                            })
+                            .catch((error) => {
+                              console.error('Error:', error);
+                              alert('Erro ao excluir produto. Por favor, tente novamente.');
+                            });
+                          }
+                        }}
+                        className="text-sm text-red-600 hover:text-red-900"
+                      >
+                        Excluir
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
