@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 import { prisma } from '@/lib/prisma'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]/route'
 
 export async function POST(request: Request) {
   try {
@@ -32,6 +34,33 @@ export async function POST(request: Request) {
       // Note: We're not validating name/price/quantity here because we'll fetch fresh product data
       // The cart should have valid items, but we'll handle missing products gracefully
     }
+
+    // Get session to check if user is logged in
+    const session = await getServerSession(authOptions)
+    const userId = session?.user ? (session.user as any).id : undefined
+
+    // Calculate total price
+    const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+
+    // Generate a unique external reference
+    const externalReference = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+
+    // Create order record in database
+    const order = await prisma.order.create({
+      data: {
+        status: 'PENDING',
+        total: totalPrice,
+        externalReference,
+        userId: userId,
+        items: {
+          create: items.map(item => ({
+            productId: item.id,
+            quantity: item.quantity,
+            price: item.price
+          }))
+        }
+      }
+    })
 
     const accessToken = process.env.MP_ACCESS_TOKEN
     if (!accessToken) {
@@ -88,9 +117,6 @@ export async function POST(request: Request) {
       }
     })
 
-    // Create a reference that summarizes the order for tracking
-    const externalReference = `LOJA-${Date.now()}-${items.length}itens`;
-
     const response = await preference.create({
       body: {
         items: mercadopagoItems,
@@ -99,8 +125,9 @@ export async function POST(request: Request) {
           failure: `${baseUrl}/`,
           pending: `${baseUrl}/`
         },
+        notification_url: `${baseUrl}/api/webhooks/mercadopago`,
         statement_descriptor: 'LOJA CAMISAS', // Appears on customer's bank statement
-        external_reference: externalReference // Helps with order tracking
+        external_reference: order.externalReference ?? `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}` // Use the exact externalReference from the created Order
       }
     })
 

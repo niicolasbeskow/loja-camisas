@@ -25,6 +25,7 @@ model Product {
   imagem     String?
   artista    Artist @relation(fields: [artista_id], references: [id])
   artista_id Int
+  orderItems OrderItem[] @relation("OrderItemProduct")
 }
 
 model User {
@@ -36,6 +37,7 @@ model User {
   password      String?
   accounts      Account[]
   sessions      Session[]
+  orders        Order[]   @relation("OrderUser")
 }
 
 model Account {
@@ -72,4 +74,28 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Order {
+  id                 String    @id @default(cuid())
+  userId             String?
+  status             String    @default("PENDING")
+  total              Float
+  externalReference  String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User?     @relation("OrderUser", fields: [userId], references: [id])
+  items              OrderItem[] @relation("OrderUser")
+
+  @@index([userId])
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  order     Order    @relation("OrderUser", fields: [orderId], references: [id])
+  orderId   String
+  product   Product  @relation("OrderItemProduct", fields: [productId], references: [id])
+  productId Int
+  quantity  Int
+  price     Float
 }
