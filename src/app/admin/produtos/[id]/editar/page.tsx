@@ -1,19 +1,27 @@
 import { prisma } from '@/lib/prisma';
-import { notFound } from 'next/navigation';
+import EditProductForm from '@/components/admin/EditProductForm';
 
 export default async function EditarProduto({ params }: { params: { id: string } }) {
+  const productId = parseInt(params.id);
+
+  // Fetch the product
   const product = await prisma.product.findUnique({
-    where: { id: parseInt(params.id) }
+    where: { id: productId }
   });
 
   if (!product) return notFound();
 
+  // Fetch all artists for the dropdown
+  const artists = await prisma.artist.findMany({
+    orderBy: {
+      nome: 'asc',
+    }
+  });
+
   return (
-    <div className="max-w-2xl mx-auto py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Modo de Edição Ativado</h1>
-      <div className="bg-white p-6 rounded shadow border border-gray-200">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Produto: {product.nome}</h2>
-        <p className="text-gray-500">O erro 404 foi aniquilado. A rota dinâmica [id] está a funcionar perfeitamente na Vercel.</p>
+    <div className="min-h-screen bg-gray-50 text-gray-900 p-6">
+      <div className="max-w-2xl mx-auto">
+        <EditProductForm artists={artists} product={product} />
       </div>
     </div>
   );
