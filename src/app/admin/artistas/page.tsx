@@ -1,3 +1,5 @@
+'use client';
+
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 
@@ -5,6 +7,9 @@ export default async function AdminArtists() {
   const artistas = await prisma.artist.findMany({
     orderBy: {
       nome: 'asc',
+    },
+    include: {
+      products: true
     }
   });
 

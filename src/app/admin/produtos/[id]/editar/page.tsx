@@ -1,8 +1,10 @@
 import { prisma } from '@/lib/prisma';
+import { notFound } from 'next/navigation';
 import EditProductForm from '@/components/admin/EditProductForm';
 
-export default async function EditarProduto({ params }: { params: { id: string } }) {
-  const productId = parseInt(params.id);
+export default async function EditarProduto({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const productId = parseInt(id);
 
   // Fetch the product
   const product = await prisma.product.findUnique({
@@ -21,7 +23,13 @@ export default async function EditarProduto({ params }: { params: { id: string }
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 p-6">
       <div className="max-w-2xl mx-auto">
-        <EditProductForm artists={artists} product={product} />
+        <EditProductForm
+          artists={artists}
+          product={{
+            ...product,
+            imagem: product.imagem || ''
+          }}
+        />
       </div>
     </div>
   );
