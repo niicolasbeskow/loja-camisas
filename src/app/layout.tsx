@@ -34,10 +34,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <AuthProvider>
           <Marquee />
           <Header />
-          <div className="pt-16">
-            <CartSidebar />
-            {children}
-          </div>
+          <CartSidebar />
+          {children}
         </AuthProvider>
       </body>
     </html>
