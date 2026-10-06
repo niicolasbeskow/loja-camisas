@@ -29,6 +29,17 @@
   );
 }
 
+/* Marquee animation for orange stripe */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 20s linear infinite;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

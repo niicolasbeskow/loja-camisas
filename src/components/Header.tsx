@@ -24,56 +24,104 @@ export default function Header() {
 
   return (
     <>
-      {/* Menu Fixo (Sticky): navbar preta */}
-      <nav className="sticky top-0 z-50 w-full bg-[#000000] text-white shadow-md min-h-[3rem]">
+      {/* Navbar Preta, Fixa e Hover Âmbar */}
+      <nav className="sticky top-0 z-50 w-full bg-[#000000] py-6 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-[3rem] items-center justify-between">
+          <div className="flex flex-col items-center">
             {/* Logo */}
-            <div className="flex-shrink-0 flex items-center">
+            <div className="mb-4">
               <Link href="/" className="text-white font-bold text-xl tracking-tight">
                 B.SKW
               </Link>
             </div>
 
             {/* Category Bar - Center */}
-            <div className="flex-1 flex flex-wrap justify-center gap-x-3 gap-y-1">
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 w-full">
+              {/* PROMOÇÕES 🔥 with amber text */}
               <Link
                 href="#"
-                className="px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]"
+                className="text-[#F59E0B] bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
               >
                 PROMOÇÕES 🔥
               </Link>
+              {/* Collab (em breve) with gray text */}
               <Link
                 href="#"
-                className="px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]"
+                className="text-[#9A9A9A] bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
               >
                 Collab (em breve)
               </Link>
-              {[
-                'Kits',
-                'Camiseta Básica',
-                'Camiseta Oversized',
-                'Camiseta Suedine',
-                'Camiseta Boxy',
-                'Camiseta Poliamida',
-                'Manga Longa',
-                'Feminino',
-                'Moletom',
-                'Regata Oversized',
-                'Shorts'
-              ].map((cat, idx) => (
-                <Link
-                  key={idx}
-                  href="#"
-                  className={`px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]`}
-                >
-                  {cat}
-                </Link>
-              ))}
+              {/* Other categories with white text */}
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Kits
+              </Link>
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Camiseta Básica
+              </Link>
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Camiseta Oversized
+              </Link>
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Camiseta Suedine
+              </Link>
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Camiseta Boxy
+              </Link>
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Camiseta Poliamida
+              </Link>
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Manga Longa
+              </Link>
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Feminino
+              </Link>
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Moletom
+              </Link>
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Regata Oversized
+              </Link>
+              <Link
+                href="#"
+                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+              >
+                Shorts
+              </Link>
             </div>
 
             {/* Right Side Icons */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 mt-4">
               {/* Search Icon / Input */}
               {searchOpen ? (
                 <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
@@ -87,15 +135,15 @@ export default function Header() {
                   />
                   <button
                     type="submit"
-                    className="px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]"
+                    className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
                   >
-                    <Search className="h-4 w-4" />
+                    <Search className="h-5 w-5" />
                   </button>
                 </form>
               ) : (
                 <button
                   onClick={() => setSearchOpen(true)}
-                  className="px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]"
+                  className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
                 >
                   <Search className="h-5 w-5" />
                 </button>
@@ -109,7 +157,7 @@ export default function Header() {
                   <>
                     <button
                       onClick={() => signOut({ callbackUrl: '/' })}
-                      className="px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]"
+                      className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
                     >
                       <User className="h-5 w-5" />
                       {totalItems > 0 && (
@@ -122,7 +170,7 @@ export default function Header() {
                 ) : (
                   <button
                     onClick={() => signIn(undefined, { callbackUrl: '/' })}
-                    className="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold text-xs rounded"
+                    className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
                   >
                     <User className="h-5 w-5" />
                   </button>
@@ -130,7 +178,7 @@ export default function Header() {
               </div>
 
               {/* Shopping Cart */}
-              <button onClick={toggleCart} className="relative px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]">
+              <button onClick={toggleCart} className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] relative">
                 <ShoppingCart className="h-5 w-5" />
                 {totalItems > 0 && (
                   <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">

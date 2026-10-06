@@ -18,8 +18,8 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
-      {/* Faixa Concreto com Logo (Homepage) - Aumentada */}
-      <section className="bg-concreto px-4 py-32 flex justify-center">
+      {/* Faixa Concreto e Destaques Brancos */}
+      <section className="bg-[#9A9A9A] py-32 px-4 flex justify-center w-full">
         <img
           src="/edited-image.png"
           alt="B.SKW Logo"
