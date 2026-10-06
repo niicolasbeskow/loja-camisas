@@ -18,8 +18,8 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
-      {/* Faixa Concreto com Logo (Homepage) */}
-      <section className="bg-concreto px-4 py-24 flex justify-center">
+      {/* Faixa Concreto com Logo (Homepage) - Aumentada */}
+      <section className="bg-concreto px-4 py-32 flex justify-center">
         <img
           src="/edited-image.png"
           alt="B.SKW Logo"
@@ -27,14 +27,15 @@ export default async function Home() {
         />
       </section>
 
-      {/* Nova Coleção / Destaques */}
+      {/* Seção DESTAQUES */}
       <section className="bg-white text-black py-16 px-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-display mb-8 text-center text-black tracking-tighter uppercase">
-            Nova Coleção
+            DESTAQUES
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {/* Placeholder cards */}
+            {/* TODO: Backend - Filtrar e exibir os produtos com maior número de adições ao carrinho (Mais Vendidos) */}
             {[1, 2, 3, 4, 5, 6].map((_, idx) => (
               <Link
                 key={idx}

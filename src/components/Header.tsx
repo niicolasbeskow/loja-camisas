@@ -24,8 +24,8 @@ export default function Header() {
 
   return (
     <>
-      {/* Navbar Preta e Texto Branco: forçar bg-[#000000] text-white w-full z-50 */}
-      <nav className="bg-[#000000] text-white w-full z-50 min-h-[3rem] py-4">
+      {/* Menu Fixo (Sticky): navbar preta */}
+      <nav className="sticky top-0 z-50 w-full bg-[#000000] text-white shadow-md min-h-[3rem]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-[3rem] items-center justify-between">
             {/* Logo */}
@@ -36,16 +36,16 @@ export default function Header() {
             </div>
 
             {/* Category Bar - Center */}
-            <div className="flex-1 flex flex-wrap justify-center gap-x-4 gap-y-2">
+            <div className="flex-1 flex flex-wrap justify-center gap-x-3 gap-y-1">
               <Link
                 href="#"
-                className="text-amber p-2 transition-colors hover:bg-ambar hover:text-[#000000]"
+                className="px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]"
               >
                 PROMOÇÕES 🔥
               </Link>
               <Link
                 href="#"
-                className="text-concreto p-2 transition-colors hover:bg-ambar hover:text-[#000000]"
+                className="px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]"
               >
                 Collab (em breve)
               </Link>
@@ -65,7 +65,7 @@ export default function Header() {
                 <Link
                   key={idx}
                   href="#"
-                  className={`text-white p-2 transition-colors hover:bg-ambar hover:text-[#000000]`}
+                  className={`px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]`}
                 >
                   {cat}
                 </Link>
@@ -82,12 +82,12 @@ export default function Header() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onBlur={() => setSearchOpen(false)}
-                    className="bg-white text-black placeholder-black/50 border-2 border-amber p-2 w-[200px] rounded-none focus:outline-none focus:ring-2 focus:ring-amber-200"
+                    className="bg-white text-black placeholder-black/50 border-2 border-amber px-2 py-1 rounded-none focus:outline-none focus:ring-2 focus:ring-amber-200"
                     placeholder="Buscar..."
                   />
                   <button
                     type="submit"
-                    className="p-2 transition-colors hover:bg-ambar hover:text-[#000000]"
+                    className="px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]"
                   >
                     <Search className="h-4 w-4" />
                   </button>
@@ -95,7 +95,7 @@ export default function Header() {
               ) : (
                 <button
                   onClick={() => setSearchOpen(true)}
-                  className="p-2 transition-colors hover:bg-ambar hover:text-[#000000]"
+                  className="px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]"
                 >
                   <Search className="h-5 w-5" />
                 </button>
@@ -109,7 +109,7 @@ export default function Header() {
                   <>
                     <button
                       onClick={() => signOut({ callbackUrl: '/' })}
-                      className="p-2 transition-colors hover:bg-ambar hover:text-[#000000]"
+                      className="px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]"
                     >
                       <User className="h-5 w-5" />
                       {totalItems > 0 && (
@@ -130,7 +130,7 @@ export default function Header() {
               </div>
 
               {/* Shopping Cart */}
-              <button onClick={toggleCart} className="relative p-2 transition-colors hover:bg-ambar hover:text-[#000000]">
+              <button onClick={toggleCart} className="relative px-2 py-1 transition-colors hover:bg-ambar hover:text-[#000000]">
                 <ShoppingCart className="h-5 w-5" />
                 {totalItems > 0 && (
                   <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
