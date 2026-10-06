@@ -16,7 +16,7 @@ export default function AddToCartButton({ id, name, price }: AddToCartButtonProp
       onClick={() => {
         addItem({ id, name, price }); // quantity will be handled in addItem
       }}
-      className="w-full bg-gray-700 text-gray-200 py-2 px-4 rounded hover:bg-gray-600 transition-colors"
+      className="w-full bg-ambar text-breu font-sans font-semibold py-2 px-4 rounded transition-colors hover:bg-amber-600"
     >
       Adicionar ao Carrinho
     </button>

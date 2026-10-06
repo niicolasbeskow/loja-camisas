@@ -1,35 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #FFFFFF;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-outfit);
+  --font-display: var(--font-anton);
+  --font-montserrat: var(--font-montserrat); /* keep if used elsewhere */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #000000;
+    --foreground: #FFFFFF;
   }
 }
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
-}
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
+/* Utility class for canelado texture */
+.bg-canelado {
+  background: repeating-linear-gradient(
+    90deg,
+    #1c1c1c 0 3px,
+    transparent 3px 9px
+  );
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-montserrat);
+  font-family: var(--font-outfit);
+  @apply antialiased;
+}
+
+/* Ensure headings use display font */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-anton);
 }
