@@ -102,85 +102,19 @@ export default function Header() {
           {/* CENTRO: Categorias com Scroll Horizontal no Mobile */}
           <div className="w-full md:flex-1 overflow-x-auto hide-scrollbar mt-3 md:mt-0 px-4 md:px-8">
             <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center items-center gap-x-4 gap-y-4 w-max md:w-auto mx-auto pb-1 md:pb-0">
-              {/* Category Links - ensure whitespace-nowrap on each link */}
-              <Link
-                href="#"
-                className="text-[#F59E0B] bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                PROMOÇÕES 🔥
-              </Link>
-              <Link
-                href="#"
-                className="text-[#9A9A9A] bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Collab (em breve)
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Kits
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Camiseta Básica
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Camiseta Oversized
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Camiseta Suedine
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Camiseta Boxy
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Camiseta Poliamida
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Manga Longa
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Feminino
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Moletom
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Regata Oversized
-              </Link>
-              <Link
-                href="#"
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] whitespace-nowrap"
-              >
-                Shorts
-              </Link>
+              <Link href="/categoria/promocoes" className="text-[#F59E0B] bg-transparent p-2 transition-colors hover:text-[#000000] whitespace-nowrap">PROMOÇÕES 🔥</Link>
+              <Link href="/categoria/collab" className="text-[#9A9A9A] bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Collab (em breve)</Link>
+              <Link href="/categoria/kits" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Kits</Link>
+              <Link href="/categoria/basica" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Camiseta Básica</Link>
+              <Link href="/categoria/oversized" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Camiseta Oversized</Link>
+              <Link href="/categoria/suedine" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Camiseta Suedine</Link>
+              <Link href="/categoria/boxy" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Camiseta Boxy</Link>
+              <Link href="/categoria/poliamida" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Camiseta Poliamida</Link>
+              <Link href="/categoria/manga-longa" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Manga Longa</Link>
+              <Link href="/categoria/feminino" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Feminino</Link>
+              <Link href="/categoria/moletom" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Moletom</Link>
+              <Link href="/categoria/regata" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Regata Oversized</Link>
+              <Link href="/categoria/shorts" className="text-white bg-transparent p-2 transition-colors hover:text-[#F59E0B] hover:text-[#000000] whitespace-nowrap">Shorts</Link>
             </div>
           </div>
 
