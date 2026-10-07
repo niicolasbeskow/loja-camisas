@@ -21,50 +21,24 @@ export default function CadastroPage() {
         <p className="text-zinc-400 text-sm text-center mb-8">Crie sua conta na armadura do streetwear.</p>
 
         <form className="flex flex-col gap-5">
-
-          {/* Nome */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-zinc-300" htmlFor="nome">Nome completo</label>
-            <input
-              type="text"
-              id="nome"
-              className="bg-zinc-900 border border-zinc-800 rounded-md px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-colors"
-              placeholder="Seu nome completo"
-            />
+            <input type="text" id="nome" className="bg-zinc-900 border border-zinc-800 rounded-md px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-colors" placeholder="Seu nome completo" />
           </div>
 
-          {/* E-mail */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-zinc-300" htmlFor="email">E-mail</label>
-            <input
-              type="email"
-              id="email"
-              className="bg-zinc-900 border border-zinc-800 rounded-md px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-colors"
-              placeholder="seu@email.com"
-            />
+            <input type="email" id="email" className="bg-zinc-900 border border-zinc-800 rounded-md px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-colors" placeholder="seu@email.com" />
           </div>
 
-          {/* Senha */}
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-zinc-300" htmlFor="senha">Senha</label>
-            <input
-              type="password"
-              id="senha"
-              className="bg-zinc-900 border border-zinc-800 rounded-md px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-colors"
-              placeholder="••••••••"
-            />
+            <input type="password" id="senha" className="bg-zinc-900 border border-zinc-800 rounded-md px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-colors" placeholder="••••••••" />
           </div>
 
-          {/* Botão */}
-          <button
-            type="submit"
-            className="mt-4 w-full bg-[#F59E0B] text-[#000000] font-bold uppercase py-4 rounded-md hover:bg-amber-400 transition-colors"
-          >
-            Cadastrar
-          </button>
+          <button type="submit" className="mt-4 w-full bg-[#F59E0B] text-[#000000] font-bold uppercase py-4 rounded-md hover:bg-amber-400 transition-colors">Cadastrar</button>
         </form>
 
-        {/* Login Link */}
         <p className="mt-8 text-center text-sm text-zinc-400">
           Já tem uma conta? <Link href="/login" className="text-[#F59E0B] hover:underline">Faça login</Link>
         </p>
