@@ -34,44 +34,21 @@ export default function Header() {
             <div className="flex-shrink-0">
               <Link className="flex-shrink-0 cursor-pointer transition-opacity hover:opacity-80" href="/"><img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-8 md:h-10 w-auto object-contain" /></Link>
             </div>
-            <div className="flex flex-row items-center gap-2 md:hidden">
-              {/* Mobile Icons: Search, User, ShoppingCart */}
-              {searchOpen ? (
-                <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onBlur={() => setSearchOpen(false)}
-                    className="bg-white text-black placeholder-black/50 border-2 border-amber px-2 py-1 rounded-none focus:outline-none focus:ring-2 focus:ring-amber-200"
-                    placeholder="Buscar..."
-                  />
-                  <button
-                    type="submit"
-                    className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
-                  >
-                    <Search className="h-5 w-5" />
-                  </button>
-                </form>
-              ) : (
-                <button
-                  onClick={() => setSearchOpen(true)}
-                  className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
-                >
-                  <Search className="h-5 w-5" />
-                </button>
-              )}
-              {/* User / Auth */}
-              <div className="relative">
-                <UserDropdown session={session} />
-                {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
-                    {totalItems}
-                  </span>
-                )}
-              </div>
-              {/* Shopping Cart */}
-              <button onClick={toggleCart} className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] relative">
+            {/* MOBILE ICONS: Search, User, ShoppingCart */}
+            <div className="flex items-center gap-4 md:gap-6">
+              {/* Search Button */}
+              <button
+                onClick={() => setSearchOpen(!searchOpen)}
+                className="text-white hover:text-[#F59E0B] transition-colors"
+              >
+                <Search className="h-5 w-5" />
+              </button>
+
+              {/* User Dropdown */}
+              <UserDropdown session={typeof session !== 'undefined' ? session : null} />
+
+              {/* Shopping Cart Button */}
+              <button onClick={toggleCart} className="text-white hover:text-[#F59E0B] transition-colors relative">
                 <ShoppingCart className="h-5 w-5" />
                 {totalItems > 0 && (
                   <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
@@ -104,49 +81,28 @@ export default function Header() {
           {/* DIREITA DESKTOP: Ícones */}
           <div className="hidden md:flex flex-shrink-0 flex-row items-center gap-2 px-6">
             {/* Desktop Icons: Search, User, ShoppingCart */}
-            {searchOpen ? (
-              <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onBlur={() => setSearchOpen(false)}
-                  className="bg-white text-black placeholder-black/50 border-2 border-amber px-2 py-1 rounded-none focus:outline-none focus:ring-2 focus:ring-amber-200"
-                  placeholder="Buscar..."
-                />
-                <button
-                  type="submit"
-                  className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
-                >
-                  <Search className="h-5 w-5" />
-                </button>
-              </form>
-            ) : (
+            <div className="flex items-center gap-4 md:gap-6">
+              {/* Search Button */}
               <button
-                onClick={() => setSearchOpen(true)}
-                className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
+                onClick={() => setSearchOpen(!searchOpen)}
+                className="text-white hover:text-[#F59E0B] transition-colors"
               >
                 <Search className="h-5 w-5" />
               </button>
-            )}
-            {/* User / Auth */}
-            <div className="relative">
-              <UserDropdown session={session} />
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
-                  {totalItems}
-                </span>
-              )}
+
+              {/* User Dropdown */}
+              <UserDropdown session={typeof session !== 'undefined' ? session : null} />
+
+              {/* Shopping Cart Button */}
+              <button onClick={toggleCart} className="text-white hover:text-[#F59E0B] transition-colors relative">
+                <ShoppingCart className="h-5 w-5" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
+                    {totalItems}
+                  </span>
+                )}
+              </button>
             </div>
-            {/* Shopping Cart */}
-            <button onClick={toggleCart} className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] relative">
-              <ShoppingCart className="h-5 w-5" />
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
-                  {totalItems}
-                </span>
-              )}
-            </button>
           </div>
 
         </div>
