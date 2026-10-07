@@ -8,7 +8,7 @@ import bcrypt from "bcryptjs"
 const prisma = new PrismaClient()
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -54,6 +54,8 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt"
   },
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: true,
   callbacks: {
     async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
