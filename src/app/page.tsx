@@ -19,7 +19,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen">
       {/* Faixa Concreto e Destaques Brancos */}
-      <section className="bg-[#9A9A9A] bg-[url('/files/textura.jpg')] bg-cover bg-center bg-blend-multiply py-32 md:py-40 px-4 flex justify-center w-full">
+      <section className="bg-[#9A9A9A] bg-[url('/files/textura.png')] bg-cover bg-center bg-blend-multiply py-32 md:py-40 px-4 flex justify-center w-full">
         <img
           src="/files/BSKW_empilhado_cor-branco-ambar.png"
           alt="B.SKW Logo"
