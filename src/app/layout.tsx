@@ -15,6 +15,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://loja-camisas-two.vercel.app'),
   title: "B.SKW | Streetwear Premium",
   description: "Armadura de tecido para quem veste a rua com respeito.",
   icons: {
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "B.SKW",
     images: [
       {
-        url: "/files/BSKW_logos_PNG/BSKW_monograma_cor-branco-ambar.png",
+        url: "https://loja-camisas-two.vercel.app/files/BSKW_logos_PNG/BSKW_monograma_cor-branco-ambar.png",
         width: 800,
         height: 800,
         alt: "B.SKW Monograma",
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "B.SKW | Streetwear Premium",
     description: "Armadura de tecido para quem veste a rua com respeito.",
-    images: ["/files/BSKW_logos_PNG/BSKW_monograma_cor-branco-ambar.png"],
+    images: ["https://loja-camisas-two.vercel.app/files/BSKW_logos_PNG/BSKW_monograma_cor-branco-ambar.png"],
   },
 };
 
