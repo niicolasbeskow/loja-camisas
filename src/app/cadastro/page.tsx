@@ -1,4 +1,7 @@
+"use client";
+
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 
 export default function CadastroPage() {
   return (
@@ -36,9 +39,12 @@ export default function CadastroPage() {
             <input type="password" id="senha" className="bg-zinc-900 border border-zinc-800 rounded-md px-4 py-3 text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-[#F59E0B] focus:border-[#F59E0B] transition-colors" placeholder="••••••••" />
           </div>
 
-          <button type="submit" className="mt-4 w-full bg-[#F59E0B] text-[#000000] font-bold uppercase py-4 rounded-md hover:bg-amber-400 transition-colors">Cadastrar</button>
+          <button type="submit" className="mt-4 w-full bg-[#F59E0B] text-[#000000] font-bold uppercase py-4 rounded-md hover:bg-amber-400 transition-colors">
+            Cadastrar
+          </button>
         </form>
 
+        {/* Separador */}
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-zinc-800"></div>
@@ -48,9 +54,11 @@ export default function CadastroPage() {
           </div>
         </div>
 
+        {/* Botão Google Funcional */}
         <button
           type="button"
-          className="w-full flex items-center justify-center gap-3 bg-white text-black font-bold uppercase py-4 rounded-md hover:bg-zinc-200 transition-colors"
+          onClick={() => signIn('google', { callbackUrl: '/' })}
+          className="w-full flex items-center justify-center gap-3 bg-white text-black font-bold uppercase py-4 rounded-md hover:bg-zinc-200 transition-colors cursor-pointer"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -61,6 +69,7 @@ export default function CadastroPage() {
           Google
         </button>
 
+        {/* Login Link */}
         <p className="mt-8 text-center text-sm text-zinc-400">
           Já tem uma conta? <Link href="/login" className="text-[#F59E0B] hover:underline">Faça login</Link>
         </p>
