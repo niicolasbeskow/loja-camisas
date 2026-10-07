@@ -64,27 +64,26 @@ export default function Header() {
               <div className="relative">
                 {status === 'loading' ? (
                   <span className="px-2 py-1 bg-gray-600/50 text-xs rounded">Carregando...</span>
-                ) : session ? (
-                  <>
-                    <button
-                      onClick={() => signOut({ callbackUrl: '/' })}
-                      className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
-                    >
-                      <User className="h-5 w-5" />
-                      {totalItems > 0 && (
-                        <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
-                          {totalItems}
-                        </span>
-                      )}
-                    </button>
-                  </>
+                ) : session?.user ? (
+                  <div className="relative text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] cursor-pointer">
+                    <img src={session.user?.image ?? ''} alt="User" className="w-7 h-7 rounded-full border border-zinc-700" onClick={() => signOut({ callbackUrl: '/' })} />
+                    {totalItems > 0 && (
+                      <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
+                        {totalItems}
+                      </span>
+                    )}
+                  </div>
                 ) : (
-                  <button
-                    onClick={() => signIn(undefined, { callbackUrl: '/' })}
-                    className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
-                  >
-                    <User className="h-5 w-5" />
-                  </button>
+                  <>
+                    <Link href="/cadastro" className="p-1">
+                      <User className="h-5 w-5" />
+                    </Link>
+                    {totalItems > 0 && (
+                      <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
+                        {totalItems}
+                      </span>
+                    )}
+                  </>
                 )}
               </div>
               {/* Shopping Cart */}
@@ -150,27 +149,26 @@ export default function Header() {
             <div className="relative">
               {status === 'loading' ? (
                 <span className="px-2 py-1 bg-gray-600/50 text-xs rounded">Carregando...</span>
-              ) : session ? (
-                <>
-                  <button
-                    onClick={() => signOut({ callbackUrl: '/' })}
-                    className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
-                  >
-                    <User className="h-5 w-5" />
-                    {totalItems > 0 && (
-                      <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
-                        {totalItems}
-                      </span>
-                    )}
-                  </button>
-                </>
+              ) : session?.user ? (
+                <div className="relative text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000] cursor-pointer">
+                  <img src={session.user?.image ?? ''} alt="User" className="w-7 h-7 rounded-full border border-zinc-700" onClick={() => signOut({ callbackUrl: '/' })} />
+                  {totalItems > 0 && (
+                    <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
+                      {totalItems}
+                    </span>
+                  )}
+                </div>
               ) : (
-                <button
-                  onClick={() => signIn(undefined, { callbackUrl: '/' })}
-                  className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
-                >
-                  <User className="h-5 w-5" />
-                </button>
+                <>
+                  <Link href="/cadastro" className="p-1">
+                    <User className="h-5 w-5" />
+                  </Link>
+                  {totalItems > 0 && (
+                    <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
+                      {totalItems}
+                    </span>
+                  )}
+                </>
               )}
             </div>
             {/* Shopping Cart */}
