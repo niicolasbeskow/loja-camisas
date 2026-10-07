@@ -15,8 +15,34 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "B.SKW - Streetwear Premium",
-  description: "Loja oficial de camisas streetwear da B.SKW",
+  title: "B.SKW | Streetwear Premium",
+  description: "Armadura de tecido para quem veste a rua com respeito.",
+  icons: {
+    icon: "/files/BSKW_logos_PNG/BSKW_monograma_cor-branco-ambar.png",
+    apple: "/files/BSKW_logos_PNG/BSKW_monograma_cor-branco-ambar.png",
+  },
+  openGraph: {
+    title: "B.SKW | Streetwear Premium",
+    description: "Armadura de tecido para quem veste a rua com respeito.",
+    url: "https://loja-camisas-two.vercel.app",
+    siteName: "B.SKW",
+    images: [
+      {
+        url: "/files/BSKW_logos_PNG/BSKW_monograma_cor-branco-ambar.png",
+        width: 800,
+        height: 800,
+        alt: "B.SKW Monograma",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "B.SKW | Streetwear Premium",
+    description: "Armadura de tecido para quem veste a rua com respeito.",
+    images: ["/files/BSKW_logos_PNG/BSKW_monograma_cor-branco-ambar.png"],
+  },
 };
 
 import Marquee from '@/components/Marquee';
