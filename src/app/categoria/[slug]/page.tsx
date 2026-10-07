@@ -2,8 +2,13 @@ import { categories, mockProducts } from '@/lib/data';
 import { Home, SlidersHorizontal, ChevronDown, Star } from 'lucide-react';
 import Link from 'next/link';
 
-export default function CategoriaPage({ params }: { params: { slug: string } }) {
-  const category = categories.find(c => c.slug === params.slug) || { name: 'Coleção', slug: params.slug };
+export default async function CategoriaPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+
+  // Encontra a categoria no mock DB ou usa o slug formatado como fallback (ex: manga-longa -> MANGA LONGA)
+  const fallbackName = slug.replace(/-/g, ' ').toUpperCase();
+  const category = categories.find(c => c.slug === slug) || { name: fallbackName, slug: slug };
 
   return (
     <main className="min-h-screen bg-white text-black pb-24">

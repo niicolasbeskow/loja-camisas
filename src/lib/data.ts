@@ -14,11 +14,26 @@ export const categories = [
   { id: 'shorts', name: 'Shorts', slug: 'shorts' },
 ];
 
-export const mockProducts = Array(8).fill(null).map((_, i) => ({
+export type Product = {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  categorySlug: string;
+  image: string;
+  tag?: string;
+  rating: number;
+  reviews: number;
+  colors: string[];
+};
+
+export const mockProducts: Product[] = Array(8).fill(null).map((_, i) => ({
   id: `prod-${i}`,
   name: 'Camiseta B.SKW Premium Lisa',
   price: 139.00,
   originalPrice: i % 2 === 0 ? 159.00 : undefined,
+  categorySlug: 'oversized',
+  image: '',
   tag: i === 0 ? '100% Algodão' : i === 3 ? 'Tecido Encorpado' : undefined,
   rating: 5,
   reviews: Math.floor(Math.random() * 150) + 10,
