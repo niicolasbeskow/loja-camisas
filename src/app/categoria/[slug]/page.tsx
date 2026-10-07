@@ -6,7 +6,7 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
 
-  // Encontra a categoria no mock DB ou usa o slug formatado como fallback (ex: manga-longa -> MANGA LONGA)
+  // Encontra a categoria ou cria um fallback elegante se a categoria não estiver no array
   const fallbackName = slug.replace(/-/g, ' ').toUpperCase();
   const category = categories.find(c => c.slug === slug) || { name: fallbackName, slug: slug };
 
@@ -23,7 +23,7 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
           <span className="text-black font-medium">{category.name}</span>
         </div>
 
-        {/* Título */}
+        {/* Título da Categoria */}
         <h1 className="text-4xl md:text-5xl font-anton uppercase mb-8">{category.name}</h1>
 
         {/* Header de Filtros */}
@@ -43,7 +43,6 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
           {mockProducts.map((produto) => (
             <Link href={`/produto/${produto.id}`} key={produto.id} className="group flex flex-col items-center text-center cursor-pointer">
 
-              {/* Placeholder e Tag */}
               <div className="w-full aspect-[4/5] bg-zinc-100 relative mb-4 overflow-hidden rounded-md flex items-center justify-center">
                 {produto.tag && (
                   <span className="absolute top-2 left-2 md:top-3 md:right-3 md:left-auto bg-[#F59E0B] text-[#000000] text-[10px] font-bold px-2 py-1 rounded-sm z-10">
@@ -53,8 +52,8 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
                 <span className="text-zinc-400 text-sm font-medium">Produto em breve</span>
               </div>
 
-              {/* Título e Estrelas */}
               <h3 className="text-sm font-medium text-zinc-900 mb-1">{produto.name}</h3>
+
               <div className="flex items-center gap-1 mb-2">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
@@ -64,7 +63,6 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
                 <span className="text-xs text-zinc-500">({produto.reviews})</span>
               </div>
 
-              {/* Preços */}
               <div className="flex items-center gap-2 mb-3">
                 {produto.originalPrice && (
                   <span className="text-xs text-zinc-400 line-through">
@@ -76,10 +74,13 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
                 </span>
               </div>
 
-              {/* Cores */}
               <div className="flex items-center justify-center gap-1.5">
                 {produto.colors.map((color, idx) => (
-                  <div key={idx} className="w-4 h-4 rounded-full border border-zinc-300 shadow-sm" style={{ backgroundColor: color }} />
+                  <div
+                    key={idx}
+                    className="w-4 h-4 rounded-full border border-zinc-300 shadow-sm"
+                    style={{ backgroundColor: color }}
+                  />
                 ))}
               </div>
             </Link>
