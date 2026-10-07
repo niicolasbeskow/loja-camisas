@@ -28,11 +28,7 @@ export default function Header() {
       <nav className="sticky top-0 z-50 w-full bg-[#000000] py-3 shadow-md">
         <div className="max-w-7xl mx-auto px-4 flex flex-row justify-between items-center">
           {/* Lado Esquerdo (Logo) */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="text-white font-bold text-xl tracking-tight">
-              B.SKW
-            </Link>
-          </div>
+          <Link className="flex-shrink-0 cursor-pointer transition-opacity hover:opacity-80" href="/"><img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-8 md:h-10 w-auto object-contain" /></Link>
 
           {/* Centro (Categorias) */}
           <div className="flex-1 px-4 flex flex-wrap justify-center gap-x-4 gap-y-1">
