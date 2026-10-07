@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "B.SKW",
     images: [
       {
-        url: "https://loja-camisas-two.vercel.app/files/BSKW_logos_PNG/BSKW_monograma_cor-branco-ambar.png",
+        url: "https://loja-camisas-two.vercel.app/files/BSKW_monograma_cor-branco-ambar_fundo-preto.png",
         width: 800,
         height: 800,
         alt: "B.SKW Monograma",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "B.SKW | Streetwear Premium",
     description: "Armadura de tecido para quem veste a rua com respeito.",
-    images: ["https://loja-camisas-two.vercel.app/files/BSKW_logos_PNG/BSKW_monograma_cor-branco-ambar.png"],
+    images: ["https://loja-camisas-two.vercel.app/files/BSKW_monograma_cor-branco-ambar_fundo-preto.png"],
   },
 };
 
@@ -50,6 +50,7 @@ import Marquee from '@/components/Marquee';
 import Header from '@/components/Header';
 import CartSidebar from '@/components/CartSidebar';
 import { AuthProvider } from '@/providers/AuthProvider';
+import Footer from '@/components/Footer';
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <CartSidebar />
           {children}
         </AuthProvider>
+        <Footer />
       </body>
     </html>
   );
