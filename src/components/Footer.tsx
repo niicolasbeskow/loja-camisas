@@ -59,17 +59,15 @@ export default function Footer() {
         </div>
 
         {/* RODAPÉ INFERIOR: Copyright e Links Legais */}
-        <div className="pt-8 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-zinc-500">
-          <div className="flex flex-col md:flex-row items-center gap-4">
-            <p>© 2026 B.SKW Store. Todos os direitos reservados.</p>
-            <div className="flex gap-4">
-              <Link href="#" className="hover:text-white transition-colors">Política de Privacidade</Link>
-              <Link href="#" className="hover:text-white transition-colors">Política de Reembolso</Link>
-              <Link href="#" className="hover:text-white transition-colors">Termos de Serviço</Link>
-            </div>
+        <div className="mt-16 pt-8 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-zinc-600">
+          <p>© 2026 B.SKW Store. Todos os direitos reservados.</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/politica-de-privacidade" className="hover:text-[#F59E0B] transition-colors">Política de Privacidade</Link>
+            <Link href="/politica-de-reembolso" className="hover:text-[#F59E0B] transition-colors">Política de Reembolso</Link>
+            <Link href="/termos-de-servico" className="hover:text-[#F59E0B] transition-colors">Termos de Serviço</Link>
           </div>
+          {/* Mantenha a div com os logos PIX, VISA, MASTER aqui embaixo */}
           <div className="flex gap-2">
-            {/* Placeholders de Pagamento - podem ser trocados por SVGs dps */}
             <span className="px-2 py-1 bg-zinc-900 rounded font-bold text-[10px]">PIX</span>
             <span className="px-2 py-1 bg-zinc-900 rounded font-bold text-[10px]">VISA</span>
             <span className="px-2 py-1 bg-zinc-900 rounded font-bold text-[10px]">MASTER</span>
