@@ -135,19 +135,19 @@ export default function Header() {
 
             {/* Links do Menu */}
             <div className="flex flex-col p-5 space-y-6 overflow-y-auto">
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white hover:text-[#F59E0B] font-bold tracking-wide">Promoções 🔥</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Collab (em breve)</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Kits</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Básica</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Oversized</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Suedine</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Boxy</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Poliamida</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Manga Longa</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Feminino</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Moletom</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Regata Oversized</Link>
-              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Shorts</Link>
+              <Link href="/categoria/promocoes" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white hover:text-[#F59E0B] font-bold tracking-wide">Promoções 🔥</Link>
+              <Link href="/categoria/collab" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Collab (em breve)</Link>
+              <Link href="/categoria/kits" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Kits</Link>
+              <Link href="/categoria/basica" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Básica</Link>
+              <Link href="/categoria/oversized" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Oversized</Link>
+              <Link href="/categoria/suedine" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Suedine</Link>
+              <Link href="/categoria/boxy" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Boxy</Link>
+              <Link href="/categoria/poliamida" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Poliamida</Link>
+              <Link href="/categoria/manga-longa" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Manga Longa</Link>
+              <Link href="/categoria/feminino" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Feminino</Link>
+              <Link href="/categoria/moletom" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Moletom</Link>
+              <Link href="/categoria/regata" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Regata Oversized</Link>
+              <Link href="/categoria/shorts" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Shorts</Link>
             </div>
 
             {/* Rodapé do Menu */}
