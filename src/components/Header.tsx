@@ -135,13 +135,19 @@ export default function Header() {
 
             {/* Links do Menu */}
             <div className="flex flex-col p-5 space-y-6 overflow-y-auto">
-              <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white hover:text-[#F59E0B] font-bold tracking-wide">Promoções 🔥</Link>
-              <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Collab (em breve)</Link>
-              <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Kits</Link>
-              <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Básica</Link>
-              <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Oversized</Link>
-              <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Moletons</Link>
-              {/* Pode adicionar mais categorias aqui */}
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white hover:text-[#F59E0B] font-bold tracking-wide">Promoções 🔥</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Collab (em breve)</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Kits</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Básica</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Oversized</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Suedine</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Boxy</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Poliamida</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Manga Longa</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Feminino</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Moletom</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Regata Oversized</Link>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Shorts</Link>
             </div>
 
             {/* Rodapé do Menu */}
@@ -153,52 +159,6 @@ export default function Header() {
 
       </nav>
 
-      {/* OVERLAY E DRAWER DO MENU MOBILE */}
-      <div
-        className={`md:hidden fixed inset-0 z-[100] transition-opacity duration-300 ${
-          isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        {/* Fundo escuro desfocado (clique para fechar) */}
-        <div
-          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-
-        {/* Gaveta Lateral (Drawer) */}
-        <div
-          className={`absolute inset-y-0 left-0 w-[75%] max-w-sm bg-[#000000] border-r border-zinc-800 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${
-            isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
-        >
-          {/* Cabeçalho do Menu */}
-          <div className="flex items-center justify-between p-5 border-b border-zinc-800">
-            <span className="font-anton text-2xl tracking-wide text-white uppercase">Categorias</span>
-            <button
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-zinc-400 hover:text-[#F59E0B] transition-colors p-1"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-          </div>
-
-          {/* Links do Menu */}
-          <div className="flex flex-col p-5 space-y-6 overflow-y-auto">
-            <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white hover:text-[#F59E0B] font-bold tracking-wide">Promoções 🔥</Link>
-            <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Collab (em breve)</Link>
-            <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Kits</Link>
-            <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Básica</Link>
-            <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Oversized</Link>
-            <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Moletons</Link>
-            {/* Pode adicionar mais categorias aqui */}
-          </div>
-
-          {/* Rodapé do Menu */}
-          <div className="mt-auto p-5 border-t border-zinc-800">
-             <p className="text-xs text-zinc-500 uppercase tracking-widest text-center">B.SKW Streetwear</p>
-          </div>
-        </div>
-      </div>
 
     </>
   );
