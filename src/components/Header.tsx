@@ -1,165 +1,103 @@
-'use client';
+"use client";
 
-import { useCartStore } from '@/store/cartStore';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import Link from 'next/link';
-import { Search, User, ShoppingCart, Menu } from 'lucide-react';
-import { useState } from 'react';
-import UserDropdown from './UserDropdown';
+import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useState } from "react";
+import { Search, User, ShoppingCart, Menu } from "lucide-react";
+import UserDropdown from "./UserDropdown";
 
 export default function Header() {
-  const totalItems = useCartStore((state) => state.totalItems);
-  const toggleCart = useCartStore((state) => state.toggleCart);
   const { data: session, status } = useSession();
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      window.location.href = `/busca?q=${encodeURIComponent(searchTerm.trim())}`;
-    }
-    setSearchOpen(false);
-    setSearchTerm('');
-  };
 
   return (
     <>
-      {/* Navbar Preta, Fixa e Hover Âmbar */}
-      <nav className="sticky top-0 z-50 w-full bg-[#000000] py-3 md:py-4 shadow-md">
-        <div className="max-w-[1600px] mx-auto w-full px-4 relative">
-          <div className="flex items-center justify-between h-16 md:h-20 w-full">
+      <nav className="sticky top-0 z-50 w-full bg-[#000000] py-4 shadow-md border-b border-zinc-900">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 w-full">
 
-            {/* ESQUERDA: Hambúrguer (Apenas Mobile) */}
-            <div className="flex-1 flex md:hidden justify-start">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-white hover:text-[#F59E0B] transition-colors p-2 -ml-2"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          {/* ================= DESKTOP LAYOUT ================= */}
+          <div className="hidden md:flex items-start justify-between w-full">
+            {/* Esquerda: Logo */}
+            <Link href="/" className="flex-shrink-0 mt-1 transition-opacity hover:opacity-80">
+              <img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-10 w-auto object-contain" />
+            </Link>
+
+            {/* Centro: Categorias com Wrap (Quebra de linha segura) */}
+            <div className="flex-1 flex flex-wrap justify-center gap-x-6 gap-y-3 px-8">
+              <Link href="/categoria/promocoes" className="text-sm font-bold text-[#F59E0B] hover:text-amber-400 transition-colors uppercase tracking-wide">Promoções 🔥</Link>
+              <Link href="/categoria/collab" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Collab (em breve)</Link>
+              <Link href="/categoria/kits" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Kits</Link>
+              <Link href="/categoria/camiseta-basica" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Camiseta Básica</Link>
+              <Link href="/categoria/camiseta-oversized" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Camiseta Oversized</Link>
+              <Link href="/categoria/camiseta-suedine" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Camiseta Suedine</Link>
+              <Link href="/categoria/camiseta-boxy" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Camiseta Boxy</Link>
+              <Link href="/categoria/camiseta-poliamida" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Camiseta Poliamida</Link>
+              <Link href="/categoria/manga-longa" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Manga Longa</Link>
+              <Link href="/categoria/feminino" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Feminino</Link>
+              <Link href="/categoria/moletom" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Moletom</Link>
+              <Link href="/categoria/regata-oversized" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Regata Oversized</Link>
+              <Link href="/categoria/shorts" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Shorts</Link>
+            </div>
+
+            {/* Direita: Ícones */}
+            <div className="flex flex-shrink-0 items-center gap-6 mt-1">
+              <button className="text-white hover:text-[#F59E0B] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              </button>
+              <UserDropdown session={typeof session !== 'undefined' ? session : null} />
+              <button className="text-white hover:text-[#F59E0B] transition-colors relative">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
               </button>
             </div>
-
-            {/* CENTRO: Logo (No mobile ao centro, no desktop à esquerda) */}
-            <div className="flex-1 md:flex-none flex justify-center md:justify-start">
-              <Link href="/" className="transition-opacity hover:opacity-80">
-                <img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-8 md:h-10 w-auto object-contain" />
-              </Link>
-            </div>
-
-            {/* CENTRO-DIREITA: Menu Desktop (Apenas Desktop) */}
-            <div className="hidden md:flex flex-1 justify-center items-center gap-6">
-              {/* Coloque aqui os Links de categorias do desktop (Promoções, Básica, Oversized, etc) */}
-              <Link href="/categoria/promocoes" className="text-[#F59E0B] transition-colors hover:text-[#000000]">PROMOÇÕES 🔥</Link>
-              <Link href="/categoria/collab" className="text-[#9A9A9A] transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Collab (em breve)</Link>
-              <Link href="/categoria/kits" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Kits</Link>
-              <Link href="/categoria/basica" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Camiseta Básica</Link>
-              <Link href="/categoria/oversized" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Camiseta Oversized</Link>
-              <Link href="/categoria/suedine" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Camiseta Suedine</Link>
-              <Link href="/categoria/boxy" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Camiseta Boxy</Link>
-              <Link href="/categoria/poliamida" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Camiseta Poliamida</Link>
-              <Link href="/categoria/manga-longa" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Manga Longa</Link>
-              <Link href="/categoria/feminino" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Feminino</Link>
-              <Link href="/categoria/moletom" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Moletom</Link>
-              <Link href="/categoria/regata" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Regata Oversized</Link>
-              <Link href="/categoria/shorts" className="text-white transition-colors hover:text-[#F59E0B] hover:text-[#000000]">Shorts</Link>
-            </div>
-
-            {/* DIREITA: Ícones (Mobile e Desktop) */}
-            <div className="flex-1 flex justify-end items-center gap-3 md:gap-6">
-              {searchOpen ? (
-                <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onBlur={() => setSearchOpen(false)}
-                    className="bg-white text-black placeholder-black/50 border-2 border-amber px-2 py-1 rounded-none focus:outline-none focus:ring-2 focus:ring-amber-200"
-                    placeholder="Buscar..."
-                  />
-                  <button
-                    type="submit"
-                    className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                  </button>
-                </form>
-              ) : (
-                <>
-                  <button
-                    onClick={() => setSearchOpen(!searchOpen)}
-                    className="text-white hover:text-[#F59E0B] transition-colors"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                  </button>
-                  <UserDropdown session={typeof session !== 'undefined' ? session : null} />
-                  <button className="text-white hover:text-[#F59E0B] transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                  </button>
-                </>
-              )}
-            </div>
-
           </div>
-        </div>
 
-        {/* OVERLAY E DRAWER DO MENU MOBILE */}
-        <div
-          className={`md:hidden fixed inset-0 z-[100] transition-opacity duration-300 ${
-            isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-          }`}
-        >
-          {/* Fundo escuro desfocado (clique para fechar) */}
-          <div
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
+          {/* ================= MOBILE LAYOUT ================= */}
+          <div className="flex md:hidden items-center justify-between w-full">
+            {/* Hambúrguer */}
+            <button onClick={() => setIsMobileMenuOpen(true)} className="text-white hover:text-[#F59E0B] p-2 -ml-2 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
 
-          {/* Gaveta Lateral (Drawer) */}
-          <div
-            className={`absolute inset-y-0 left-0 w-[75%] max-w-sm bg-[#000000] border-r border-zinc-800 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${
-              isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-            }`}
-          >
-            {/* Cabeçalho do Menu */}
-            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
-              <span className="font-anton text-2xl tracking-wide text-white uppercase">Categorias</span>
-              <button
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-zinc-400 hover:text-[#F59E0B] transition-colors p-1"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            </div>
+            {/* Logo Centro */}
+            <Link href="/" className="absolute left-1/2 -translate-x-1/2 transition-opacity hover:opacity-80">
+              <img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-8 w-auto object-contain" />
+            </Link>
 
-            {/* Links do Menu */}
-            <div className="flex flex-col p-5 space-y-6 overflow-y-auto">
-              <Link href="/categoria/promocoes" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white hover:text-[#F59E0B] font-bold tracking-wide">Promoções 🔥</Link>
-              <Link href="/categoria/collab" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Collab (em breve)</Link>
-              <Link href="/categoria/kits" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Kits</Link>
-              <Link href="/categoria/basica" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Básica</Link>
-              <Link href="/categoria/oversized" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Oversized</Link>
-              <Link href="/categoria/suedine" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Suedine</Link>
-              <Link href="/categoria/boxy" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Boxy</Link>
-              <Link href="/categoria/poliamida" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Camiseta Poliamida</Link>
-              <Link href="/categoria/manga-longa" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Manga Longa</Link>
-              <Link href="/categoria/feminino" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Feminino</Link>
-              <Link href="/categoria/moletom" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Moletom</Link>
-              <Link href="/categoria/regata" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Regata Oversized</Link>
-              <Link href="/categoria/shorts" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-[#F59E0B] font-medium transition-colors">Shorts</Link>
-            </div>
-
-            {/* Rodapé do Menu */}
-            <div className="mt-auto p-5 border-t border-zinc-800">
-               <p className="text-xs text-zinc-500 uppercase tracking-widest text-center">B.SKW Streetwear</p>
+            {/* Ícones */}
+            <div className="flex items-center gap-4">
+              <button className="text-white hover:text-[#F59E0B]"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
+              <UserDropdown session={typeof session !== 'undefined' ? session : null} />
+              <button className="text-white hover:text-[#F59E0B]"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></button>
             </div>
           </div>
         </div>
-
       </nav>
 
-
+      {/* ================= DRAWER MOBILE (Mantido intacto) ================= */}
+      <div className={`md:hidden fixed inset-0 z-[100] transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
+         <div className={`absolute inset-y-0 left-0 w-[80%] max-w-sm bg-[#000000] border-r border-zinc-800 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
+              <span className="font-anton text-2xl tracking-wide text-white uppercase">Categorias</span>
+              <button onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-400 hover:text-[#F59E0B] p-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div className="flex flex-col p-5 space-y-6 overflow-y-auto pb-10">
+              <Link href="/categoria/promocoes" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-[#F59E0B] font-bold tracking-wide">Promoções 🔥</Link>
+              <Link href="/categoria/collab" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Collab (em breve)</Link>
+              <Link href="/categoria/kits" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Kits</Link>
+              <Link href="/categoria/camiseta-basica" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Camiseta Básica</Link>
+              <Link href="/categoria/camiseta-oversized" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Camiseta Oversized</Link>
+              <Link href="/categoria/camiseta-suedine" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Camiseta Suedine</Link>
+              <Link href="/categoria/camiseta-boxy" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Camiseta Boxy</Link>
+              <Link href="/categoria/camiseta-poliamida" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Camiseta Poliamida</Link>
+              <Link href="/categoria/manga-longa" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Manga Longa</Link>
+              <Link href="/categoria/feminino" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Feminino</Link>
+              <Link href="/categoria/moletom" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Moletom</Link>
+              <Link href="/categoria/regata-oversized" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Regata Oversized</Link>
+              <Link href="/categoria/shorts" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Shorts</Link>
+            </div>
+         </div>
+      </div>
     </>
   );
 }
