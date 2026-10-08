@@ -31,7 +31,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <h4 className="text-white font-anton text-xl uppercase tracking-wide mb-2">Mais sobre a B.SKW</h4>
             <Link href="/influenciador" className="text-zinc-400 hover:text-[#F59E0B] transition-colors text-sm">Seja um Influenciador</Link>
-            <Link href="/" className="text-[#F59E0B] font-medium hover:text-amber-400 transition-colors text-sm">Nossos Produtos</Link>
+            <Link href="/produtos" className="text-zinc-400 hover:text-[#F59E0B] transition-colors text-sm">Nossos Produtos</Link>
             <Link href="/quem-somos" className="text-zinc-400 hover:text-[#F59E0B] transition-colors text-sm">Quem Somos</Link>
           </div>
 
