@@ -72,9 +72,9 @@ export default async function PerfilPage() {
                 Endereços de Entrega
               </h3>
               <p className="text-zinc-500 text-sm mb-4">Nenhum endereço cadastrado.</p>
-              <button className="text-[#F59E0B] hover:text-amber-400 transition-colors text-sm font-bold uppercase tracking-wide">
+              <Link href="/enderecos/novo" className="text-[#F59E0B] hover:text-amber-400 transition-colors text-sm font-bold uppercase tracking-wide mt-2 inline-block">
                 + Adicionar novo endereço
-              </button>
+              </Link>
             </div>
 
           </div>
