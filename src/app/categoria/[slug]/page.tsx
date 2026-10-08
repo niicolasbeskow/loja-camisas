@@ -1,6 +1,9 @@
-export default function CategoriaPage({ params }: { params: { slug: string } }) {
+export default async function CategoriaPage({ params }: { params: Promise<{ slug: string }> }) {
+  // Aguarda a resolução dos parâmetros da URL exigida pelo Next.js 15+
+  const resolvedParams = await params;
+
   // Formata o slug para o título (ex: 'camiseta-basica' -> 'CAMISETA BASICA')
-  const titulo = params.slug.replace(/-/g, ' ').toUpperCase();
+  const titulo = resolvedParams.slug.replace(/-/g, ' ').toUpperCase();
 
   return (
     <main className="min-h-screen bg-[#000000] text-white py-24 px-4 flex flex-col items-center justify-center mt-16">
