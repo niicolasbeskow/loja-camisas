@@ -53,50 +53,9 @@ export default function Header() {
             </div>
           </div>
 
-          {/* DIREITA: Ícones (Search, User, ShoppingCart) */}
-          <div className="hidden md:flex flex-shrink-0 flex-row items-center gap-2">
-            {/* Desktop Icons: Search, User, ShoppingCart */}
-            {searchOpen ? (
-              <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onBlur={() => setSearchOpen(false)}
-                  className="bg-white text-black placeholder-black/50 border-2 border-amber px-2 py-1 rounded-none focus:outline-none focus:ring-2 focus:ring-amber-200"
-                  placeholder="Buscar..."
-                />
-                <button
-                  type="submit"
-                  className="text-white bg-transparent p-2 transition-colors hover:bg-[#F59E0B] hover:text-[#000000]"
-                >
-                  <Search className="h-5 w-5" />
-                </button>
-              </form>
-            ) : (
-              <>
-                <button
-                  onClick={() => setSearchOpen(!searchOpen)}
-                  className="text-white hover:text-[#F59E0B] transition-colors"
-                >
-                  <Search className="h-5 w-5" />
-                </button>
-                <UserDropdown session={typeof session !== 'undefined' ? session : null} />
-                <button onClick={toggleCart} className="text-white hover:text-[#F59E0B] transition-colors relative">
-                  <ShoppingCart className="h-5 w-5" />
-                  {totalItems > 0 && (
-                    <span className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center bg-amber-500 text-[10px] font-bold text-black rounded-full">
-                      {totalItems}
-                    </span>
-                  )}
-                </button>
-              </>
-            )}
-          </div>
-
-          {/* MOBILE: Ícones (Search, User, ShoppingCart) - shown only on mobile */}
-          <div className="flex md:hidden flex-shrink-0 flex-row items-center gap-2">
-            {/* Mobile Icons: Search, User, ShoppingCart */}
+          {/* ÚNICO: Ícones (Search, User, ShoppingCart) */}
+          <div className="flex flex-shrink-0 flex-row items-center gap-2">
+            {/* Icons: Search, User, ShoppingCart */}
             {searchOpen ? (
               <form onSubmit={handleSearchSubmit} className="flex items-center space-x-2">
                 <input
