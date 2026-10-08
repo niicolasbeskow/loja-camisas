@@ -27,24 +27,20 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* COLUNA 2: Mais sobre a Marca */}
-          <div className="flex flex-col">
-            <h3 className="text-lg font-bold mb-6 font-anton tracking-wide">MAIS SOBRE A B.SKW</h3>
-            <div className="flex flex-col gap-3 text-zinc-400">
-              <Link href="/influenciador" className="hover:text-[#F59E0B] transition-colors">Seja um Influenciador</Link>
-              <Link href="#" className="hover:text-[#F59E0B] transition-colors">Nossos Produtos</Link>
-              <Link href="#" className="hover:text-[#F59E0B] transition-colors">Quem Somos</Link>
-            </div>
+          {/* Coluna 2 */}
+          <div className="flex flex-col gap-4">
+            <h4 className="text-white font-anton text-xl uppercase tracking-wide mb-2">Mais sobre a B.SKW</h4>
+            <Link href="/influenciador" className="text-zinc-400 hover:text-[#F59E0B] transition-colors text-sm">Seja um Influenciador</Link>
+            <Link href="/" className="text-[#F59E0B] font-medium hover:text-amber-400 transition-colors text-sm">Nossos Produtos</Link>
+            <Link href="/quem-somos" className="text-zinc-400 hover:text-[#F59E0B] transition-colors text-sm">Quem Somos</Link>
           </div>
 
-          {/* COLUNA 3: Atendimento */}
-          <div className="flex flex-col">
-            <h3 className="text-lg font-bold mb-6 font-anton tracking-wide">ATENDIMENTO</h3>
-            <div className="flex flex-col gap-3 text-zinc-400">
-              <Link href="#" className="hover:text-[#F59E0B] transition-colors">Trocas e Devoluções</Link>
-              <Link href="#" className="hover:text-[#F59E0B] transition-colors">Dúvidas Frequentes</Link>
-              <Link href="#" className="hover:text-[#F59E0B] transition-colors">Rastreie seu Pedido</Link>
-            </div>
+          {/* Coluna 3 */}
+          <div className="flex flex-col gap-4">
+            <h4 className="text-white font-anton text-xl uppercase tracking-wide mb-2">Atendimento</h4>
+            <Link href="/trocas" className="text-zinc-400 hover:text-[#F59E0B] transition-colors text-sm">Trocas e Devoluções</Link>
+            <Link href="/faq" className="text-zinc-400 hover:text-[#F59E0B] transition-colors text-sm">Dúvidas Frequentes</Link>
+            <Link href="/rastreio" className="text-zinc-400 hover:text-[#F59E0B] transition-colors text-sm">Rastreie seu Pedido</Link>
           </div>
 
           {/* COLUNA 4: Contato */}
