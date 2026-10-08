@@ -39,9 +39,9 @@ export default async function PerfilPage() {
               <h2 className="text-2xl font-bold tracking-tight">{session.user?.name}</h2>
               <p className="text-zinc-400 text-sm mb-6">{session.user?.email}</p>
 
-              <button className="w-full bg-zinc-900 border border-zinc-800 hover:border-[#F59E0B] text-white py-3 rounded transition-colors text-sm uppercase font-bold tracking-wider">
+              <Link href="/configuracoes" className="w-full bg-zinc-900 border border-zinc-800 hover:border-[#F59E0B] text-white py-3 rounded transition-colors text-sm uppercase font-bold tracking-wider text-center block">
                 Editar Dados
-              </button>
+              </Link>
             </div>
           </div>
 
