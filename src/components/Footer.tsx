@@ -31,7 +31,7 @@ export default function Footer() {
           <div className="flex flex-col">
             <h3 className="text-lg font-bold mb-6 font-anton tracking-wide">MAIS SOBRE A B.SKW</h3>
             <div className="flex flex-col gap-3 text-zinc-400">
-              <Link href="#" className="hover:text-[#F59E0B] transition-colors">Seja um Influenciador</Link>
+              <Link href="/influenciador" className="hover:text-[#F59E0B] transition-colors">Seja um Influenciador</Link>
               <Link href="#" className="hover:text-[#F59E0B] transition-colors">Nossos Produtos</Link>
               <Link href="#" className="hover:text-[#F59E0B] transition-colors">Quem Somos</Link>
             </div>
