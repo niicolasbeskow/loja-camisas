@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Anton, Outfit } from "next/font/google";
 import "./globals.css";
+import { useSession } from "next-auth/react";
 
 const antón = Anton({
   variable: "--font-anton",
