@@ -39,15 +39,16 @@ export default function Header() {
               <Link href="/categoria/shorts" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">Shorts</Link>
             </div>
 
-            {/* Direita: Ícones */}
+            {/* Direita: Ícones Desktop */}
             <div className="flex flex-shrink-0 items-center gap-6 mt-1">
-              <button className="text-white hover:text-[#F59E0B] transition-colors">
+              <button onClick={() => alert("Sistema de busca em breve!")} className="text-white hover:text-[#F59E0B] transition-colors" aria-label="Pesquisar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               </button>
-              <UserDropdown session={typeof session !== 'undefined' ? session : null} />
-              <button className="text-white hover:text-[#F59E0B] transition-colors relative">
+              <UserDropdown session={session} />
+              <Link href="/carrinho" className="text-white hover:text-[#F59E0B] transition-colors relative" aria-label="Carrinho">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-              </button>
+                <span className="absolute -top-2 -right-2 bg-[#F59E0B] text-[#000000] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+              </Link>
             </div>
           </div>
 
@@ -63,11 +64,16 @@ export default function Header() {
               <img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-8 w-auto object-contain" />
             </Link>
 
-            {/* Ícones */}
+            {/* Ícones Mobile */}
             <div className="flex items-center gap-4">
-              <button className="text-white hover:text-[#F59E0B]"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
-              <UserDropdown session={typeof session !== 'undefined' ? session : null} />
-              <button className="text-white hover:text-[#F59E0B]"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></button>
+              <button onClick={() => alert("Sistema de busca em breve!")} className="text-white hover:text-[#F59E0B] transition-colors" aria-label="Pesquisar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              </button>
+              <UserDropdown session={session} />
+              <Link href="/carrinho" className="text-white hover:text-[#F59E0B] transition-colors relative" aria-label="Carrinho">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                <span className="absolute -top-2 -right-2 bg-[#F59E0B] text-[#000000] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+              </Link>
             </div>
           </div>
         </div>
