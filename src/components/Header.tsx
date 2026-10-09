@@ -9,6 +9,7 @@ import UserDropdown from "./UserDropdown";
 export default function Header() {
   const { data: session, status } = useSession();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false); // NOVO ESTADO
 
   return (
     <>
@@ -45,10 +46,10 @@ export default function Header() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               </button>
               <UserDropdown session={session} />
-              <Link href="/carrinho" className="text-white hover:text-[#F59E0B] transition-colors relative" aria-label="Carrinho">
+              <button onClick={() => setIsCartOpen(true)} className="text-white hover:text-[#F59E0B] transition-colors relative" aria-label="Carrinho">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                 <span className="absolute -top-2 -right-2 bg-[#F59E0B] text-[#000000] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-              </Link>
+              </button>
             </div>
           </div>
 
@@ -70,10 +71,10 @@ export default function Header() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               </button>
               <UserDropdown session={session} />
-              <Link href="/carrinho" className="text-white hover:text-[#F59E0B] transition-colors relative" aria-label="Carrinho">
+              <button onClick={() => setIsCartOpen(true)} className="text-white hover:text-[#F59E0B] transition-colors relative" aria-label="Carrinho">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                 <span className="absolute -top-2 -right-2 bg-[#F59E0B] text-[#000000] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -101,6 +102,34 @@ export default function Header() {
               <Link href="/categoria/moletom" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Moletom</Link>
               <Link href="/categoria/regata-oversized" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Regata Oversized</Link>
               <Link href="/categoria/shorts" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-zinc-300 hover:text-white transition-colors">Shorts</Link>
+            </div>
+         </div>
+      </div>
+
+      {/* ================= DRAWER DO CARRINHO (DIREITA) ================= */}
+      <div className={`fixed inset-0 z-[100] transition-opacity duration-300 ${isCartOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+         {/* Overlay escuro */}
+         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setIsCartOpen(false)} />
+
+         {/* Gaveta do Carrinho */}
+         <div className={`absolute inset-y-0 right-0 w-full sm:w-[400px] bg-[#000000] border-l border-zinc-800 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+
+            {/* Cabeçalho do Carrinho */}
+            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
+              <span className="font-anton text-2xl tracking-wide text-white uppercase">Seu Carrinho</span>
+              <button onClick={() => setIsCartOpen(false)} className="text-zinc-400 hover:text-[#F59E0B] p-1 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+
+            {/* Corpo do Carrinho Vazio */}
+            <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mb-6"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+              <h2 className="text-2xl font-anton uppercase tracking-wide text-white mb-2">Carrinho Vazio</h2>
+              <p className="text-zinc-400 text-sm mb-8">Você ainda não selecionou nenhuma armadura para forjar.</p>
+              <button onClick={() => setIsCartOpen(false)} className="w-full bg-[#F59E0B] text-[#000000] font-bold uppercase tracking-wide py-4 rounded-md hover:bg-amber-400 transition-colors">
+                Continuar Comprando
+              </button>
             </div>
          </div>
       </div>
