@@ -30,10 +30,13 @@ export default function QuickBuyCard({ titulo, preco, cores }: { titulo: string,
         quantidade: 1
       };
       
-      // Dispara o evento global EXATAMENTE com o nome que o Header está escutando
+      // 1. O Alerta que você gostou!
+      alert(`Adicionado ao carrinho: ${titulo} | Cor: ${corObj?.name} | Tam: ${tamanhoSelecionado}`);
+      
+      // 2. O Evento Mágico que envia para a gaveta do Carrinho
       window.dispatchEvent(new CustomEvent('adicionarAoCarrinho', { detail: newItem }));
       
-      // Reseta a seleção visualmente após adicionar
+      // 3. Limpa a seleção visualmente para o cliente poder comprar outra
       setCorSelecionada(null);
       setTamanhoSelecionado(null);
     }
