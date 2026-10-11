@@ -3,30 +3,15 @@
 import { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
 
-// Define the CorOpcao type
-interface CorOpcao {
-  id: string;
-  name: string;
-  hex: string;
-}
+export type CorOpcao = { id: string; name: string; hex: string };
 
-export default function QuickBuyCard({
-  titulo,
-  preco,
-  cores
-}: {
-  titulo: string,
-  preco: string,
-  cores: CorOpcao[]
-}) {
+const TAMANHOS = ['P', 'M', 'G', 'GG'];
+
+export default function QuickBuyCard({ titulo, preco, cores }: { titulo: string, preco: string, cores: CorOpcao[] }) {
   const [corSelecionada, setCorSelecionada] = useState<string | null>(null);
   const [corHover, setCorHover] = useState<string | null>(null);
   const [tamanhoSelecionado, setTamanhoSelecionado] = useState<string | null>(null);
 
-  // Tamanhos disponíveis
-  const TAMANHOS = ['P', 'M', 'G', 'GG'];
-
-  // A cor ativa na imagem é a que está a sofrer hover, ou a selecionada, ou a primeira por padrão
   const corAtivaId = corHover || corSelecionada || cores[0].id;
   const corAtivaObj = cores.find(c => c.id === corAtivaId);
 
@@ -34,18 +19,31 @@ export default function QuickBuyCard({
 
   const handleComprar = () => {
     if (isProntoParaComprar) {
-      alert(`Adicionado: ${titulo} | Cor: ${cores.find(c => c.id === corSelecionada)?.name} | Tam: ${tamanhoSelecionado}`);
-      // Futuramente aqui chamamos a abertura do Cart Drawer
+      const corObj = cores.find(c => c.id === corSelecionada);
+      const precoNumerico = parseFloat(preco.replace('.', '').replace(',', '.'));
+
+      const newItem = {
+        titulo,
+        preco: precoNumerico,
+        cor: corObj?.name || 'Padrão',
+        tamanho: tamanhoSelecionado,
+        quantidade: 1
+      };
+
+      // Dispara o evento global para o Header abrir a gaveta com o item
+      window.dispatchEvent(new CustomEvent('adicionarAoCarrinho', { detail: newItem }));
+
+      // Reseta os botões visualmente
+      setCorSelecionada(null);
+      setTamanhoSelecionado(null);
     }
   };
 
   return (
     <div className="flex flex-col border border-zinc-200 rounded-md overflow-hidden bg-white hover:shadow-lg transition-shadow duration-300">
-      {/* Imagem Dinâmica */}
       <div className="w-full aspect-[4/5] bg-zinc-100 relative flex items-center justify-center transition-colors duration-300">
-        {/* Placeholder simulando a troca de imagem baseada na cor */}
         <div className="text-center px-4">
-          <span className="text-zinc-400 font-medium text-sm block mb-2">Imagem da Camiseta</span>
+          <span className="text-zinc-400 font-medium text-sm block mb-2 line-clamp-1">{titulo}</span>
           <span className="text-xs font-bold px-2 py-1 rounded-sm text-white" style={{ backgroundColor: corAtivaObj?.hex, color: corAtivaObj?.id === 'offwhite' ? 'black' : 'white' }}>
             {corAtivaObj?.name}
           </span>
@@ -53,15 +51,13 @@ export default function QuickBuyCard({
         <span className="absolute top-2 left-2 bg-[#F59E0B] text-[#000000] text-[10px] font-bold px-2 py-1 rounded-sm">100% Algodão</span>
       </div>
 
-      {/* Info e Seleção */}
       <div className="p-4 flex flex-col gap-3">
         <div>
           <h3 className="font-bold text-zinc-900 uppercase text-sm line-clamp-1">{titulo}</h3>
           <span className="font-bold text-black text-lg">R$ {preco}</span>
         </div>
 
-        {/* Seletor de Cores */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap h-7">
           {cores.map((cor) => (
             <button
               key={cor.id}
@@ -71,11 +67,11 @@ export default function QuickBuyCard({
               className={`w-6 h-6 rounded-full border-2 transition-all ${corSelecionada === cor.id ? 'border-[#F59E0B] scale-110' : 'border-zinc-300 hover:border-zinc-400'}`}
               style={{ backgroundColor: cor.hex }}
               aria-label={`Cor ${cor.name}`}
+              title={cor.name}
             />
           ))}
         </div>
 
-        {/* Seletor de Tamanhos */}
         <div className="flex items-center gap-1.5 mt-1">
           {TAMANHOS.map((tam) => (
             <button
@@ -88,7 +84,6 @@ export default function QuickBuyCard({
           ))}
         </div>
 
-        {/* Botão de Compra */}
         <button
           onClick={handleComprar}
           disabled={!isProntoParaComprar}
@@ -99,7 +94,7 @@ export default function QuickBuyCard({
           }`}
         >
           <ShoppingCart className="w-4 h-4" />
-          {isProntoParaComprar ? 'Comprar Rápido' : 'Selecione Cor e Tamanho'}
+          {isProntoParaComprar ? 'Comprar Rápido' : 'Selecione a Cor'}
         </button>
       </div>
     </div>

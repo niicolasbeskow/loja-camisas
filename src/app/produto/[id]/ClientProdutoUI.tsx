@@ -16,6 +16,18 @@ export default function ClientProdutoUI({ produto }: { produto: Product }) {
   // Pega 4 produtos diferentes para a vitrine de relacionados
   const relacionados = mockProducts.filter(p => p.id !== produto.id).slice(0, 4);
 
+  const handleAddToCart = () => {
+    window.dispatchEvent(new CustomEvent('adicionarAoCarrinho', {
+      detail: {
+        titulo: produto.name,
+        preco: produto.price,
+        cor: produto.colors && produto.colors.length > 0 ? 'Padrão' : 'Única',
+        tamanho: tamanho,
+        quantidade: quantidade
+      }
+    }));
+  };
+
   return (
     <main className="min-h-screen bg-white text-black pb-24 mt-16">
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 pt-8">
@@ -80,7 +92,9 @@ export default function ClientProdutoUI({ produto }: { produto: Product }) {
                 <span className="w-10 text-center font-bold">{quantidade}</span>
                 <button onClick={() => setQuantidade(quantidade + 1)} className="flex-1 flex justify-center text-zinc-500 hover:text-black"><Plus className="w-4 h-4" /></button>
               </div>
-              <button className="flex-1 bg-black text-white font-bold uppercase tracking-widest text-sm rounded-sm hover:bg-[#F59E0B] hover:text-black transition-colors h-14">
+              <button onClick={handleAddToCart}
+                className="flex-1 bg-black text-white font-bold uppercase tracking-widest text-sm rounded-sm hover:bg-[#F59E0B] hover:text-black transition-colors h-14"
+              >
                 Adicionar ao Carrinho
               </button>
             </div>
@@ -110,7 +124,7 @@ export default function ClientProdutoUI({ produto }: { produto: Product }) {
                 {abaAtiva === 'descricao' && (
                   <div className="pb-5 text-sm text-zinc-600 leading-relaxed space-y-3">
                     <p>A {produto.name} Zero Encolhimento é produzida com modelagem exclusiva streetwear e acabamento de extrema qualidade.</p>
-                    <p>Nossas peças passam por um rigoroso processo de pré-encolhimento, o que garante que a peça não encolha mais nas próximas lavagens.</p>
+                    <p>Nossas peças passam porum rigoroso processo de pré-encolhimento, o que garante que a peça não encolhe mais nas próximas lavagens.</p>
                     <p>As nossas peças possuem toque conforto, não são transparentes e podem ser personalizadas com a sua estampa. Ideal para quem busca qualidade, conforto e custo-benefício!</p>
                   </div>
                 )}
@@ -133,7 +147,7 @@ export default function ClientProdutoUI({ produto }: { produto: Product }) {
               <div className="border-b border-zinc-200">
                 <button onClick={() => toggleAba('lavagem')} className="w-full py-5 flex justify-between items-center text-left focus:outline-none">
                   <span className="font-bold text-zinc-900">Recomendações de Lavagem</span>
-                  {abaAtiva === 'lavagem' ? <ChevronUp className="w-5 h-5 text-zinc-400" /> : <ChevronDown className="w-5 h-5 text-zinc-400" />}
+                  {abaAtiva === 'lavagem' ? <ChevronUp className="w-5 h-5 text-zinc-400" /> : <ChevronDown className="w-5 h-5 text-vinc-400" />}
                 </button>
                 {abaAtiva === 'lavagem' && (
                   <ul className="pb-5 text-sm text-zinc-600 leading-relaxed space-y-2 list-disc pl-5">
