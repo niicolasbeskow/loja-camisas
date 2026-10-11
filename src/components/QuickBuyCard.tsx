@@ -3,30 +3,38 @@
 import { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
 
-// Dados mockados para a vitrine de compra rápida
-const CORES = [
-  { id: 'preto', name: 'Preto', hex: '#000000' },
-  { id: 'offwhite', name: 'Off White', hex: '#FAF9F6' },
-  { id: 'marrom', name: 'Marrom', hex: '#5E4B3C' },
-  { id: 'verdemilitar', name: 'Verde Militar', hex: '#4B5320' },
-];
+// Define the CorOpcao type
+interface CorOpcao {
+  id: string;
+  name: string;
+  hex: string;
+}
 
-const TAMANHOS = ['P', 'M', 'G', 'GG'];
-
-export default function QuickBuyCard({ titulo, preco }: { titulo: string, preco: string }) {
+export default function QuickBuyCard({
+  titulo,
+  preco,
+  cores
+}: {
+  titulo: string,
+  preco: string,
+  cores: CorOpcao[]
+}) {
   const [corSelecionada, setCorSelecionada] = useState<string | null>(null);
   const [corHover, setCorHover] = useState<string | null>(null);
   const [tamanhoSelecionado, setTamanhoSelecionado] = useState<string | null>(null);
 
+  // Tamanhos disponíveis
+  const TAMANHOS = ['P', 'M', 'G', 'GG'];
+
   // A cor ativa na imagem é a que está a sofrer hover, ou a selecionada, ou a primeira por padrão
-  const corAtivaId = corHover || corSelecionada || CORES[0].id;
-  const corAtivaObj = CORES.find(c => c.id === corAtivaId);
+  const corAtivaId = corHover || corSelecionada || cores[0].id;
+  const corAtivaObj = cores.find(c => c.id === corAtivaId);
 
   const isProntoParaComprar = corSelecionada && tamanhoSelecionado;
 
   const handleComprar = () => {
     if (isProntoParaComprar) {
-      alert(`Adicionado: ${titulo} | Cor: ${CORES.find(c => c.id === corSelecionada)?.name} | Tam: ${tamanhoSelecionado}`);
+      alert(`Adicionado: ${titulo} | Cor: ${cores.find(c => c.id === corSelecionada)?.name} | Tam: ${tamanhoSelecionado}`);
       // Futuramente aqui chamamos a abertura do Cart Drawer
     }
   };
@@ -54,7 +62,7 @@ export default function QuickBuyCard({ titulo, preco }: { titulo: string, preco:
 
         {/* Seletor de Cores */}
         <div className="flex items-center gap-2">
-          {CORES.map((cor) => (
+          {cores.map((cor) => (
             <button
               key={cor.id}
               onMouseEnter={() => setCorHover(cor.id)}

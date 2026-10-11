@@ -17,6 +17,28 @@ export default async function Home() {
     }).format(price);
   };
 
+  // Definição das cores para cada grupo
+  const coresBasicaEssenciais = [
+    { id: 'preto', name: 'Preto', hex: '#000000' },
+    { id: 'offwhite', name: 'Off White', hex: '#FAF9F6' },
+  ];
+
+  const coresBasicaCores = [
+    { id: 'marrom', name: 'Marrom', hex: '#5E4B3C' },
+    { id: 'verdemilitar', name: 'Verde Militar', hex: '#4B5320' },
+    { id: 'azulmarinho', name: 'Azul Marinho', hex: '#000080' },
+    { id: 'bordo', name: 'Bordô', hex: '#800000' },
+  ];
+
+  const coresBasicaEstonada = [
+    { id: 'pretoestonado', name: 'Preto Estonado', hex: '#2C2C2C' },
+    { id: 'cinzaenvelhecido', name: 'Cinza Envelhecido', hex: '#808080' },
+  ];
+
+  const coresBasicaVintage = [
+    { id: 'azulenvelhecido', name: 'Azul Envelhecido', hex: '#4682B4' },
+  ];
+
   return (
     <main className="min-h-screen">
       {/* Faixa Concreto e Destaques Brancos */}
@@ -35,10 +57,10 @@ export default async function Home() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          <QuickBuyCard titulo="Camiseta Básica B.SKW" preco="89,90" />
-          <QuickBuyCard titulo="Camiseta Oversized B.SKW" preco="119,90" />
-          <QuickBuyCard titulo="Camiseta Boxy B.SKW" preco="109,90" />
-          <QuickBuyCard titulo="Camiseta Suedine Premium" preco="139,90" />
+          <QuickBuyCard titulo="Básica Essenciais" preco="78,90" cores={coresBasicaEssenciais} />
+          <QuickBuyCard titulo="Básica Cores" preco="89,90" cores={coresBasicaCores} />
+          <QuickBuyCard titulo="Básica Estonada" preco="112,90" cores={coresBasicaEstonada} />
+          <QuickBuyCard titulo="Básica Vintage" preco="123,90" cores={coresBasicaVintage} />
         </div>
       </section>
     </main>
