@@ -1,0 +1,85 @@
+"use client";
+import { useState } from 'react';
+import { useCart } from '@/contexts/CartContext';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+
+export default function CheckoutPage() {
+  const { cartItems, cartTotal } = useCart();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const [cep, setCep] = useState('');
+  const [frete, setFrete] = useState<number | null>(null);
+
+  if (status === 'loading') return <div className="min-h-screen bg-zinc-50 flex items-center justify-center font-anton text-2xl uppercase">Carregando armadura...</div>;
+  if (!session) { router.push('/login'); return null; }
+  if (cartItems.length === 0) {
+    return (
+      <div className="min-h-[70vh] bg-zinc-50 flex flex-col items-center justify-center p-4 text-center">
+        <h1 className="font-anton text-4xl uppercase mb-4">Sua Sacola está vazia</h1>
+        <Link href="/" className="bg-black text-white px-8 py-4 font-bold uppercase tracking-widest text-sm hover:bg-[#F59E0B] hover:text-black transition-colors">Voltar para a loja</Link>
+      </div>
+    );
+  }
+
+  const calcularFrete = () => { if (cep.length >= 8) setFrete(25.90); }; // Frete Mockado Fixo
+  const totalGeral = cartTotal + (frete || 0);
+
+  return (
+    <div className="min-h-screen bg-zinc-50 py-12">
+      <div className="max-w-[1200px] mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12">
+        
+        {/* COLUNA ESQUERDA: PERFIL E FRETE */}
+        <div>
+          <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">1. Dados de Envio</h2>
+          <div className="bg-white p-6 border border-zinc-200 rounded-sm mb-8">
+            <p className="text-zinc-600 mb-2">Comprador: <strong className="text-black">{session.user?.name || session.user?.email}</strong></p>
+            <div className="mt-4">
+              <label className="block text-sm font-bold uppercase text-zinc-500 mb-2">Calcular Frete (CEP)</label>
+              <div className="flex gap-2">
+                <input type="text" placeholder="00000-000" value={cep} onChange={(e) => setCep(e.target.value)} className="border border-zinc-300 p-3 w-full rounded-sm outline-none focus:border-black" />
+                <button onClick={calcularFrete} className="bg-black text-white px-6 font-bold uppercase text-xs hover:bg-[#F59E0B] hover:text-black transition-colors">Calcular</button>
+              </div>
+            </div>
+          </div>
+
+          <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">2. Pagamento</h2>
+          <button 
+            disabled={!frete} 
+            className={`w-full py-5 font-anton text-xl uppercase tracking-wider transition-colors ${frete ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}
+          >
+            {frete ? 'Ir para Mercado Pago' : 'Calcule o frete para prosseguir'}
+          </button>
+        </div>
+
+        {/* COLUNA DIREITA: RESUMO DO PEDIDO */}
+        <div className="bg-white p-8 border border-zinc-200 rounded-sm h-fit sticky top-24">
+          <h2 className="font-anton text-2xl uppercase mb-6">Resumo da Compra</h2>
+          <div className="space-y-4 mb-6">
+            {cartItems.map((item, idx) => (
+              <div key={idx} className="flex justify-between items-center text-sm border-b border-zinc-100 pb-4">
+                <div className="flex flex-col">
+                  <span className="font-bold uppercase text-zinc-800">{item.titulo}</span>
+                  <span className="text-zinc-500">Cor: {item.cor} | Tam: {item.tamanho} | Qtd: {item.quantidade}</span>
+                </div>
+                <span className="font-bold text-black">R$ {(item.preco * item.quantidade).toFixed(2).replace('.', ',')}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-3 text-sm border-t border-zinc-200 pt-6">
+            <div className="flex justify-between"><span className="text-zinc-500">Subtotal</span><span className="font-bold">R$ {cartTotal.toFixed(2).replace('.', ',')}</span></div>
+            <div className="flex justify-between"><span className="text-zinc-500">Frete</span><span className="font-bold">{frete ? `R$ ${frete.toFixed(2).replace('.', ',')}` : '--'}</span></div>
+            <div className="flex justify-between text-lg mt-4 border-t border-black pt-4">
+              <span className="font-anton uppercase">Total Geral</span>
+              <span className="font-bold text-[#F59E0B]">R$ {totalGeral.toFixed(2).replace('.', ',')}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,18 @@
+⚠ Warning: Next.js ignored package-lock.json in /home/niico because it is outside the current Git repository (/home/niico/loja-camisas).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+Error occurred prerendering page "/_not-found". Read more: https://nextjs.org/docs/messages/prerender-error
+Error occurred prerendering page "/configuracoes". Read more: https://nextjs.org/docs/messages/prerender-error
+Error: React Context is unavailable in Server Components
+    at <unknown> (src/app/layout.tsx:57:29)
+  55 |
+  56 | export default function RootLayout({ children }: LayoutProps<"/">) {
+> 57 |   const { data: session } = useSession();
+     |                             ^
+  58 |
+  59 |   return (
+  60 |     <html {
+  digest: '3248761923'
+}
+Export encountered an error on /_not-found/page: /_not-found, exiting the build.
+⨯ Next.js build worker exited with code: 1 and signal: null

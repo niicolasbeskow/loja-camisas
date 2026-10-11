@@ -28,27 +28,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const savedCart = localStorage.getItem('@bskw-cart');
-    if (savedCart) {
-      try { setCartItems(JSON.parse(savedCart)); } catch (e) {}
-    }
+    if (savedCart) { try { setCartItems(JSON.parse(savedCart)); } catch (e) {} }
     setIsInitialized(true);
   }, []);
 
   useEffect(() => {
-    if (isInitialized) {
-      localStorage.setItem('@bskw-cart', JSON.stringify(cartItems));
-    }
+    if (isInitialized) localStorage.setItem('@bskw-cart', JSON.stringify(cartItems));
   }, [cartItems, isInitialized]);
 
   const addToCart = (newItem: CartItem) => {
     setCartItems(prev => {
       const exists = prev.find(item => item.titulo === newItem.titulo && item.cor === newItem.cor && item.tamanho === newItem.tamanho);
-      if (exists) {
-         return prev.map(item => item === exists ? { ...item, quantidade: item.quantidade + 1 } : item);
-      }
+      if (exists) return prev.map(item => item === exists ? { ...item, quantidade: item.quantidade + 1 } : item);
       return [...prev, newItem];
     });
-    setIsCartOpen(true);
+    // REMOVIDO: setIsCartOpen(true); -> O "Silent Add" agora é real!
   };
 
   const removeFromCart = (titulo: string, cor: string, tamanho: string) => {

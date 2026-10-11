@@ -1,46 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import UserDropdown from "./UserDropdown";
+import { useCart } from '@/contexts/CartContext';
 
 export default function Header({ session }: { session: any }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  
-  const [cartItems, setCartItems] = useState<any[]>([]);
-
-  useEffect(() => {
-    const savedCart = localStorage.getItem('@bskw-cart');
-    if (savedCart) {
-      try { setCartItems(JSON.parse(savedCart)); } catch (e) {}
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('@bskw-cart', JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  useEffect(() => {
-    const handleAddToCart = (e: any) => {
-      const newItem = e.detail;
-      setCartItems(prev => {
-        const exists = prev.find(item => item.titulo === newItem.titulo && item.cor === newItem.cor && item.tamanho === newItem.tamanho);
-        if (exists) {
-           return prev.map(item => item === exists ? { ...item, quantidade: item.quantidade + 1 } : item);
-        }
-        return [...prev, newItem];
-      });
-      setIsCartOpen(true);
-    };
-
-    // BYPASS no TypeScript: forçamos o tipo any no window para aceitar o CustomEvent
-    (window as any).addEventListener('adicionarAoCarrinho', handleAddToCart);
-    return () => (window as any).removeEventListener('adicionarAoCarrinho', handleAddToCart);
-  }, []);
+  const {
+    cartItems,
+    addToCart,
+    removeFromCart,
+    cartCount,
+    cartTotal,
+    isCartOpen,
+    setIsCartOpen
+  } = useCart();
 
   const router = useRouter();
   const handleSearch = (e: React.FormEvent) => {
@@ -50,13 +28,6 @@ export default function Header({ session }: { session: any }) {
       router.push(`/busca?q=${encodeURIComponent(searchQuery)}`);
       setSearchQuery('');
     }
-  };
-
-  const cartCount = cartItems.reduce((acc, item) => acc + item.quantidade, 0);
-  const cartTotal = cartItems.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
-
-  const removerItem = (titulo: string, cor: string, tamanho: string) => {
-    setCartItems(prev => prev.filter(item => !(item.titulo === titulo && item.cor === cor && item.tamanho === tamanho)));
   };
 
   return (
@@ -171,7 +142,7 @@ export default function Header({ session }: { session: any }) {
                         <div className="flex-1 flex flex-col">
                           <div className="flex justify-between items-start">
                             <h4 className="text-white font-bold text-sm uppercase line-clamp-2 pr-2">{item.titulo}</h4>
-                            <button onClick={() => removerItem(item.titulo, item.cor, item.tamanho)} className="text-zinc-500 hover:text-red-500">
+                            <button onClick={() => removeFromCart(item.titulo, item.cor, item.tamanho)} className="text-zinc-500 hover:text-red-500">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                             </button>
                           </div>

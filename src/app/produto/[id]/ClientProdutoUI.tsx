@@ -4,12 +4,14 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Home, Minus, Plus, Truck, CreditCard, Package, ShieldCheck, ChevronDown, ChevronUp, Star } from 'lucide-react';
 import { Product, mockProducts } from '@/lib/data';
+import { useCart } from '@/contexts/CartContext';
 
 export default function ClientProdutoUI({ produto }: { produto: Product }) {
   const [quantidade, setQuantidade] = useState(1);
   const [tamanho, setTamanho] = useState('G');
   const [abaAtiva, setAbaAtiva] = useState('descricao');
   const tamanhos = ['PP', 'P', 'M', 'G', 'GG', 'G1', 'G2'];
+  const { addToCart } = useCart();
 
   const toggleAba = (aba: string) => setAbaAtiva(abaAtiva === aba ? '' : aba);
 
@@ -17,15 +19,13 @@ export default function ClientProdutoUI({ produto }: { produto: Product }) {
   const relacionados = mockProducts.filter(p => p.id !== produto.id).slice(0, 4);
 
   const handleAddToCart = () => {
-    window.dispatchEvent(new CustomEvent('adicionarAoCarrinho', {
-      detail: {
-        titulo: produto.name,
-        preco: produto.price,
-        cor: produto.colors && produto.colors.length > 0 ? 'Padrão' : 'Única',
-        tamanho: tamanho,
-        quantidade: quantidade
-      }
-    }));
+    addToCart({
+      titulo: produto.name,
+      preco: produto.price,
+      cor: produto.colors && produto.colors.length > 0 ? 'Padrão' : 'Única',
+      tamanho: tamanho,
+      quantidade: quantidade
+    });
   };
 
   return (
