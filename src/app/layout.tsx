@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { Anton, Outfit } from "next/font/google";
 import "./globals.css";
-import { useSession } from "next-auth/react";
+
+import Marquee from '@/components/Marquee';
+import Header from '@/components/Header';
+import CartSidebar from '@/components/CartSidebar';
+import { AuthProvider } from '@/providers/AuthProvider';
+import Footer from '@/components/Footer';
+import { CartProvider } from '@/contexts/CartContext';
 
 const antón = Anton({
   variable: "--font-anton",
@@ -47,24 +53,20 @@ export const metadata: Metadata = {
   },
 };
 
-import Marquee from '@/components/Marquee';
-import Header from '@/components/Header';
-import CartSidebar from '@/components/CartSidebar';
-import { AuthProvider } from '@/providers/AuthProvider';
-import Footer from '@/components/Footer';
-
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
-      lang="en"
+      lang="pt-BR"
       className={`${antón.variable} ${outfit.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <AuthProvider>
-          <Marquee />
-          <Header />
-          <CartSidebar />
-          {children}
+          <CartProvider>
+            <Marquee />
+            <Header session={null} />
+            <CartSidebar />
+            {children}
+          </CartProvider>
         </AuthProvider>
         <Footer />
       </body>
