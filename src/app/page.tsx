@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import AddToCartButton from '@/components/AddToCartButton';
+import QuickBuyCard from '@/components/QuickBuyCard';
 
 export default async function Home() {
   const products = await prisma.product.findMany({
@@ -28,27 +29,16 @@ export default async function Home() {
       </section>
 
       {/* Seção DESTAQUES */}
-      <section className="bg-white text-black py-16 px-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-display mb-8 text-center text-black tracking-tighter uppercase">
-            DESTAQUES
-          </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Placeholder cards */}
-            {/* TODO: Backend - Filtrar e exibir os produtos com maior número de adições ao carrinho (Mais Vendidos) */}
-            {[1, 2, 3, 4, 5, 6].map((_, idx) => (
-              <Link
-                key={idx}
-                href="#"
-                className="block hover:shadow-lg transition-shadow border border-gray-300 rounded p-6 bg-white flex flex-col items-center justify-center"
-              >
-                <div className="w-16 h-16 mb-2 bg-black/5 rounded"></div>
-                <p className="text-sm text-black/60 font-medium text-center">
-                  Produto em breve
-                </p>
-              </Link>
-            ))}
-          </div>
+      <section className="max-w-[1600px] mx-auto px-4 md:px-6 py-16">
+        <h2 className="text-4xl md:text-5xl font-anton uppercase text-center mb-12 tracking-wide text-zinc-900">
+          Destaques B.<span className="text-[#F59E0B]">SKW</span>
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <QuickBuyCard titulo="Camiseta Básica B.SKW" preco="89,90" />
+          <QuickBuyCard titulo="Camiseta Oversized B.SKW" preco="119,90" />
+          <QuickBuyCard titulo="Camiseta Boxy B.SKW" preco="109,90" />
+          <QuickBuyCard titulo="Camiseta Suedine Premium" preco="139,90" />
         </div>
       </section>
     </main>
