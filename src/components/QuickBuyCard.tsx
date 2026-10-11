@@ -21,7 +21,7 @@ export default function QuickBuyCard({ titulo, preco, cores }: { titulo: string,
     if (isProntoParaComprar) {
       const corObj = cores.find(c => c.id === corSelecionada);
       const precoNumerico = parseFloat(preco.replace('.', '').replace(',', '.'));
-
+      
       const newItem = {
         titulo,
         preco: precoNumerico,
@@ -29,11 +29,11 @@ export default function QuickBuyCard({ titulo, preco, cores }: { titulo: string,
         tamanho: tamanhoSelecionado,
         quantidade: 1
       };
-
-      // Dispara o evento global para o Header abrir a gaveta com o item
+      
+      // Dispara o evento global EXATAMENTE com o nome que o Header está escutando
       window.dispatchEvent(new CustomEvent('adicionarAoCarrinho', { detail: newItem }));
-
-      // Reseta os botões visualmente
+      
+      // Reseta a seleção visualmente após adicionar
       setCorSelecionada(null);
       setTamanhoSelecionado(null);
     }
@@ -88,8 +88,8 @@ export default function QuickBuyCard({ titulo, preco, cores }: { titulo: string,
           onClick={handleComprar}
           disabled={!isProntoParaComprar}
           className={`mt-2 flex items-center justify-center gap-2 w-full py-3 text-xs font-bold uppercase tracking-widest rounded-sm transition-all duration-300 ${
-            isProntoParaComprar
-              ? 'bg-[#F59E0B] text-black hover:bg-amber-400 cursor-pointer'
+            isProntoParaComprar 
+              ? 'bg-[#F59E0B] text-black hover:bg-amber-400 cursor-pointer' 
               : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'
           }`}
         >
