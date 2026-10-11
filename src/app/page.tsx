@@ -53,7 +53,7 @@ export default async function Home() {
       {/* Seção DESTAQUES */}
       <section className="max-w-[1600px] mx-auto px-4 md:px-6 py-16">
         <h2 className="text-4xl md:text-5xl font-anton uppercase text-center mb-12 tracking-wide text-zinc-900">
-          Destaques B.<span className="text-[#F59E0B]">SKW</span>
+          Destaques B<span className="text-[#F59E0B]">.</span>SKW
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
