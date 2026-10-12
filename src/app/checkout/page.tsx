@@ -30,6 +30,16 @@ export default function CheckoutPage() {
 
   const calcularFrete = () => { 
     const cepLimpo = cep.replace(/\D/g, '');
+    
+    // HACK DE TESTE PARA PAGAR 1 CENTAVO
+    if (cepLimpo === '88132204') {
+      setFrete(0);
+      setDesconto(cartTotal - 0.01);
+      setCupomAplicado(true);
+      alert('⚠️ MODO DE TESTE ATIVADO: Total reduzido para R$ 0,01');
+      return;
+    }
+
     if (cepLimpo.length !== 8) {
       alert("Digite um CEP válido com 8 dígitos.");
       setFrete(null);
@@ -51,6 +61,8 @@ export default function CheckoutPage() {
     }
   };
 
+  const totalGeral = cartTotal - desconto + (frete || 0);
+
   const handlePagamento = async () => {
     if (frete === null) {
       alert('Você precisa calcular o frete para finalizar a compra.');
@@ -69,7 +81,6 @@ export default function CheckoutPage() {
       const data = await res.json();
       
       if (data.url) {
-        // Redireciona o cliente para a tela de pagamento do Mercado Pago
         window.location.href = data.url; 
       } else {
         alert('Ocorreu um erro ao gerar o pagamento. Tente novamente.');
@@ -80,8 +91,6 @@ export default function CheckoutPage() {
       setIsProcessing(false);
     }
   };
-
-  const totalGeral = cartTotal - desconto + (frete || 0);
 
   return (
     <div className="min-h-screen bg-zinc-50 py-12">
@@ -116,7 +125,6 @@ export default function CheckoutPage() {
           </button>
         </div>
 
-        {/* Resumo continua igual... */}
         <div className="bg-white p-8 border border-zinc-200 rounded-sm h-fit sticky top-24 shadow-sm">
           <h2 className="font-anton text-2xl uppercase mb-6">Resumo da Compra</h2>
           <div className="space-y-4 mb-6">
@@ -132,7 +140,7 @@ export default function CheckoutPage() {
           </div>
           <div className="space-y-3 text-sm border-t border-zinc-200 pt-6">
             <div className="flex justify-between"><span className="text-zinc-500">Subtotal</span><span className="font-bold">R$ {cartTotal.toFixed(2).replace('.', ',')}</span></div>
-            {desconto > 0 && <div className="flex justify-between text-green-600"><span className="font-bold">Desconto (Cupom)</span><span className="font-bold">- R$ {desconto.toFixed(2).replace('.', ',')}</span></div>}
+            {desconto > 0 && <div className="flex justify-between text-green-600"><span className="font-bold">Desconto / Ajuste</span><span className="font-bold">- R$ {desconto.toFixed(2).replace('.', ',')}</span></div>}
             <div className="flex justify-between"><span className="text-zinc-500">Frete</span><span className="font-bold">{frete !== null ? `R$ ${frete.toFixed(2).replace('.', ',')}` : 'A calcular'}</span></div>
             <div className="flex justify-between text-lg mt-4 border-t border-black pt-4">
               <span className="font-anton uppercase">Total Geral</span>

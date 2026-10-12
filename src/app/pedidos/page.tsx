@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
 import Link from "next/link";
+import BotoesAcao from "./BotoesAcao";
 
 const prisma = new PrismaClient();
 const WPP_NUMBER = "5548991243958";
@@ -78,29 +79,7 @@ export default async function PedidosPage() {
                     ))}
                   </div>
 
-                  <div className="sm:w-64 flex flex-col justify-center border-t sm:border-t-0 sm:border-l border-zinc-100 pt-4 sm:pt-0 sm:pl-6">
-                    {pedido.status === 'PENDENTE' && (
-                      <>
-                        <p className="text-xs text-zinc-500 mb-3 text-center sm:text-left">Finalize o pagamento para garantirmos o seu estoque.</p>
-                        {pedido.paymentUrl && (
-                          <Link href={pedido.paymentUrl} className="w-full text-center bg-[#F59E0B] text-black font-bold uppercase py-3 text-xs tracking-wider rounded-sm hover:bg-amber-400 transition-colors block">
-                            Pagar Agora
-                          </Link>
-                        )}
-                      </>
-                    )}
-                    
-                    {pedido.status === 'PROCESSANDO' && (
-                      <>
-                        <p className="text-sm text-zinc-600 font-medium text-center sm:text-left mb-3">Aguardando confirmação...</p>
-                        <a href={`https://wa.me/${WPP_NUMBER}?text=Olá Nicolas, preciso de ajuda com o meu pedido ${pedido.id.substring(0,8).toUpperCase()}`} target="_blank" className="w-full text-center bg-black text-white font-bold uppercase py-2 text-xs tracking-wider rounded-sm hover:bg-zinc-800 transition-colors block">Falar com Suporte</a>
-                      </>
-                    )}
-
-                    {pedido.status === 'ENVIADO' && pedido.trackingCode && (
-                      <>
-                        <p className="text-xs font-bold uppercase text-zinc-500 mb-2">Código de Rastreio</p>
-                        <div className="bg-zinc-100 border border-zinc-200 text-center py-2 px-3 rounded-sm font-mono text-sm text-black tracking-widest mb-3">{pedido.trackingCode}</div>
+                  <BotoesAcao pedidoId={pedido.id} status={pedido.status} paymentUrl={pedido.paymentUrl} rastreio={pedido.trackingCode} wpp={WPP_NUMBER} />
                         <a href={`https://rastreamento.correios.com.br/app/index.php?codigo=${pedido.trackingCode}`} target="_blank" className="w-full text-center bg-black text-white font-bold uppercase py-2 text-xs tracking-wider rounded-sm hover:bg-[#F59E0B] hover:text-black transition-colors block">Rastrear Correios</a>
                       </>
                     )}
