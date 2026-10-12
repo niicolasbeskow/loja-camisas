@@ -15,6 +15,7 @@ export default function CheckoutPage() {
   const [cupom, setCupom] = useState('');
   const [desconto, setDesconto] = useState(0);
   const [cupomAplicado, setCupomAplicado] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   if (status === 'loading') return <div className="min-h-screen bg-zinc-50 flex items-center justify-center font-anton text-2xl uppercase">Carregando...</div>;
   if (!session) { router.push('/login'); return null; }
@@ -42,7 +43,7 @@ export default function CheckoutPage() {
     if (cupom.toUpperCase() === 'BSKW10') {
       setDesconto(cartTotal * 0.10);
       setCupomAplicado(true);
-      alert('Cupom de 10% aplicado com sucesso!');
+      alert('Cupom de 10% aplicado!');
     } else {
       setDesconto(0);
       setCupomAplicado(false);
@@ -50,12 +51,34 @@ export default function CheckoutPage() {
     }
   };
 
-  const handlePagamento = () => {
+  const handlePagamento = async () => {
     if (frete === null) {
-      alert('Você precisa calcular o frete (inserir CEP) para finalizar a compra.');
+      alert('Você precisa calcular o frete para finalizar a compra.');
       return;
     }
-    alert('Tudo certo! Redirecionando para o Mercado Pago...');
+    
+    setIsProcessing(true);
+    
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cartItems, frete, desconto })
+      });
+      
+      const data = await res.json();
+      
+      if (data.url) {
+        // Redireciona o cliente para a tela de pagamento do Mercado Pago
+        window.location.href = data.url; 
+      } else {
+        alert('Ocorreu um erro ao gerar o pagamento. Tente novamente.');
+        setIsProcessing(false);
+      }
+    } catch (error) {
+      alert('Erro de conexão com o servidor.');
+      setIsProcessing(false);
+    }
   };
 
   const totalGeral = cartTotal - desconto + (frete || 0);
@@ -84,11 +107,16 @@ export default function CheckoutPage() {
           </div>
 
           <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">3. Pagamento</h2>
-          <button onClick={handlePagamento} disabled={frete === null} className={`w-full py-5 font-anton text-xl uppercase tracking-wider transition-colors ${frete !== null ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
-            {frete !== null ? 'Ir para Mercado Pago' : 'Calcule o frete para prosseguir'}
+          <button 
+            onClick={handlePagamento} 
+            disabled={frete === null || isProcessing} 
+            className={`w-full py-5 flex items-center justify-center font-anton text-xl uppercase tracking-wider transition-colors ${frete !== null && !isProcessing ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}
+          >
+            {isProcessing ? 'Conectando ao banco...' : frete !== null ? 'Ir para Mercado Pago' : 'Calcule o frete para prosseguir'}
           </button>
         </div>
 
+        {/* Resumo continua igual... */}
         <div className="bg-white p-8 border border-zinc-200 rounded-sm h-fit sticky top-24 shadow-sm">
           <h2 className="font-anton text-2xl uppercase mb-6">Resumo da Compra</h2>
           <div className="space-y-4 mb-6">
