@@ -32,14 +32,7 @@ export default function QuickBuyCard({ titulo, preco, cores }: { titulo: string,
       const corObj = cores.find(c => c.id === corSelecionada);
       const precoNumerico = parseFloat(preco.replace('.', '').replace(',', '.'));
       
-      addToCart({
-        titulo,
-        preco: precoNumerico,
-        cor: corObj?.name || 'Padrão',
-        tamanho: tamanhoSelecionado,
-        quantidade: 1
-      });
-      
+      addToCart({ titulo, preco: precoNumerico, cor: corObj?.name || 'Padrão', tamanho: tamanhoSelecionado, quantidade: 1 });
       alert(`Adicionado à sua armadura: ${titulo} | Cor: ${corObj?.name} | Tam: ${tamanhoSelecionado}`);
       setCorSelecionada(null);
       setTamanhoSelecionado(null);
@@ -69,7 +62,7 @@ export default function QuickBuyCard({ titulo, preco, cores }: { titulo: string,
             <button key={tam} onClick={() => setTamanhoSelecionado(tam)} className={`flex-1 py-1.5 text-xs font-bold border rounded-sm transition-colors ${tamanhoSelecionado === tam ? 'bg-black text-white border-black' : 'bg-white text-zinc-600 border-zinc-300 hover:border-black'}`}>{tam}</button>
           ))}
         </div>
-        <button onClick={handleComprar} disabled={!isProntoParaComprar && !!session} className={`mt-2 flex items-center justify-center gap-2 w-full py-3 text-xs font-bold uppercase tracking-widest rounded-sm transition-all duration-300 ${!session ? 'bg-zinc-900 text-white hover:bg-black' : isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400'}`}>
+        <button onClick={handleComprar} disabled={!isProntoParaComprar && !!session} className={`mt-2 flex items-center justify-center gap-2 w-full py-3 text-xs font-bold uppercase tracking-widest rounded-sm transition-all duration-300 ${!session ? 'bg-zinc-900 text-white hover:bg-black' : isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
           <ShoppingCart className="w-4 h-4" />
           {!session ? 'Faça Login para Comprar' : isProntoParaComprar ? 'Comprar Rápido' : 'Selecione a Cor'}
         </button>

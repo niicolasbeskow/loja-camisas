@@ -162,7 +162,7 @@ export default function Header({ session }: { session: any }) {
                        <span className="text-[#F59E0B]">R$ {cartTotal.toFixed(2).replace('.', ',')}</span>
                      </div>
                      <p className="text-zinc-500 text-xs text-center mb-4">Frete calculado no checkout.</p>
-                     <button className="w-full bg-[#F59E0B] text-[#000000] font-bold uppercase tracking-wide py-4 rounded-md hover:bg-amber-400 transition-colors">
+                     <button onClick={() => { setIsCartOpen(false); router.push('/checkout'); }} className="w-full bg-[#F59E0B] text-[#000000] font-bold uppercase tracking-wide py-4 rounded-md hover:bg-amber-400 transition-colors">
                        Finalizar Compra
                      </button>
                   </div>

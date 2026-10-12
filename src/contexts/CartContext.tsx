@@ -42,7 +42,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (exists) return prev.map(item => item === exists ? { ...item, quantidade: item.quantidade + 1 } : item);
       return [...prev, newItem];
     });
-    // REMOVIDO: setIsCartOpen(true); -> O "Silent Add" agora é real!
   };
 
   const removeFromCart = (titulo: string, cor: string, tamanho: string) => {

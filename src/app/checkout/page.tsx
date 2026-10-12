@@ -24,14 +24,12 @@ export default function CheckoutPage() {
     );
   }
 
-  const calcularFrete = () => { if (cep.length >= 8) setFrete(25.90); }; // Frete Mockado Fixo
+  const calcularFrete = () => { if (cep.length >= 8) setFrete(25.90); };
   const totalGeral = cartTotal + (frete || 0);
 
   return (
     <div className="min-h-screen bg-zinc-50 py-12">
       <div className="max-w-[1200px] mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12">
-        
-        {/* COLUNA ESQUERDA: PERFIL E FRETE */}
         <div>
           <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">1. Dados de Envio</h2>
           <div className="bg-white p-6 border border-zinc-200 rounded-sm mb-8">
@@ -44,17 +42,11 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
-
           <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">2. Pagamento</h2>
-          <button 
-            disabled={!frete} 
-            className={`w-full py-5 font-anton text-xl uppercase tracking-wider transition-colors ${frete ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}
-          >
+          <button disabled={!frete} className={`w-full py-5 font-anton text-xl uppercase tracking-wider transition-colors ${frete ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
             {frete ? 'Ir para Mercado Pago' : 'Calcule o frete para prosseguir'}
           </button>
         </div>
-
-        {/* COLUNA DIREITA: RESUMO DO PEDIDO */}
         <div className="bg-white p-8 border border-zinc-200 rounded-sm h-fit sticky top-24">
           <h2 className="font-anton text-2xl uppercase mb-6">Resumo da Compra</h2>
           <div className="space-y-4 mb-6">
@@ -68,7 +60,6 @@ export default function CheckoutPage() {
               </div>
             ))}
           </div>
-
           <div className="space-y-3 text-sm border-t border-zinc-200 pt-6">
             <div className="flex justify-between"><span className="text-zinc-500">Subtotal</span><span className="font-bold">R$ {cartTotal.toFixed(2).replace('.', ',')}</span></div>
             <div className="flex justify-between"><span className="text-zinc-500">Frete</span><span className="font-bold">{frete ? `R$ ${frete.toFixed(2).replace('.', ',')}` : '--'}</span></div>
@@ -78,7 +69,6 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
