@@ -30,6 +30,20 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await signIn('google', {
+        callbackUrl: '/'
+      });
+    } catch (err: any) {
+      setError('Erro ao fazer login com Google');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-concreto flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
@@ -70,6 +84,16 @@ export default function LoginPage() {
                 className="w-full px-4 py-2 bg-breu/20 border border-breu/20 text-breu placeholder-breu/50 focus:outline-none focus:ring-2 focus:ring-amber-400 rounded-md"
                 required
               />
+            </div>
+            <div className="flex justify-center">
+              <button
+                onClick={handleGoogleSignIn}
+                disabled={isLoading}
+                className="w-full bg-white text-breu font-sans font-semibold rounded-md px-4 py-2 flex items-center justify-center gap-2 transition-colors hover:bg-breu/20"
+              >
+                {/* You can replace this with an actual Google icon */}
+                <span className="text-sm">Continuar com Google</span>
+              </button>
             </div>
             <button
               type="submit"

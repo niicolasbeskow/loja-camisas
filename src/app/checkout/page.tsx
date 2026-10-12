@@ -16,7 +16,7 @@ export default function CheckoutPage() {
   const [desconto, setDesconto] = useState(0);
   const [cupomAplicado, setCupomAplicado] = useState(false);
 
-  if (status === 'loading') return <div className="min-h-screen bg-zinc-50 flex items-center justify-center font-anton text-2xl uppercase">Carregando armadura...</div>;
+  if (status === 'loading') return <div className="min-h-screen bg-zinc-50 flex items-center justify-center font-anton text-2xl uppercase">Carregando...</div>;
   if (!session) { router.push('/login'); return null; }
   if (cartItems.length === 0) {
     return (
@@ -30,11 +30,10 @@ export default function CheckoutPage() {
   const calcularFrete = () => { 
     const cepLimpo = cep.replace(/\D/g, '');
     if (cepLimpo.length !== 8) {
-      alert("Por favor, digite um CEP válido com 8 dígitos.");
+      alert("Digite um CEP válido com 8 dígitos.");
       setFrete(null);
       return;
     }
-    // Lógica simples de Frete: Se começar com 8 ou 9 é mais barato (Sul), senão preço normal.
     const primeiraLetra = parseInt(cepLimpo.charAt(0));
     setFrete(primeiraLetra >= 8 ? 15.90 : 25.90);
   };
@@ -47,17 +46,16 @@ export default function CheckoutPage() {
     } else {
       setDesconto(0);
       setCupomAplicado(false);
-      alert('Cupom inválido ou expirado.');
+      alert('Cupom inválido.');
     }
   };
 
   const handlePagamento = () => {
-    if (!frete) {
-      alert('Você precisa calcular o frete para sua região antes de pagar.');
+    if (frete === null) {
+      alert('Você precisa calcular o frete (inserir CEP) para finalizar a compra.');
       return;
     }
     alert('Tudo certo! Redirecionando para o Mercado Pago...');
-    // Aqui vai entrar a função real de pagamento
   };
 
   const totalGeral = cartTotal - desconto + (frete || 0);
@@ -69,13 +67,12 @@ export default function CheckoutPage() {
           <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">1. Dados de Envio</h2>
           <div className="bg-white p-6 border border-zinc-200 rounded-sm mb-8 shadow-sm">
             <p className="text-zinc-600 mb-4">Comprador: <strong className="text-black">{session.user?.name || session.user?.email}</strong></p>
-            
-            <label className="block text-sm font-bold uppercase text-zinc-500 mb-2">Calcular Frete (CEP)</label>
+            <label className="block text-sm font-bold uppercase text-zinc-500 mb-2">Calcular Frete (CEP) *</label>
             <div className="flex gap-2 mb-2">
               <input type="text" placeholder="Ex: 88000-000" value={cep} onChange={(e) => setCep(e.target.value)} className="border border-zinc-300 p-3 w-full rounded-sm outline-none focus:border-black" maxLength={9} />
               <button onClick={calcularFrete} className="bg-black text-white px-6 font-bold uppercase text-xs hover:bg-[#F59E0B] hover:text-black transition-colors">Calcular</button>
             </div>
-            {frete && <p className="text-green-600 text-sm font-bold">Frete calculado: R$ {frete.toFixed(2).replace('.', ',')}</p>}
+            {frete !== null && <p className="text-green-600 text-sm font-bold">Frete calculado: R$ {frete.toFixed(2).replace('.', ',')}</p>}
           </div>
 
           <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">2. Cupom de Desconto</h2>
@@ -87,8 +84,8 @@ export default function CheckoutPage() {
           </div>
 
           <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">3. Pagamento</h2>
-          <button onClick={handlePagamento} disabled={!frete} className={`w-full py-5 font-anton text-xl uppercase tracking-wider transition-colors ${frete ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
-            {frete ? 'Ir para Mercado Pago' : 'Calcule o frete para prosseguir'}
+          <button onClick={handlePagamento} disabled={frete === null} className={`w-full py-5 font-anton text-xl uppercase tracking-wider transition-colors ${frete !== null ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
+            {frete !== null ? 'Ir para Mercado Pago' : 'Calcule o frete para prosseguir'}
           </button>
         </div>
 
@@ -108,7 +105,7 @@ export default function CheckoutPage() {
           <div className="space-y-3 text-sm border-t border-zinc-200 pt-6">
             <div className="flex justify-between"><span className="text-zinc-500">Subtotal</span><span className="font-bold">R$ {cartTotal.toFixed(2).replace('.', ',')}</span></div>
             {desconto > 0 && <div className="flex justify-between text-green-600"><span className="font-bold">Desconto (Cupom)</span><span className="font-bold">- R$ {desconto.toFixed(2).replace('.', ',')}</span></div>}
-            <div className="flex justify-between"><span className="text-zinc-500">Frete</span><span className="font-bold">{frete ? `R$ ${frete.toFixed(2).replace('.', ',')}` : 'A calcular'}</span></div>
+            <div className="flex justify-between"><span className="text-zinc-500">Frete</span><span className="font-bold">{frete !== null ? `R$ ${frete.toFixed(2).replace('.', ',')}` : 'A calcular'}</span></div>
             <div className="flex justify-between text-lg mt-4 border-t border-black pt-4">
               <span className="font-anton uppercase">Total Geral</span>
               <span className="font-bold text-[#F59E0B]">R$ {totalGeral.toFixed(2).replace('.', ',')}</span>
