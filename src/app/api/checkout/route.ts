@@ -9,8 +9,18 @@ export async function POST(req: Request) {
     const session = await getServerSession();
     if (!session || !session.user?.email) return NextResponse.json({ error: 'Não autorizado. Faça login novamente.' }, { status: 401 });
 
-    const user = await prisma.user.findUnique({ where: { email: session.user.email } });
-    if (!user) return NextResponse.json({ error: 'Usuário não encontrado.' }, { status: 404 });
+    // SOLUÇÃO INTELIGENTE: Busca o usuário. Se não existir, CRIA ele na hora!
+    let user = await prisma.user.findUnique({ where: { email: session.user.email } });
+    
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email: session.user.email,
+          name: session.user.name || 'Cliente B.SKW',
+          image: session.user.image || '',
+        }
+      });
+    }
 
     const body = await req.json();
     const { cartItems, frete, desconto, totalGeral } = body;
@@ -77,7 +87,6 @@ export async function POST(req: Request) {
       });
       return NextResponse.json({ url: data.init_point });
     } else {
-      // Devolve O ERRO DETALHADO DO MERCADO PAGO
       return NextResponse.json({ error: 'Erro MP', detalhes: data }, { status: 400 });
     }
   } catch (error: any) {
