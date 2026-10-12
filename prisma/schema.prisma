@@ -18,12 +18,12 @@ model Artist {
 }
 
 model Product {
-  id         Int    @id @default(autoincrement())
+  id         Int         @id @default(autoincrement())
   nome       String
   preco      Float
   tipo       String // Tag or Colecao
   imagem     String?
-  artista    Artist @relation(fields: [artista_id], references: [id])
+  artista    Artist      @relation(fields: [artista_id], references: [id])
   artista_id Int
   orderItems OrderItem[] @relation("OrderItemProduct")
 }
@@ -41,22 +41,20 @@ model User {
 }
 
 model Account {
-  id                   String    @id @default(cuid())
-  userId               String
-  type                 String
-  provider             String
-  providerAccountId    String
-  refresh_token        String?
-  access_token         String?
-  expires_at           Int?
-  token_type           String?
-  scope                String?
-  id_token             String?
-  session_state        String?
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
   access_token_expires DateTime?
-
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   @@unique([provider, providerAccountId])
 }
 
@@ -72,21 +70,21 @@ model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
-
   @@unique([identifier, token])
 }
 
 model Order {
-  id                 String    @id @default(cuid())
-  userId             String?
-  status             String    @default("PENDING")
-  total              Float
-  externalReference  String?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  user               User?     @relation("OrderUser", fields: [userId], references: [id])
-  items              OrderItem[] @relation("OrderUser")
-
+  id                String      @id @default(cuid())
+  userId            String?
+  status            String      @default("PENDENTE")
+  total             Float
+  externalReference String?
+  paymentUrl        String?     // NOVO: Guarda o link do MP
+  trackingCode      String?     // NOVO: Guarda o Rastreio
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  user              User?       @relation("OrderUser", fields: [userId], references: [id])
+  items             OrderItem[] @relation("OrderUser")
   @@index([userId])
 }
 
@@ -94,8 +92,11 @@ model OrderItem {
   id        String   @id @default(cuid())
   order     Order    @relation("OrderUser", fields: [orderId], references: [id])
   orderId   String
-  product   Product  @relation("OrderItemProduct", fields: [productId], references: [id])
-  productId Int
+  product   Product? @relation("OrderItemProduct", fields: [productId], references: [id])
+  productId Int?     // Deixado opcional para aceitar produtos do carrinho facilmente
+  nome      String?  // NOVO: Nome da roupa
+  cor       String?  // NOVO: Cor da roupa
+  tamanho   String?  // NOVO: Tamanho da roupa
   quantity  Int
   price     Float
 }
