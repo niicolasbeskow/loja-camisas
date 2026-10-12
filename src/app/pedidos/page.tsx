@@ -22,7 +22,9 @@ export default async function PedidosPage() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'PENDENTE': return <span className="bg-zinc-200 text-zinc-600 px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider">Aguardando Pagamento</span>;
+      case 'PENDENTE':
+      case 'PENDING':
+        return <span className="bg-zinc-200 text-zinc-600 px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider">Aguardando Pagamento</span>;
       case 'PROCESSANDO': return <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider">Analisando Pagamento</span>;
       case 'ENVIADO': return <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider">Pago & Enviado</span>;
       case 'ENTREGUE': return <span className="bg-green-100 text-green-700 px-3 py-1 rounded-sm text-xs font-bold uppercase tracking-wider">Pedido Entregue</span>;
@@ -79,18 +81,14 @@ export default async function PedidosPage() {
                     ))}
                   </div>
 
-                  <BotoesAcao pedidoId={pedido.id} status={pedido.status} paymentUrl={pedido.paymentUrl} rastreio={pedido.trackingCode} wpp={WPP_NUMBER} />
-                        <a href={`https://rastreamento.correios.com.br/app/index.php?codigo=${pedido.trackingCode}`} target="_blank" className="w-full text-center bg-black text-white font-bold uppercase py-2 text-xs tracking-wider rounded-sm hover:bg-[#F59E0B] hover:text-black transition-colors block">Rastrear Correios</a>
-                      </>
-                    )}
-
-                    {pedido.status === 'ENTREGUE' && (
-                      <>
-                        <p className="text-sm text-green-600 font-bold text-center sm:text-left mb-3">Pedido Entregue! ✓</p>
-                        <a href={`https://wa.me/${WPP_NUMBER}?text=Olá Nicolas, tive um problema com o pedido ${pedido.id.substring(0,8).toUpperCase()}`} target="_blank" className="w-full text-center border-2 border-black text-black font-bold uppercase py-2 text-xs tracking-wider rounded-sm hover:bg-black hover:text-white transition-colors block">Relatar um Problema</a>
-                      </>
-                    )}
-                  </div>
+                  {/* Componente de ações inserido corretamente */}
+                  <BotoesAcao 
+                    pedidoId={pedido.id} 
+                    status={pedido.status} 
+                    paymentUrl={pedido.paymentUrl} 
+                    rastreio={pedido.trackingCode} 
+                    wpp={WPP_NUMBER} 
+                  />
                 </div>
               </div>
             ))}
