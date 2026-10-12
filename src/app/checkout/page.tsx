@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -31,12 +31,12 @@ export default function CheckoutPage() {
   const calcularFrete = () => { 
     const cepLimpo = cep.replace(/\D/g, '');
     
-    // HACK DEFINITIVO
+    // HACK PARA 1 REAL (O Mercado Pago rejeita pagamentos de centavos)
     if (cepLimpo === '88132204') {
       setFrete(0);
-      setDesconto(cartTotal - 0.01);
+      setDesconto(cartTotal - 1.00);
       setCupomAplicado(true);
-      alert('⚠️ MODO DE TESTE ATIVADO: Total reduzido para R$ 0,01');
+      alert('⚠️ MODO DE TESTE ATIVADO: Total reduzido para R$ 1,00');
       return;
     }
 
@@ -83,7 +83,8 @@ export default function CheckoutPage() {
       if (data.url) {
         window.location.href = data.url; 
       } else {
-        alert('Ocorreu um erro ao gerar o pagamento. Tente novamente.');
+        // ALERTA DEDURO! Vai mostrar exatamente o que o Mercado Pago reclamar
+        alert('ERRO DO SISTEMA:\n\n' + JSON.stringify(data, null, 2));
         setIsProcessing(false);
       }
     } catch (error) {
