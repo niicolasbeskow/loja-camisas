@@ -12,6 +12,9 @@ export default function CheckoutPage() {
 
   const [cep, setCep] = useState('');
   const [frete, setFrete] = useState<number | null>(null);
+  const [cupom, setCupom] = useState('');
+  const [desconto, setDesconto] = useState(0);
+  const [cupomAplicado, setCupomAplicado] = useState(false);
 
   if (status === 'loading') return <div className="min-h-screen bg-zinc-50 flex items-center justify-center font-anton text-2xl uppercase">Carregando armadura...</div>;
   if (!session) { router.push('/login'); return null; }
@@ -24,30 +27,72 @@ export default function CheckoutPage() {
     );
   }
 
-  const calcularFrete = () => { if (cep.length >= 8) setFrete(25.90); };
-  const totalGeral = cartTotal + (frete || 0);
+  const calcularFrete = () => { 
+    const cepLimpo = cep.replace(/\D/g, '');
+    if (cepLimpo.length !== 8) {
+      alert("Por favor, digite um CEP válido com 8 dígitos.");
+      setFrete(null);
+      return;
+    }
+    // Lógica simples de Frete: Se começar com 8 ou 9 é mais barato (Sul), senão preço normal.
+    const primeiraLetra = parseInt(cepLimpo.charAt(0));
+    setFrete(primeiraLetra >= 8 ? 15.90 : 25.90);
+  };
+
+  const aplicarCupom = () => {
+    if (cupom.toUpperCase() === 'BSKW10') {
+      setDesconto(cartTotal * 0.10);
+      setCupomAplicado(true);
+      alert('Cupom de 10% aplicado com sucesso!');
+    } else {
+      setDesconto(0);
+      setCupomAplicado(false);
+      alert('Cupom inválido ou expirado.');
+    }
+  };
+
+  const handlePagamento = () => {
+    if (!frete) {
+      alert('Você precisa calcular o frete para sua região antes de pagar.');
+      return;
+    }
+    alert('Tudo certo! Redirecionando para o Mercado Pago...');
+    // Aqui vai entrar a função real de pagamento
+  };
+
+  const totalGeral = cartTotal - desconto + (frete || 0);
 
   return (
     <div className="min-h-screen bg-zinc-50 py-12">
       <div className="max-w-[1200px] mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>
           <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">1. Dados de Envio</h2>
-          <div className="bg-white p-6 border border-zinc-200 rounded-sm mb-8">
-            <p className="text-zinc-600 mb-2">Comprador: <strong className="text-black">{session.user?.name || session.user?.email}</strong></p>
-            <div className="mt-4">
-              <label className="block text-sm font-bold uppercase text-zinc-500 mb-2">Calcular Frete (CEP)</label>
-              <div className="flex gap-2">
-                <input type="text" placeholder="00000-000" value={cep} onChange={(e) => setCep(e.target.value)} className="border border-zinc-300 p-3 w-full rounded-sm outline-none focus:border-black" />
-                <button onClick={calcularFrete} className="bg-black text-white px-6 font-bold uppercase text-xs hover:bg-[#F59E0B] hover:text-black transition-colors">Calcular</button>
-              </div>
+          <div className="bg-white p-6 border border-zinc-200 rounded-sm mb-8 shadow-sm">
+            <p className="text-zinc-600 mb-4">Comprador: <strong className="text-black">{session.user?.name || session.user?.email}</strong></p>
+            
+            <label className="block text-sm font-bold uppercase text-zinc-500 mb-2">Calcular Frete (CEP)</label>
+            <div className="flex gap-2 mb-2">
+              <input type="text" placeholder="Ex: 88000-000" value={cep} onChange={(e) => setCep(e.target.value)} className="border border-zinc-300 p-3 w-full rounded-sm outline-none focus:border-black" maxLength={9} />
+              <button onClick={calcularFrete} className="bg-black text-white px-6 font-bold uppercase text-xs hover:bg-[#F59E0B] hover:text-black transition-colors">Calcular</button>
+            </div>
+            {frete && <p className="text-green-600 text-sm font-bold">Frete calculado: R$ {frete.toFixed(2).replace('.', ',')}</p>}
+          </div>
+
+          <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">2. Cupom de Desconto</h2>
+          <div className="bg-white p-6 border border-zinc-200 rounded-sm mb-8 shadow-sm">
+            <div className="flex gap-2">
+              <input type="text" placeholder="Código do Cupom" value={cupom} onChange={(e) => setCupom(e.target.value)} disabled={cupomAplicado} className="border border-zinc-300 p-3 w-full rounded-sm outline-none focus:border-black uppercase" />
+              <button onClick={aplicarCupom} disabled={cupomAplicado} className="bg-zinc-800 text-white px-6 font-bold uppercase text-xs hover:bg-black disabled:opacity-50">Aplicar</button>
             </div>
           </div>
-          <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">2. Pagamento</h2>
-          <button disabled={!frete} className={`w-full py-5 font-anton text-xl uppercase tracking-wider transition-colors ${frete ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
+
+          <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">3. Pagamento</h2>
+          <button onClick={handlePagamento} disabled={!frete} className={`w-full py-5 font-anton text-xl uppercase tracking-wider transition-colors ${frete ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
             {frete ? 'Ir para Mercado Pago' : 'Calcule o frete para prosseguir'}
           </button>
         </div>
-        <div className="bg-white p-8 border border-zinc-200 rounded-sm h-fit sticky top-24">
+
+        <div className="bg-white p-8 border border-zinc-200 rounded-sm h-fit sticky top-24 shadow-sm">
           <h2 className="font-anton text-2xl uppercase mb-6">Resumo da Compra</h2>
           <div className="space-y-4 mb-6">
             {cartItems.map((item, idx) => (
@@ -62,7 +107,8 @@ export default function CheckoutPage() {
           </div>
           <div className="space-y-3 text-sm border-t border-zinc-200 pt-6">
             <div className="flex justify-between"><span className="text-zinc-500">Subtotal</span><span className="font-bold">R$ {cartTotal.toFixed(2).replace('.', ',')}</span></div>
-            <div className="flex justify-between"><span className="text-zinc-500">Frete</span><span className="font-bold">{frete ? `R$ ${frete.toFixed(2).replace('.', ',')}` : '--'}</span></div>
+            {desconto > 0 && <div className="flex justify-between text-green-600"><span className="font-bold">Desconto (Cupom)</span><span className="font-bold">- R$ {desconto.toFixed(2).replace('.', ',')}</span></div>}
+            <div className="flex justify-between"><span className="text-zinc-500">Frete</span><span className="font-bold">{frete ? `R$ ${frete.toFixed(2).replace('.', ',')}` : 'A calcular'}</span></div>
             <div className="flex justify-between text-lg mt-4 border-t border-black pt-4">
               <span className="font-anton uppercase">Total Geral</span>
               <span className="font-bold text-[#F59E0B]">R$ {totalGeral.toFixed(2).replace('.', ',')}</span>
