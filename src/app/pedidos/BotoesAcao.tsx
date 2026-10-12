@@ -14,9 +14,11 @@ export default function BotoesAcao({ pedidoId, status, paymentUrl, rastreio, wpp
     router.refresh();
   };
 
+  const isPendente = status === 'PENDENTE' || status === 'PENDING';
+
   return (
     <div className="sm:w-64 flex flex-col justify-center border-t sm:border-t-0 sm:border-l border-zinc-100 pt-4 sm:pt-0 sm:pl-6">
-      {status === 'PENDENTE' && (
+      {isPendente && (
         <>
           <p className="text-xs text-zinc-500 mb-3 text-center sm:text-left">Finalize o pagamento para garantirmos o seu estoque.</p>
           {paymentUrl && (
@@ -32,7 +34,7 @@ export default function BotoesAcao({ pedidoId, status, paymentUrl, rastreio, wpp
       
       {status === 'PROCESSANDO' && (
         <>
-          <p className="text-sm text-zinc-600 font-medium text-center sm:text-left mb-3">Aguardando confirmação ou em análise...</p>
+          <p className="text-sm text-zinc-600 font-medium text-center sm:text-left mb-3">Aguardando confirmação do pagamento...</p>
           <a href={`https://wa.me/${wpp}?text=Olá Nicolas, preciso de ajuda com o meu pedido ${pedidoId.substring(0,8).toUpperCase()}`} target="_blank" className="w-full text-center bg-black text-white font-bold uppercase py-2 text-xs tracking-wider rounded-sm hover:bg-zinc-800 transition-colors block">Falar com Suporte</a>
         </>
       )}

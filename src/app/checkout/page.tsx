@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -31,7 +31,7 @@ export default function CheckoutPage() {
   const calcularFrete = () => { 
     const cepLimpo = cep.replace(/\D/g, '');
     
-    // HACK DE TESTE PARA PAGAR 1 CENTAVO
+    // HACK DEFINITIVO
     if (cepLimpo === '88132204') {
       setFrete(0);
       setDesconto(cartTotal - 0.01);

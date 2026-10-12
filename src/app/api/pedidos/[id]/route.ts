@@ -13,11 +13,11 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     if (!user) return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 });
 
     const order = await prisma.order.findUnique({ where: { id: params.id } });
-    if (!order || order.userId !== user.id || order.status !== 'PENDENTE') {
+    // Aceita deletar tanto o status novo quanto o fantasma antigo
+    if (!order || order.userId !== user.id || (order.status !== 'PENDENTE' && order.status !== 'PENDING')) {
       return NextResponse.json({ error: 'Pedido inválido para exclusão' }, { status: 400 });
     }
 
-    // Exclui os itens e o pedido
     await prisma.orderItem.deleteMany({ where: { orderId: params.id } });
     await prisma.order.delete({ where: { id: params.id } });
 
