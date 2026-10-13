@@ -58,7 +58,9 @@ export async function POST(req: Request) {
        return NextResponse.json({ 
           success: true, 
           status: payment.status, 
+          // Retornamos o texto e a IMAGEM BASE64 do QR Code!
           pix_qr_code: payment.point_of_interaction?.transaction_data?.qr_code,
+          pix_qr_code_base64: payment.point_of_interaction?.transaction_data?.qr_code_base64,
           ticket_url: payment.point_of_interaction?.transaction_data?.ticket_url
        });
     } else {

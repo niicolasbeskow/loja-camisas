@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { initMercadoPago, Payment } from '@mercadopago/sdk-react';
 
-// Inicializa o Mercado Pago de forma super segura
 initMercadoPago('APP_USR-8bed9de9-af7c-42ad-b05a-187f46f35fbb', { locale: 'pt-BR' });
 
 export default function CheckoutPage() {
@@ -21,7 +20,22 @@ export default function CheckoutPage() {
   const [cupomAplicado, setCupomAplicado] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
+  // Estados do Modal PIX
+  const [showPixModal, setShowPixModal] = useState(false);
+  const [pixData, setPixData] = useState({ qr_code: '', qr_code_base64: '' });
+  const [timeLeft, setTimeLeft] = useState(120); // 2 minutos
+
   useEffect(() => { setIsClient(true); }, []);
+
+  // Lógica do Temporizador do PIX
+  useEffect(() => {
+    if (showPixModal && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (timeLeft === 0 && showPixModal) {
+      fecharModalPix();
+    }
+  }, [timeLeft, showPixModal]);
 
   if (status === 'loading') return <div className="min-h-screen bg-zinc-50 flex items-center justify-center font-anton text-2xl uppercase">Carregando...</div>;
   if (!session) { router.push('/login'); return null; }
@@ -37,10 +51,7 @@ export default function CheckoutPage() {
   const calcularFrete = () => { 
     const cepLimpo = cep.replace(/\D/g, '');
     if (cepLimpo === '88132204') {
-      setFrete(0);
-      setDesconto(cartTotal - 1.00);
-      setCupomAplicado(true);
-      alert('⚠️ MODO DE TESTE ATIVADO: Total reduzido para R$ 1,00');
+      setFrete(0); setDesconto(cartTotal - 1.00); setCupomAplicado(true);
       return;
     }
     if (cepLimpo.length !== 8) { alert("Digite um CEP válido"); setFrete(null); return; }
@@ -54,7 +65,6 @@ export default function CheckoutPage() {
 
   const totalGeral = cartTotal - desconto + (frete || 0);
 
-  // Esta é a função mágica que o Brick chama quando o cliente aperta "Pagar"
   const onSubmitPagamento = async (formData: any) => {
     return new Promise<void>((resolve, reject) => {
       fetch('/api/pagamento', {
@@ -66,35 +76,79 @@ export default function CheckoutPage() {
       .then((data) => {
         if (data.success) {
           if (data.pix_qr_code) {
-             // Redireciona para Meus Pedidos onde o Pix ou Boleto estará guardado!
-             alert('Pedido processado com sucesso!\n\nSe escolheu PIX, o seu código Copia e Cola é:\n\n' + data.pix_qr_code);
+             // Abre o Modal iFood Style
+             setPixData({ qr_code: data.pix_qr_code, qr_code_base64: data.pix_qr_code_base64 });
+             setShowPixModal(true);
+             setTimeLeft(120);
           } else if (data.ticket_url) {
-             alert('Pedido processado com sucesso! O seu boleto foi gerado.');
+             alert('Pedido gerado! O seu boleto está pronto.');
+             router.push('/pedidos');
+          } else {
+             // Cartão ou Conta Mercado Pago
+             router.push('/sucesso');
           }
-          router.push('/pedidos');
           resolve();
         } else {
-          alert('Ocorreu um erro ao processar o pagamento.\nDetalhes: ' + JSON.stringify(data.error));
+          alert('Erro no pagamento.\nDetalhes: ' + JSON.stringify(data.error));
           reject();
         }
       })
-      .catch((err) => {
+      .catch(() => {
         alert('Falha na comunicação com o servidor.');
         reject();
       });
     });
   };
 
+  const copiarPix = () => {
+    navigator.clipboard.writeText(pixData.qr_code);
+    alert('Código Pix copiado! Cole no app do seu banco.');
+  };
+
+  const fecharModalPix = () => {
+    setShowPixModal(false);
+    router.push('/pedidos');
+  };
+
   const initialization = { amount: Number(totalGeral.toFixed(2)) };
-  const customization = { paymentMethods: { ticket: 'all', bankTransfer: 'all', creditCard: 'all', debitCard: 'all' }};
+  // Adicionámos 'mercadoPago' para pagar direto com a conta!
+  const customization = { paymentMethods: { ticket: 'all', bankTransfer: 'all', creditCard: 'all', debitCard: 'all', mercadoPago: 'all' }};
 
   return (
-    <div className="min-h-screen bg-zinc-50 py-12">
+    <div className="min-h-screen bg-zinc-50 py-12 relative">
+      
+      {/* MODAL PIX (iFood Style) */}
+      {showPixModal && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+           <div className="bg-white max-w-sm w-full rounded-md p-8 relative flex flex-col items-center text-center shadow-2xl animate-fade-in-up">
+              <button onClick={fecharModalPix} className="absolute top-4 right-4 text-zinc-400 hover:text-black font-bold text-xl">&times;</button>
+              
+              <h2 className="font-anton text-2xl uppercase mb-1">Pague com PIX</h2>
+              <p className="text-zinc-500 text-sm mb-6">
+                O código expira em: <span className="font-bold text-red-500">{Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}</span>
+              </p>
+
+              {pixData.qr_code_base64 && (
+                  <img src={`data:image/png;base64,${pixData.qr_code_base64}`} alt="QR Code Pix" className="w-48 h-48 mb-6 border-4 border-zinc-100 rounded-lg shadow-sm" />
+              )}
+
+              <p className="text-xs text-zinc-500 mb-2 font-bold uppercase">Ou copie o código abaixo:</p>
+              <div className="flex w-full gap-2 mb-6">
+                 <input type="text" value={pixData.qr_code} readOnly className="border border-zinc-300 text-xs p-3 w-full rounded-sm outline-none bg-zinc-50 text-zinc-500 truncate" />
+                 <button onClick={copiarPix} className="bg-black text-white px-4 text-xs font-bold uppercase hover:bg-[#F59E0B] hover:text-black transition-colors whitespace-nowrap">Copiar</button>
+              </div>
+
+              <button onClick={fecharModalPix} className="text-xs font-bold uppercase underline text-zinc-400 hover:text-black">
+                Já paguei / Fechar
+              </button>
+           </div>
+        </div>
+      )}
+
       <div className="max-w-[1200px] mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>
           <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">1. Dados de Envio</h2>
           <div className="bg-white p-6 border border-zinc-200 rounded-sm mb-8 shadow-sm">
-            <p className="text-zinc-600 mb-4">Comprador: <strong className="text-black">{session.user?.name || session.user?.email}</strong></p>
             <div className="flex gap-2 mb-2">
               <input type="text" placeholder="CEP Ex: 88000-000" value={cep} onChange={(e) => setCep(e.target.value)} className="border border-zinc-300 p-3 w-full rounded-sm outline-none focus:border-black" maxLength={9} />
               <button onClick={calcularFrete} className="bg-black text-white px-6 font-bold uppercase text-xs hover:bg-[#F59E0B] hover:text-black transition-colors">Calcular</button>
@@ -102,31 +156,20 @@ export default function CheckoutPage() {
             {frete !== null && <p className="text-green-600 text-sm font-bold">Frete: R$ {frete.toFixed(2).replace('.', ',')}</p>}
           </div>
 
-          <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">2. Desconto</h2>
-          <div className="bg-white p-6 border border-zinc-200 rounded-sm mb-8 shadow-sm flex gap-2">
-            <input type="text" placeholder="Código" value={cupom} onChange={(e) => setCupom(e.target.value)} disabled={cupomAplicado} className="border border-zinc-300 p-3 w-full rounded-sm outline-none focus:border-black uppercase" />
-            <button onClick={aplicarCupom} disabled={cupomAplicado} className="bg-zinc-800 text-white px-6 font-bold uppercase text-xs hover:bg-black disabled:opacity-50">Aplicar</button>
-          </div>
-
-          <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">3. Pagamento Seguro</h2>
+          <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">2. Pagamento Seguro</h2>
           <div className="min-h-[400px]">
             {isClient && frete !== null ? (
-              <Payment 
-                initialization={initialization} 
-                customization={customization as any} 
-                onSubmit={onSubmitPagamento} 
-                locale="pt-BR"
-              />
+              <Payment initialization={initialization} customization={customization as any} onSubmit={onSubmitPagamento} locale="pt-BR" />
             ) : (
               <div className="bg-white p-6 border border-zinc-200 text-center text-zinc-500 rounded-sm shadow-sm">
-                Calcule o frete para exibir as opções de pagamento (Pix, Cartão e Boleto).
+                Calcule o frete para exibir as opções de pagamento.
               </div>
             )}
           </div>
         </div>
 
         <div className="bg-white p-8 border border-zinc-200 rounded-sm h-fit sticky top-24 shadow-sm">
-          <h2 className="font-anton text-2xl uppercase mb-6">Sua Armadura</h2>
+          <h2 className="font-anton text-2xl uppercase mb-6">Resumo</h2>
           <div className="space-y-4 mb-6 border-b border-zinc-100 pb-4">
             {cartItems.map((item, idx) => (
               <div key={idx} className="flex justify-between items-center text-sm">
@@ -137,8 +180,6 @@ export default function CheckoutPage() {
           </div>
           <div className="space-y-3 text-sm">
             <div className="flex justify-between"><span className="text-zinc-500">Subtotal</span><span className="font-bold">R$ {cartTotal.toFixed(2).replace('.', ',')}</span></div>
-            {desconto > 0 && <div className="flex justify-between text-green-600"><span className="font-bold">Desconto</span><span className="font-bold">- R$ {desconto.toFixed(2).replace('.', ',')}</span></div>}
-            <div className="flex justify-between"><span className="text-zinc-500">Frete</span><span className="font-bold">{frete !== null ? `R$ ${frete.toFixed(2).replace('.', ',')}` : 'A calcular'}</span></div>
             <div className="flex justify-between text-lg mt-4 border-t border-black pt-4">
               <span className="font-anton uppercase">Total Geral</span>
               <span className="font-bold text-[#F59E0B]">R$ {totalGeral.toFixed(2).replace('.', ',')}</span>
