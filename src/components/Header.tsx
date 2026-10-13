@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import UserDropdown from "./UserDropdown";
 import { useCart } from "@/contexts/CartContext";
 import { useSession } from "next-auth/react";
+import { produtos } from "@/data/produtos"; // Importamos o banco de dados!
 
 const CATEGORIAS = [
   { nome: "Promoções 🔥", slug: "promocoes", class: "text-[#F59E0B] hover:text-amber-400" },
@@ -23,7 +24,6 @@ const CATEGORIAS = [
 ];
 
 export default function Header({ session: _propSession }: { session?: any }) {
-  // A SESSÃO REAL É BUSCADA AQUI (IGNORA O NULL DO LAYOUT)
   const { data: session } = useSession(); 
   
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -33,11 +33,18 @@ export default function Header({ session: _propSession }: { session?: any }) {
   const { cartItems, cartCount, cartTotal, removeFromCart, isCartOpen, setIsCartOpen } = useCart();
   const router = useRouter();
 
+  // Filtragem em tempo real (Mostra os primeiros 5 resultados que batem com o texto)
+  const produtosFiltrados = searchQuery.trim() === '' ? [] : produtos.filter(p => 
+    p.nome.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    p.cor.toLowerCase().includes(searchQuery.toLowerCase())
+  ).slice(0, 5);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       setIsSearchOpen(false);
-      router.push(`/busca?q=${encodeURIComponent(searchQuery)}`);
+      // Podemos mandar para a página do primeiro produto ou para a busca geral
+      router.push(`/categoria/camiseta-basica`); 
       setSearchQuery('');
     }
   };
@@ -54,13 +61,12 @@ export default function Header({ session: _propSession }: { session?: any }) {
   return (
     <>
       <nav className="sticky top-0 z-50 w-full bg-[#000000] py-4 shadow-md border-b border-zinc-900">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 w-full">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 w-full relative">
           <div className="hidden lg:flex items-start justify-between w-full">
             <Link href="/" className="flex-shrink-0 mt-1 transition-opacity hover:opacity-80">
               <img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-10 w-auto object-contain" />
             </Link>
             
-            {/* AS 13 CATEGORIAS RESTAURADAS! */}
             <div className="flex-1 flex flex-wrap justify-center gap-x-4 gap-y-2 px-6">
               {CATEGORIAS.map(cat => (
                 <Link key={cat.slug} href={`/categoria/${cat.slug}`} className={`text-[11px] font-medium uppercase tracking-widest ${cat.class}`}>
@@ -70,7 +76,9 @@ export default function Header({ session: _propSession }: { session?: any }) {
             </div>
 
             <div className="flex flex-shrink-0 items-center gap-6 mt-1">
-              <button onClick={() => setIsSearchOpen(true)} className="text-white hover:text-[#F59E0B] transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
+              <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-white hover:text-[#F59E0B] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              </button>
               <UserDropdown session={session} />
               <button onClick={handleCartClick} className="text-white hover:text-[#F59E0B] relative">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
@@ -78,22 +86,53 @@ export default function Header({ session: _propSession }: { session?: any }) {
               </button>
             </div>
           </div>
+        </div>
 
-          <div className="flex lg:hidden items-center justify-between w-full">
-            <button onClick={() => setIsMobileMenuOpen(true)} className="text-white hover:text-[#F59E0B] p-2 -ml-2"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button>
-            <Link href="/" className="absolute left-1/2 -translate-x-1/2 hover:opacity-80"><img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-8 w-auto object-contain" /></Link>
-            <div className="flex items-center gap-4">
-              <UserDropdown session={session} />
-              <button onClick={handleCartClick} className="text-white hover:text-[#F59E0B] relative">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                {cartCount > 0 && <span className="absolute -top-2 -right-2 bg-[#F59E0B] text-[#000000] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{cartCount}</span>}
-              </button>
-            </div>
-          </div>
+        {/* BARRA DE PESQUISA INTELIGENTE (Abre por baixo do menu) */}
+        <div className={`absolute top-full left-0 w-full bg-[#111111] border-b border-zinc-800 transition-all duration-300 overflow-hidden shadow-2xl ${isSearchOpen ? 'max-h-[500px] py-6' : 'max-h-0 py-0 border-transparent'}`}>
+           <div className="max-w-[800px] mx-auto px-4 relative">
+              <form onSubmit={handleSearch} className="relative">
+                 <input 
+                    type="text" 
+                    placeholder="O que você está procurando, meu chapa?" 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    autoFocus={isSearchOpen}
+                    className="w-full bg-transparent border-b-2 border-zinc-700 text-white text-xl md:text-3xl font-anton uppercase outline-none py-2 placeholder:text-zinc-600 focus:border-[#F59E0B] transition-colors"
+                 />
+                 <button type="submit" className="absolute right-0 top-1/2 -translate-y-1/2 text-[#F59E0B]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                 </button>
+              </form>
+
+              {/* RESULTADOS DA BUSCA */}
+              {searchQuery.length > 1 && (
+                <div className="mt-6 flex flex-col gap-2">
+                  {produtosFiltrados.length > 0 ? (
+                    produtosFiltrados.map(produto => (
+                      <Link 
+                        key={produto.id} 
+                        href={`/produto/${produto.id}`}
+                        onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
+                        className="flex justify-between items-center bg-zinc-900 p-4 rounded-md hover:bg-zinc-800 transition-colors group"
+                      >
+                        <div>
+                          <span className="text-white font-bold uppercase text-sm block group-hover:text-[#F59E0B] transition-colors">{produto.nome}</span>
+                          <span className="text-zinc-400 text-xs">Cor: {produto.cor}</span>
+                        </div>
+                        <span className="text-[#F59E0B] font-bold">R$ {produto.preco.toFixed(2).replace('.', ',')}</span>
+                      </Link>
+                    ))
+                  ) : (
+                    <p className="text-zinc-500 font-medium text-center py-4">Puts, não encontramos nada com "{searchQuery}".</p>
+                  )}
+                </div>
+              )}
+           </div>
         </div>
       </nav>
 
-      {/* DRAWER DO CARRINHO */}
+      {/* DRAWER DO CARRINHO (Mantido idêntico) */}
       <div className={`fixed inset-0 z-[100] transition-opacity duration-300 ${isCartOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setIsCartOpen(false)} />
          <div className={`absolute inset-y-0 right-0 w-full sm:w-[400px] bg-[#000000] border-l border-zinc-800 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}>
