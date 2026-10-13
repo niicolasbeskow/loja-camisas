@@ -24,6 +24,9 @@ export default function CheckoutPage() {
   const [showPixModal, setShowPixModal] = useState(false);
   const [pixData, setPixData] = useState({ qr_code: '', qr_code_base64: '' });
   const [timeLeft, setTimeLeft] = useState(120);
+  
+  // Estado para o botão de Redirecionamento do Mercado Pago
+  const [isRedirectingMP, setIsRedirectingMP] = useState(false);
 
   useEffect(() => { setIsClient(true); }, []);
 
@@ -64,6 +67,29 @@ export default function CheckoutPage() {
 
   const totalGeral = cartTotal - desconto + (frete || 0);
 
+  // PAGAMENTO VIA CONTA MERCADO PAGO (Redirecionamento)
+  const pagarComContaMercadoPago = async () => {
+    setIsRedirectingMP(true);
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cartItems, frete: frete || 0, desconto, totalGeral })
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url; // Leva o cliente para a tela azul com segurança
+      } else {
+        alert('Erro ao gerar o link do Mercado Pago.');
+        setIsRedirectingMP(false);
+      }
+    } catch (error) {
+      alert('Falha na comunicação.');
+      setIsRedirectingMP(false);
+    }
+  };
+
+  // PAGAMENTO TRANSPARENTE (Cartão, PIX Nativo)
   const onSubmitPagamento = async (formData: any) => {
     return new Promise<void>((resolve, reject) => {
       fetch('/api/pagamento', {
@@ -107,15 +133,12 @@ export default function CheckoutPage() {
     router.push('/pedidos');
   };
 
-  // MAGIA AQUI: Injetamos o e-mail do cliente logado para o formulário não pedir de novo
   const initialization = { 
     amount: Number(totalGeral.toFixed(2)),
-    payer: {
-      email: session.user?.email || ''
-    }
+    payer: { email: session.user?.email || '' }
   };
   
-  const customization = { paymentMethods: { ticket: 'all', bankTransfer: 'all', creditCard: 'all', debitCard: 'all', mercadoPago: 'all' }};
+  const customization = { paymentMethods: { ticket: 'all', bankTransfer: 'all', creditCard: 'all', debitCard: 'all' }};
 
   return (
     <div className="min-h-screen bg-zinc-50 py-12 relative">
@@ -162,7 +185,35 @@ export default function CheckoutPage() {
           <h2 className="font-anton text-2xl uppercase mb-6 border-b-2 border-black pb-2">2. Pagamento Seguro</h2>
           <div className="min-h-[400px]">
             {isClient && frete !== null ? (
-              <Payment initialization={initialization} customization={customization as any} onSubmit={onSubmitPagamento} locale="pt-BR" />
+              <div className="animate-fade-in-up">
+                
+                {/* BOTÃO AZUL MERCADO PAGO */}
+                <button 
+                  onClick={pagarComContaMercadoPago} 
+                  disabled={isRedirectingMP}
+                  className="w-full bg-[#009EE3] hover:bg-[#008ACA] text-white py-4 rounded-md font-bold flex items-center justify-center gap-3 transition-colors mb-6 disabled:opacity-70 shadow-sm"
+                >
+                  {isRedirectingMP ? 'A redirecionar...' : (
+                    <>
+                      {/* Ícone das mãos do Mercado Pago */}
+                      <svg viewBox="0 0 100 100" className="w-8 h-8 fill-current">
+                        <path d="M50 0C22.4 0 0 22.4 0 50s22.4 50 50 50 50-22.4 50-50S77.6 0 50 0zm21.5 68.6L60.2 79.9c-2.3 2.3-6.1 2.3-8.5 0l-5.6-5.6c-2.3-2.3-2.3-6.1 0-8.5l11.3-11.3L46.1 43.1 34.8 54.4c-2.3 2.3-6.1 2.3-8.5 0L15 43.1c-2.3-2.3-2.3-6.1 0-8.5l11.3-11.3c2.3-2.3 6.1-2.3 8.5 0l5.6 5.6c2.3 2.3 2.3 6.1 0 8.5L29.1 48.7l11.3 11.3 11.3-11.3c2.3-2.3 6.1-2.3 8.5 0l11.3 11.3c2.3 2.3 2.3 6.1 0 8.5z"/>
+                      </svg>
+                      Pagar com sua conta Mercado Pago
+                    </>
+                  )}
+                </button>
+
+                {/* DIVISÓRIA */}
+                <div className="flex items-center gap-4 mb-6">
+                   <div className="h-px bg-zinc-200 flex-1"></div>
+                   <span className="text-zinc-400 text-xs font-bold uppercase">Ou pague direto na tela</span>
+                   <div className="h-px bg-zinc-200 flex-1"></div>
+                </div>
+
+                {/* FORMULÁRIO TRANSPARENTE (PIX E CARTÃO) */}
+                <Payment initialization={initialization} customization={customization as any} onSubmit={onSubmitPagamento} locale="pt-BR" />
+              </div>
             ) : (
               <div className="bg-white p-6 border border-zinc-200 text-center text-zinc-500 rounded-sm shadow-sm">
                 Calcule o frete para exibir as opções de pagamento.
