@@ -2,8 +2,11 @@ import { produtos } from '@/data/produtos';
 import QuickBuyCard from '@/components/QuickBuyCard';
 
 export default async function Home() {
-  // Pega apenas as Camisetas Básicas (as 4 primeiras cadastradas no nosso arquivo data/produtos.ts)
-  const destaques = produtos.slice(0, 4);
+  // Filtramos os produtos do banco de dados para formar os grupos de preço
+  const essenciais = produtos.filter(p => ['basica-preta', 'basica-off-white'].includes(p.id));
+  const cores = produtos.filter(p => ['basica-marrom', 'basica-verde', 'basica-azul-marinho', 'basica-bordo'].includes(p.id));
+  const estonadas = produtos.filter(p => ['basica-preto-estonado', 'basica-cinza-envelhecido'].includes(p.id));
+  const vintage = produtos.filter(p => ['basica-azul-envelhecido'].includes(p.id));
 
   return (
     <main className="min-h-screen">
@@ -21,9 +24,11 @@ export default async function Home() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {destaques.map(produto => (
-             <QuickBuyCard key={produto.id} produto={produto} />
-          ))}
+          {/* Passamos o Título do Grupo e o Array com as variações de cor para o Card */}
+          <QuickBuyCard tituloGrupo="Básica Essenciais" produtosDoGrupo={essenciais} />
+          <QuickBuyCard tituloGrupo="Básica Cores" produtosDoGrupo={cores} />
+          <QuickBuyCard tituloGrupo="Básica Estonada" produtosDoGrupo={estonadas} />
+          <QuickBuyCard tituloGrupo="Básica Vintage" produtosDoGrupo={vintage} />
         </div>
       </section>
     </main>

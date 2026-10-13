@@ -1,18 +1,31 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Produto, Tamanho } from '@/data/produtos';
 
-export default function QuickBuyCard({ produto }: { produto: Produto }) {
+const TAMANHOS: Tamanho[] = ['P', 'M', 'G', 'GG', 'G1', 'G2'];
+
+export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: { tituloGrupo: string, produtosDoGrupo: Produto[] }) {
+  const [corSelecionadaId, setCorSelecionadaId] = useState<string | null>(null);
+  const [corHoverId, setCorHoverId] = useState<string | null>(null);
   const [tamanhoSelecionado, setTamanhoSelecionado] = useState<Tamanho | null>(null);
+
   const { addToCart } = useCart();
   const { data: session } = useSession();
   const router = useRouter();
 
-  const isProntoParaComprar = tamanhoSelecionado !== null;
+  // Reseta o tamanho selecionado caso o cliente troque de cor
+  useEffect(() => { setTamanhoSelecionado(null); }, [corSelecionadaId]);
+
+  // Define qual produto está ativo na tela (Hover ganha prioridade, depois a selecionada, depois a 1ª da lista)
+  const idAtivo = corHoverId || corSelecionadaId || (produtosDoGrupo[0]?.id);
+  const produtoAtivo = produtosDoGrupo.find(p => p.id === idAtivo) || produtosDoGrupo[0];
+
+  // A regra de ouro: O botão só liberta se cor e tamanho estiverem clicados!
+  const isProntoParaComprar = corSelecionadaId !== null && tamanhoSelecionado !== null;
 
   const handleComprar = () => {
     if (!session) {
@@ -22,40 +35,63 @@ export default function QuickBuyCard({ produto }: { produto: Produto }) {
     }
 
     if (isProntoParaComprar) {
-      // Usa os dados exatos do banco para o carrinho não duplicar peças erradas
+      const produtoReal = produtosDoGrupo.find(p => p.id === corSelecionadaId);
+      if (!produtoReal) return;
+
       addToCart({ 
-        titulo: produto.nome, 
-        preco: produto.preco, 
-        cor: produto.cor, 
+        titulo: produtoReal.nome, 
+        preco: produtoReal.preco, 
+        cor: produtoReal.cor, 
         tamanho: tamanhoSelecionado, 
         quantidade: 1 
       });
-      alert(`Adicionado à sua armadura: ${produto.nome} | Cor: ${produto.cor} | Tam: ${tamanhoSelecionado}`);
+      alert(`Adicionado à sua armadura: ${produtoReal.nome} | Cor: ${produtoReal.cor} | Tam: ${tamanhoSelecionado}`);
+      setCorSelecionadaId(null);
       setTamanhoSelecionado(null);
     }
   };
+
+  if (!produtoAtivo) return null;
 
   return (
     <div className="flex flex-col border border-zinc-200 rounded-md overflow-hidden bg-white hover:shadow-lg transition-shadow duration-300">
       <div className="w-full aspect-[4/5] bg-zinc-100 relative flex items-center justify-center transition-colors duration-300">
         <div className="text-center px-4">
-          <span className="text-zinc-400 font-medium text-sm block mb-2 line-clamp-1">{produto.nome}</span>
-          <span className="text-xs font-bold px-2 py-1 rounded-sm text-white" 
-                style={{ backgroundColor: produto.hex, color: produto.hex.toLowerCase() === '#ffffff' || produto.hex.toLowerCase() === '#f5f5f5' ? 'black' : 'white' }}>
-            {produto.cor}
+          <span className="text-zinc-400 font-medium text-sm block mb-2 line-clamp-1">{produtoAtivo.nome}</span>
+          <span className="text-xs font-bold px-2 py-1 rounded-sm transition-colors" 
+                style={{ backgroundColor: produtoAtivo.hex, color: ['#ffffff', '#faf9f6'].includes(produtoAtivo.hex.toLowerCase()) ? 'black' : 'white' }}>
+            {produtoAtivo.cor}
           </span>
         </div>
       </div>
+      
       <div className="p-4 flex flex-col gap-3">
         <div>
-          <h3 className="font-bold text-zinc-900 uppercase text-sm line-clamp-1">{produto.nome}</h3>
-          <span className="font-bold text-black text-lg">R$ {produto.preco.toFixed(2).replace('.', ',')}</span>
+          <h3 className="font-bold text-zinc-900 uppercase text-sm line-clamp-1" title={produtoAtivo.nome}>{produtoAtivo.nome}</h3>
+          <span className="font-bold text-black text-lg">R$ {produtoAtivo.preco.toFixed(2).replace('.', ',')}</span>
+        </div>
+
+        {/* Bolinhas de Cor */}
+        <div className="flex items-center gap-2 flex-wrap h-7">
+          {produtosDoGrupo.map((produto) => (
+            <button 
+              key={produto.id} 
+              onMouseEnter={() => setCorHoverId(produto.id)} 
+              onMouseLeave={() => setCorHoverId(null)} 
+              onClick={() => setCorSelecionadaId(produto.id)} 
+              className={`w-6 h-6 rounded-full border-2 transition-all 
+                ${corSelecionadaId === produto.id ? 'border-[#F59E0B] scale-110' : 'border-zinc-300 hover:border-zinc-400'}`} 
+              style={{ backgroundColor: produto.hex }} 
+              aria-label={`Cor ${produto.cor}`} 
+              title={produto.cor} 
+            />
+          ))}
         </div>
         
         {/* Controle de Estoque de Tamanhos */}
         <div className="flex items-center gap-1.5 mt-1">
-          {produto.tamanhos.map((tam) => {
-            const emEstoque = produto.estoque[tam] > 0;
+          {TAMANHOS.map((tam) => {
+            const emEstoque = produtoAtivo.estoque[tam] > 0;
             return (
               <button 
                 key={tam} 
@@ -72,6 +108,7 @@ export default function QuickBuyCard({ produto }: { produto: Produto }) {
           })}
         </div>
         
+        {/* Botão de Compra com Trava Dupla */}
         <button 
           onClick={handleComprar} 
           disabled={!isProntoParaComprar && !!session} 
@@ -80,7 +117,7 @@ export default function QuickBuyCard({ produto }: { produto: Produto }) {
             isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}
         >
           <ShoppingCart className="w-4 h-4" />
-          {!session ? 'Faça Login para Comprar' : isProntoParaComprar ? 'Comprar Rápido' : 'Selecione o Tamanho'}
+          {!session ? 'Faça Login para Comprar' : isProntoParaComprar ? 'Comprar Rápido' : (!corSelecionadaId ? 'Selecione a Cor' : 'Selecione o Tamanho')}
         </button>
       </div>
     </div>
