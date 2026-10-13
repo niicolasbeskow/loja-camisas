@@ -23,11 +23,10 @@ export default function CheckoutPage() {
   // Estados do Modal PIX
   const [showPixModal, setShowPixModal] = useState(false);
   const [pixData, setPixData] = useState({ qr_code: '', qr_code_base64: '' });
-  const [timeLeft, setTimeLeft] = useState(120); // 2 minutos
+  const [timeLeft, setTimeLeft] = useState(120);
 
   useEffect(() => { setIsClient(true); }, []);
 
-  // Lógica do Temporizador do PIX
   useEffect(() => {
     if (showPixModal && timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
@@ -76,7 +75,6 @@ export default function CheckoutPage() {
       .then((data) => {
         if (data.success) {
           if (data.pix_qr_code) {
-             // Abre o Modal iFood Style
              setPixData({ qr_code: data.pix_qr_code, qr_code_base64: data.pix_qr_code_base64 });
              setShowPixModal(true);
              setTimeLeft(120);
@@ -84,7 +82,6 @@ export default function CheckoutPage() {
              alert('Pedido gerado! O seu boleto está pronto.');
              router.push('/pedidos');
           } else {
-             // Cartão ou Conta Mercado Pago
              router.push('/sucesso');
           }
           resolve();
@@ -110,8 +107,14 @@ export default function CheckoutPage() {
     router.push('/pedidos');
   };
 
-  const initialization = { amount: Number(totalGeral.toFixed(2)) };
-  // Adicionámos 'mercadoPago' para pagar direto com a conta!
+  // MAGIA AQUI: Injetamos o e-mail do cliente logado para o formulário não pedir de novo
+  const initialization = { 
+    amount: Number(totalGeral.toFixed(2)),
+    payer: {
+      email: session.user?.email || ''
+    }
+  };
+  
   const customization = { paymentMethods: { ticket: 'all', bankTransfer: 'all', creditCard: 'all', debitCard: 'all', mercadoPago: 'all' }};
 
   return (
@@ -119,7 +122,7 @@ export default function CheckoutPage() {
       
       {/* MODAL PIX (iFood Style) */}
       {showPixModal && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm">
            <div className="bg-white max-w-sm w-full rounded-md p-8 relative flex flex-col items-center text-center shadow-2xl animate-fade-in-up">
               <button onClick={fecharModalPix} className="absolute top-4 right-4 text-zinc-400 hover:text-black font-bold text-xl">&times;</button>
               
