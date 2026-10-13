@@ -7,19 +7,14 @@ const prisma = new PrismaClient();
 export async function POST(req: Request) {
   try {
     const session = await getServerSession();
-    if (!session || !session.user?.email) return NextResponse.json({ error: 'Não autorizado. Faça login novamente.' }, { status: 401 });
+    if (!session || !session.user?.email) return NextResponse.json({ error: 'Não autorizado. Faça login.' }, { status: 401 });
 
     let user = await prisma.user.findUnique({ where: { email: session.user.email } });
-    if (!user) {
-      user = await prisma.user.create({
-        data: { email: session.user.email, name: session.user.name || 'Cliente B.SKW', image: session.user.image || '' }
-      });
-    }
+    if (!user) user = await prisma.user.create({ data: { email: session.user.email, name: session.user.name || 'Cliente B.SKW', image: session.user.image || '' } });
 
     const body = await req.json();
     const { cartItems, frete, desconto, totalGeral } = body;
     let items = [];
-    
     const totalArredondado = Number(Number(totalGeral).toFixed(2));
 
     if (desconto > 0 || totalArredondado <= 1.00) {
@@ -34,14 +29,8 @@ export async function POST(req: Request) {
       headers: { 'Authorization': `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         items: items,
-        // ENVIANDO OS DADOS DO CLIENTE PARA O MERCADO PAGO LIBERAR O PIX
-        payer: {
-          name: user.name,
-          email: user.email
-        },
-        payment_methods: {
-          excluded_payment_types: [{ id: "ticket" }] // Removemos o boleto pois demora 3 dias a compensar
-        },
+        payer: { name: user.name, email: user.email },
+        // REMOVEMOS A TRAVA DE EXCLUSÃO DE PAGAMENTOS AQUI
         back_urls: { success: `${process.env.NEXTAUTH_URL}/sucesso`, failure: `${process.env.NEXTAUTH_URL}/checkout`, pending: `${process.env.NEXTAUTH_URL}/pedidos` },
         auto_return: "approved"
       })
