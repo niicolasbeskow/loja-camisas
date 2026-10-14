@@ -24,7 +24,6 @@ export default function ProdutoPage() {
   const [cep, setCep] = useState('');
   const [frete, setFrete] = useState<number | null>(null);
 
-  // Reseta a quantidade se trocar de produto
   useEffect(() => { setQuantidade(1); setTamanhoSelecionado(null); }, [id]);
 
   if (!produto) {
@@ -36,19 +35,13 @@ export default function ProdutoPage() {
     );
   }
 
-  // Agrupa os produtos da mesma linha para as bolinhas de cor
+  // Agrupa os produtos com base na categoria e tag para as bolinhas de cor
   const grupoDeCores = produtos.filter(p => p.categoria === produto.categoria && p.precoOriginal === produto.precoOriginal);
   const relacionadas = produtos.filter(p => p.categoria === produto.categoria && p.id !== produto.id).slice(0, 4);
 
-  // MATEMÁTICA DOS KITS (Desconto Progressivo)
-  const p1 = produto.precoOriginal;
-  const p3 = produto.preco;
-  const p2 = Math.floor(p1 - ((p1 - p3) / 2)) + 0.90; 
+  const valorTotal = produto.preco * quantidade;
   
-  const precoAtual = quantidade >= 3 ? p3 : quantidade === 2 ? p2 : p1;
-  const valorTotal = precoAtual * quantidade;
-  
-  // TRAVA DE ESTOQUE
+  // TRAVA DE ESTOQUE BLINDADA
   const maxDisponivel = tamanhoSelecionado ? produto.estoque[tamanhoSelecionado] : Math.max(...Object.values(produto.estoque));
   const isProntoParaComprar = tamanhoSelecionado !== null;
 
@@ -72,7 +65,7 @@ export default function ProdutoPage() {
   const handleComprar = () => {
     if (!session) { alert('Faça login para adicionar à sua armadura.'); router.push('/login'); return; }
     if (isProntoParaComprar) {
-      addToCart({ titulo: produto.nome, preco: precoAtual, cor: produto.cor, tamanho: tamanhoSelecionado, quantidade });
+      addToCart({ titulo: produto.nome, preco: produto.preco, cor: produto.cor, tamanho: tamanhoSelecionado, quantidade });
       setIsCartOpen(true);
     }
   };
@@ -131,7 +124,7 @@ export default function ProdutoPage() {
             
             <h1 className="text-2xl md:text-3xl font-outfit font-medium text-zinc-900 mb-3">{produto.nome}</h1>
             
-            {/* AVALIAÇÕES (VAZIO CLICÁVEL) */}
+            {/* AVALIAÇÕES */}
             <a href="#avaliacoes" className="flex items-center gap-2 mb-6 group cursor-pointer">
                <div className="flex text-zinc-300 group-hover:text-[#F59E0B] transition-colors">
                  {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
@@ -140,8 +133,8 @@ export default function ProdutoPage() {
             </a>
 
             <div className="mb-4">
-               <span className="text-3xl font-bold text-black block">R$ {precoAtual.toFixed(2).replace('.', ',')}</span>
-               <span className="text-sm text-zinc-500">em até <strong className="text-black">3x de R$ {(precoAtual / 3).toFixed(2).replace('.', ',')}</strong> sem juros</span>
+               <span className="text-3xl font-bold text-black block">R$ {produto.preco.toFixed(2).replace('.', ',')}</span>
+               <span className="text-sm text-zinc-500">em até <strong className="text-black">3x de R$ {(produto.preco / 3).toFixed(2).replace('.', ',')}</strong> sem juros</span>
             </div>
 
             <div className="flex items-center gap-2 text-sm text-zinc-600 mb-4 pb-4">
@@ -149,39 +142,11 @@ export default function ProdutoPage() {
                <span>Compre e receba <strong className="text-[#F59E0B]">FRETE GRÁTIS</strong> em compras acima de R$ 299</span>
             </div>
 
-            {/* ETIQUETAS RESTAURADAS */}
+            {/* ETIQUETAS */}
             <div className="flex items-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-600 mb-8 border-b border-zinc-100 pb-8">
               <span>{produto.tag}</span>
               <span className="w-1 h-1 rounded-full bg-zinc-400"></span>
               <span>100% Algodão</span>
-            </div>
-
-            {/* SELEÇÃO DE QUANTIDADE (KITS) */}
-            <div className="mb-8">
-              <span className="text-base text-zinc-800 mb-3 block">Quantidade</span>
-              <div className="grid grid-cols-3 gap-3">
-                <button 
-                  onClick={() => handleSetQuantidade(1)}
-                  className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade === 1 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}
-                >
-                   <span className="font-bold text-sm">1 un</span>
-                   <span className={`text-xs mt-1 ${quantidade === 1 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p1.toFixed(2).replace('.', ',')}/un</span>
-                </button>
-                <button 
-                  onClick={() => handleSetQuantidade(2)}
-                  className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade === 2 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}
-                >
-                   <span className="font-bold text-sm">Kit com 2</span>
-                   <span className={`text-xs mt-1 ${quantidade === 2 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p2.toFixed(2).replace('.', ',')}/un</span>
-                </button>
-                <button 
-                  onClick={() => handleSetQuantidade(3)}
-                  className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade >= 3 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}
-                >
-                   <span className="font-bold text-sm">Kit com {quantidade >= 3 ? quantidade : '3'}</span>
-                   <span className={`text-xs mt-1 ${quantidade >= 3 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p3.toFixed(2).replace('.', ',')}/un</span>
-                </button>
-              </div>
             </div>
 
             {/* SELEÇÃO DE COR */}
@@ -227,7 +192,7 @@ export default function ProdutoPage() {
               </div>
             </div>
 
-            {/* COMPRA E CONTADOR */}
+            {/* COMPRA E CONTADOR (SEM KITS) */}
             <div className="flex gap-4 mb-8">
               <div className="flex items-center border border-zinc-300 rounded-sm h-14 bg-white w-32 shrink-0">
                 <button onClick={() => handleSetQuantidade(quantidade - 1)} disabled={quantidade <= 1} className="px-4 h-full text-zinc-500 hover:text-black transition-colors">-</button>
@@ -246,7 +211,7 @@ export default function ProdutoPage() {
               </button>
             </div>
 
-            {/* CÁLCULO DE FRETE (RESTAURADO) */}
+            {/* CÁLCULO DE FRETE */}
             <div className="bg-zinc-50 p-4 rounded-md border border-zinc-200 mb-8">
               <span className="text-sm font-bold uppercase block mb-3 text-zinc-700">Calcule o Frete</span>
               <div className="flex gap-2">
@@ -266,7 +231,7 @@ export default function ProdutoPage() {
           </div>
         </div>
 
-        {/* ABAS DE INFORMAÇÃO COM TEXTOS IDENTIDADE B.SKW */}
+        {/* ABAS DE INFORMAÇÃO */}
         <div className="mb-20">
           <div className="flex gap-8 border-b border-zinc-200 mb-8">
             <button onClick={() => setAbaAtiva('descricao')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'descricao' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>
@@ -313,7 +278,7 @@ export default function ProdutoPage() {
           </div>
         </div>
 
-        {/* SEÇÃO DE AVALIAÇÕES (NOVA) */}
+        {/* SEÇÃO DE AVALIAÇÕES */}
         <section id="avaliacoes" className="border-t border-zinc-200 pt-16 mt-16 mb-8">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 gap-4">
             <h2 className="text-3xl font-anton uppercase tracking-wide text-zinc-900">Avaliações da Galera</h2>
