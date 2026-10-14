@@ -20,6 +20,9 @@ export default function ProdutoPage() {
   const [tamanhoSelecionado, setTamanhoSelecionado] = useState<Tamanho | null>(null);
   const [quantidade, setQuantidade] = useState(1);
   const [abaAtiva, setAbaAtiva] = useState<'descricao' | 'tecnica' | 'lavagem'>('descricao');
+  const [showTabelaMedidas, setShowTabelaMedidas] = useState(false);
+  const [cep, setCep] = useState('');
+  const [frete, setFrete] = useState<number | null>(null);
 
   // Reseta a quantidade se trocar de produto
   useEffect(() => { setQuantidade(1); setTamanhoSelecionado(null); }, [id]);
@@ -40,7 +43,6 @@ export default function ProdutoPage() {
   // MATEMÁTICA DOS KITS (Desconto Progressivo)
   const p1 = produto.precoOriginal;
   const p3 = produto.preco;
-  // Calcula o valor intermediário e força o final .90
   const p2 = Math.floor(p1 - ((p1 - p3) / 2)) + 0.90; 
   
   const precoAtual = quantidade >= 3 ? p3 : quantidade === 2 ? p2 : p1;
@@ -62,7 +64,6 @@ export default function ProdutoPage() {
 
   const handleSelectTamanho = (tam: Tamanho) => {
     setTamanhoSelecionado(tam);
-    // Se a quantidade atual for maior que o estoque do novo tamanho, reduz automaticamente
     if (quantidade > produto.estoque[tam]) {
        setQuantidade(Math.max(1, produto.estoque[tam]));
     }
@@ -71,14 +72,33 @@ export default function ProdutoPage() {
   const handleComprar = () => {
     if (!session) { alert('Faça login para adicionar à sua armadura.'); router.push('/login'); return; }
     if (isProntoParaComprar) {
-      // Mandamos o precoAtual (com desconto de kit) para o carrinho
       addToCart({ titulo: produto.nome, preco: precoAtual, cor: produto.cor, tamanho: tamanhoSelecionado, quantidade });
       setIsCartOpen(true);
     }
   };
 
+  const calcularFrete = () => {
+    if (cep.replace(/\D/g, '').length !== 8) { alert('CEP inválido'); return; }
+    setFrete(15.90);
+  };
+
   return (
     <main className="min-h-screen bg-white text-black pb-24">
+      
+      {/* MODAL DA TABELA DE MEDIDAS */}
+      {showTabelaMedidas && (
+        <div className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in-up" onClick={() => setShowTabelaMedidas(false)}>
+          <div className="bg-white max-w-2xl w-full rounded-md p-2 relative shadow-2xl" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setShowTabelaMedidas(false)} className="absolute top-2 right-4 text-zinc-500 hover:text-black font-bold text-3xl z-10">&times;</button>
+            <div className="w-full aspect-[4/3] bg-zinc-100 flex items-center justify-center rounded-sm">
+              <span className="text-zinc-400 font-bold uppercase tracking-widest text-center px-4">
+                Imagem da Tabela de Medidas<br/>(Aguardando Foto)
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-[1200px] mx-auto px-4 md:px-6 pt-8 mt-4 md:mt-8">
         
         {/* BREADCRUMBS */}
@@ -106,26 +126,34 @@ export default function ProdutoPage() {
             </div>
           </div>
 
-          {/* INFORMAÇÕES DO PRODUTO (LAYOUT DE ALTA CONVERSÃO) */}
+          {/* INFORMAÇÕES DO PRODUTO */}
           <div className="flex flex-col pt-2">
             
             <h1 className="text-2xl md:text-3xl font-outfit font-medium text-zinc-900 mb-3">{produto.nome}</h1>
             
-            <div className="flex items-center gap-2 mb-6">
-               <div className="flex text-[#F59E0B]">
+            {/* AVALIAÇÕES (VAZIO CLICÁVEL) */}
+            <a href="#avaliacoes" className="flex items-center gap-2 mb-6 group cursor-pointer">
+               <div className="flex text-zinc-300 group-hover:text-[#F59E0B] transition-colors">
                  {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
                </div>
-               <span className="text-sm text-zinc-600">176 Avaliações</span>
-            </div>
+               <span className="text-sm text-zinc-500 group-hover:text-black transition-colors underline">(0) Avaliações</span>
+            </a>
 
             <div className="mb-4">
                <span className="text-3xl font-bold text-black block">R$ {precoAtual.toFixed(2).replace('.', ',')}</span>
                <span className="text-sm text-zinc-500">em até <strong className="text-black">3x de R$ {(precoAtual / 3).toFixed(2).replace('.', ',')}</strong> sem juros</span>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-zinc-600 mb-8 border-b border-zinc-100 pb-8">
+            <div className="flex items-center gap-2 text-sm text-zinc-600 mb-4 pb-4">
                <span>🚚</span>
                <span>Compre e receba <strong className="text-[#F59E0B]">FRETE GRÁTIS</strong> em compras acima de R$ 299</span>
+            </div>
+
+            {/* ETIQUETAS RESTAURADAS */}
+            <div className="flex items-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-600 mb-8 border-b border-zinc-100 pb-8">
+              <span>{produto.tag}</span>
+              <span className="w-1 h-1 rounded-full bg-zinc-400"></span>
+              <span>100% Algodão</span>
             </div>
 
             {/* SELEÇÃO DE QUANTIDADE (KITS) */}
@@ -150,7 +178,7 @@ export default function ProdutoPage() {
                   onClick={() => handleSetQuantidade(3)}
                   className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade >= 3 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}
                 >
-                   <span className="font-bold text-sm">Kit com {quantidade > 3 ? quantidade : '4'}</span>
+                   <span className="font-bold text-sm">Kit com {quantidade >= 3 ? quantidade : '3'}</span>
                    <span className={`text-xs mt-1 ${quantidade >= 3 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p3.toFixed(2).replace('.', ',')}/un</span>
                 </button>
               </div>
@@ -177,7 +205,7 @@ export default function ProdutoPage() {
             <div className="mb-10">
               <div className="flex justify-between items-end mb-3">
                 <span className="text-base text-zinc-800">Tamanho: <span className="font-bold">{tamanhoSelecionado || ''}</span></span>
-                <button className="text-xs text-zinc-500 underline hover:text-black">Tabela de Medidas</button>
+                <button onClick={() => setShowTabelaMedidas(true)} className="text-xs text-zinc-500 underline hover:text-black transition-colors">Tabela de Medidas</button>
               </div>
               <div className="flex gap-2">
                 {produto.tamanhos.map((tam) => {
@@ -199,7 +227,7 @@ export default function ProdutoPage() {
               </div>
             </div>
 
-            {/* COMPRA E CONTADOR EXTRA */}
+            {/* COMPRA E CONTADOR */}
             <div className="flex gap-4 mb-8">
               <div className="flex items-center border border-zinc-300 rounded-sm h-14 bg-white w-32 shrink-0">
                 <button onClick={() => handleSetQuantidade(quantidade - 1)} disabled={quantidade <= 1} className="px-4 h-full text-zinc-500 hover:text-black transition-colors">-</button>
@@ -218,6 +246,16 @@ export default function ProdutoPage() {
               </button>
             </div>
 
+            {/* CÁLCULO DE FRETE (RESTAURADO) */}
+            <div className="bg-zinc-50 p-4 rounded-md border border-zinc-200 mb-8">
+              <span className="text-sm font-bold uppercase block mb-3 text-zinc-700">Calcule o Frete</span>
+              <div className="flex gap-2">
+                <input type="text" placeholder="Seu CEP" value={cep} onChange={(e) => setCep(e.target.value)} maxLength={9} className="flex-1 border border-zinc-300 px-4 h-12 rounded-sm text-sm outline-none focus:border-black" />
+                <button onClick={calcularFrete} className="bg-black text-white px-6 font-bold uppercase tracking-widest text-xs hover:bg-zinc-800 transition-colors">Consultar</button>
+              </div>
+              {frete !== null && <p className="text-green-600 text-sm font-bold mt-3">Frete Fixo: R$ {frete.toFixed(2).replace('.', ',')}</p>}
+            </div>
+
             {/* BADGES DE CONFIANÇA */}
             <div className="grid grid-cols-2 gap-4 mt-4 bg-zinc-50 p-4 rounded-md border border-zinc-100">
                <div className="flex items-center gap-3 text-xs font-bold uppercase text-zinc-600"><Package className="w-4 h-4 text-[#F59E0B]" /> Envio Imediato</div>
@@ -228,7 +266,7 @@ export default function ProdutoPage() {
           </div>
         </div>
 
-        {/* ABAS DE INFORMAÇÃO */}
+        {/* ABAS DE INFORMAÇÃO COM TEXTOS IDENTIDADE B.SKW */}
         <div className="mb-20">
           <div className="flex gap-8 border-b border-zinc-200 mb-8">
             <button onClick={() => setAbaAtiva('descricao')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'descricao' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>
@@ -248,35 +286,47 @@ export default function ProdutoPage() {
           <div className="text-zinc-600 text-sm leading-relaxed max-w-3xl">
             {abaAtiva === 'descricao' && (
               <div className="space-y-4">
-                <p>A <strong>{produto.nome} Zero Encolhimento</strong> é produzida com modelagem exclusiva streetwear e acabamento de extrema qualidade.</p>
-                <p>Nossas peças passam por um processo de pré-encolhimento, o que garante que a peça não encolha mais nas próximas lavagens.</p>
-                <p>As nossas peças possuem toque conforto, não são transparentes e podem ser personalizadas com a sua estampa.</p>
-                <p>Ideal para quem busca qualidade, conforto e custo benefício para iniciar a produção da sua marca!</p>
+                <p>A <strong>{produto.nome}</strong> é a armadura definitiva para quem veste a rua com respeito. Produzida com modelagem exclusiva streetwear e acabamento de extrema qualidade.</p>
+                <p>Nossas peças passam por um rigoroso processo de pré-encolhimento (Zero Encolhimento), garantindo que o fit perfeito se mantenha intacto lavagem após lavagem.</p>
+                <p>Tecido de alta gramatura, toque macio, estrutura pesada e zero transparência.</p>
+                <p>Feita para durar e te acompanhar no corre do dia a dia. Chegou a hora de elevar o nível do seu kit.</p>
               </div>
             )}
             {abaAtiva === 'tecnica' && (
               <ul className="list-disc pl-5 space-y-2">
-                <li>Fabricada com algodão BCI (Better Cotton Initiative).</li>
-                <li>Malha 100% algodão.</li>
-                <li>Gramatura {produto.tag.split(' ')[0]}g/m².</li>
+                <li>Fabricada com algodão premium BCI (Better Cotton Initiative).</li>
+                <li>Malha 100% algodão super macio.</li>
+                <li>Gramatura de {produto.tag.split(' ')[0]}g/m².</li>
                 <li>{produto.tag.replace(produto.tag.split(' ')[0] + ' g/m² ', '')}.</li>
-                <li>Peças pré encolhidas.</li>
-                <br/>
-                <li className="font-bold text-black list-none -ml-5">Importante!</li>
-                <li>Peça que possui somente etiqueta de composição lateral.</li>
-                <li>Insira a etiqueta da sua marca tranquilamente.</li>
+                <li>Tecnologia Zero Encolhimento (Peças pré-encolhidas).</li>
+                <li>Etiqueta interna de composição lateral, garantindo conforto sem arranhar.</li>
               </ul>
             )}
             {abaAtiva === 'lavagem' && (
               <ul className="list-disc pl-5 space-y-2">
-                <li>Lavar à mão ou em ciclo delicado.</li>
-                <li>Não usar alvejantes.</li>
-                <li>Secar à sombra para preservar a tonalidade.</li>
-                <li>Passar com ferro em temperatura baixa.</li>
+                <li>Lavar à mão ou em ciclo delicado na máquina.</li>
+                <li>Não usar alvejantes ou produtos químicos agressivos.</li>
+                <li>Secar à sombra para preservar a tonalidade original do tecido.</li>
+                <li>Passar com ferro em temperatura baixa/média.</li>
               </ul>
             )}
           </div>
         </div>
+
+        {/* SEÇÃO DE AVALIAÇÕES (NOVA) */}
+        <section id="avaliacoes" className="border-t border-zinc-200 pt-16 mt-16 mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 gap-4">
+            <h2 className="text-3xl font-anton uppercase tracking-wide text-zinc-900">Avaliações da Galera</h2>
+            <button className="text-sm font-bold uppercase tracking-widest underline hover:text-[#F59E0B] transition-colors">Escrever uma avaliação</button>
+          </div>
+          <div className="bg-zinc-50 border border-zinc-200 rounded-md p-12 text-center flex flex-col items-center justify-center">
+            <div className="flex text-zinc-300 mb-4">
+              {[...Array(5)].map((_, i) => <Star key={i} className="w-8 h-8 fill-current" />)}
+            </div>
+            <p className="text-zinc-500 font-medium text-lg">Nenhuma avaliação ainda.</p>
+            <p className="text-zinc-400 text-sm mt-1">Seja o primeiro a avaliar esta armadura!</p>
+          </div>
+        </section>
 
         {/* PRODUTOS RELACIONADOS */}
         {relacionadas.length > 0 && (
