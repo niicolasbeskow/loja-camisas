@@ -178,6 +178,25 @@ export const produtos: Produto[] = [
     id: 'suedine-cinza', nome: 'Camiseta Suedine B.SKW Cinza', cor: 'Cinza', hex: '#808080',
     preco: 229.90, precoOriginal: 279.90, precoKit: 199.90, categoria: 'camiseta-suedine', tag: '230 g/m² Fio 40.1', imagens: ['/suedine-cinza.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+
+  // ==========================================
+  // CATEGORIA: CAMISETA BOXY (NOVO!)
+  // ==========================================
+  {
+    id: 'boxy-preta', nome: 'Camiseta Boxy B.SKW Preto', cor: 'Preto', hex: '#000000',
+    preco: 129.90, precoOriginal: 149.90, precoKit: 89.90, categoria: 'camiseta-boxy', tag: '200 g/m² Fio 26.1', imagens: ['/boxy-preta.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'boxy-off-white', nome: 'Camiseta Boxy B.SKW Off White', cor: 'Off White', hex: '#FAF9F6',
+    preco: 129.90, precoOriginal: 149.90, precoKit: 89.90, categoria: 'camiseta-boxy', tag: '200 g/m² Fio 26.1', imagens: ['/boxy-off-white.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'boxy-azul-marinho', nome: 'Camiseta Boxy B.SKW Azul Marinho', cor: 'Azul Marinho', hex: '#000080',
+    preco: 129.90, precoOriginal: 149.90, precoKit: 89.90, categoria: 'camiseta-boxy', tag: '200 g/m² Fio 26.1', imagens: ['/boxy-azul-marinho.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   }
 ];
 
