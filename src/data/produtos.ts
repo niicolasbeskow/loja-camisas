@@ -296,11 +296,35 @@ export const produtos: Produto[] = [
   },
 
   // ==========================================
-  // CATEGORIA: REGATA OVERSIZED (NOVO!)
+  // CATEGORIA: REGATA OVERSIZED
   // ==========================================
   {
     id: 'regata-oversized-preto-vintage', nome: 'Regata Oversized B.SKW Preto Vintage', cor: 'Preto Vintage', hex: '#2C2C2C',
     preco: 169.90, precoOriginal: 199.90, precoKit: 129.90, categoria: 'regata-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/regata-preto-vintage.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+
+  // ==========================================
+  // CATEGORIA: SHORTS (NOVO!)
+  // ==========================================
+  {
+    id: 'shorts-preto', nome: 'Shorts Poliamida B.SKW Preto', cor: 'Preto', hex: '#000000',
+    preco: 229.90, precoOriginal: 269.90, precoKit: 159.90, categoria: 'shorts', tag: 'Premium', imagens: ['/shorts-preto.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'shorts-cinza-escuro', nome: 'Shorts Poliamida B.SKW Cinza Escuro', cor: 'Cinza Escuro', hex: '#333333',
+    preco: 229.90, precoOriginal: 269.90, precoKit: 159.90, categoria: 'shorts', tag: 'Premium', imagens: ['/shorts-cinza-escuro.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'shorts-azul-marinho', nome: 'Shorts Poliamida B.SKW Azul Marinho', cor: 'Azul Marinho', hex: '#000080',
+    preco: 229.90, precoOriginal: 269.90, precoKit: 159.90, categoria: 'shorts', tag: 'Premium', imagens: ['/shorts-azul-marinho.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'shorts-cinza-claro', nome: 'Shorts Poliamida B.SKW Cinza Claro', cor: 'Cinza Claro', hex: '#D3D3D3',
+    preco: 229.90, precoOriginal: 269.90, precoKit: 159.90, categoria: 'shorts', tag: 'Premium', imagens: ['/shorts-cinza-claro.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   }
 ];
