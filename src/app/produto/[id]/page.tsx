@@ -35,7 +35,7 @@ export default function ProdutoPage() {
     );
   }
 
-  const grupoDeCores = produtos.filter(p => p.categoria === produto.categoria && p.preco === produto.preco);
+  const grupoDeCores = produtos.filter(p => p.categoria === produto.categoria && p.preco === produto.preco && p.nome.includes(produto.nome.split(' ')[0]));
   const relacionadas = produtos.filter(p => p.categoria === produto.categoria && p.id !== produto.id).slice(0, 4);
 
   const p1 = produto.preco;
@@ -48,7 +48,14 @@ export default function ProdutoPage() {
   const maxDisponivel = tamanhoSelecionado ? produto.estoque[tamanhoSelecionado] : Math.max(...Object.values(produto.estoque));
   const isProntoParaComprar = tamanhoSelecionado !== null;
 
+  // Lógica de Composição Dinâmica
   const isPoliamida = produto.categoria === 'camiseta-poliamida';
+  const isBabyLook = produto.nome.includes('Baby Look');
+  const isCroppedSuedine = produto.nome.includes('Cropped');
+  
+  let composicaoTexto = '100% Algodão';
+  if (isPoliamida) composicaoTexto = '100% Poliamida';
+  if (isBabyLook) composicaoTexto = '96% Algodão, 4% Elastano';
 
   const handleSetQuantidade = (novaQtd: number) => {
     if (novaQtd < 1) return;
@@ -145,7 +152,7 @@ export default function ProdutoPage() {
             <div className="flex items-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-600 mb-8 border-b border-zinc-100 pb-8">
               <span>{produto.tag}</span>
               <span className="w-1 h-1 rounded-full bg-zinc-400"></span>
-              <span>{isPoliamida ? '100% Poliamida' : '100% Algodão'}</span>
+              <span>{composicaoTexto}</span>
             </div>
 
             <div className="mb-8">
@@ -237,14 +244,22 @@ export default function ProdutoPage() {
                 {isPoliamida ? (
                   <>
                     <p>A <strong>{produto.nome}</strong> é a sua armadura tecnológica de alta performance. Desenvolvida para quem exige o máximo de conforto em movimento.</p>
-                    <p>Com um tecido absurdamente leve, ela absorve o suor, seca extremamente rápido e desamassa no corpo, sem precisar de ferro de passar.</p>
-                    <p>Tecnologia anti-odor (não pega mau cheiro) e proteção UV integrada para te acompanhar em qualquer corre, seja no treino ou na rua.</p>
+                    <p>Com um tecido absurdamente leve, ela absorve o suor, seca extremamente rápido e desamassa no corpo.</p>
+                  </>
+                ) : isBabyLook ? (
+                  <>
+                    <p>A <strong>{produto.nome}</strong> traz o caimento perfeito para o corpo feminino, unindo conforto e estilo streetwear.</p>
+                    <p>A presença do elastano na composição garante que a peça se molde ao corpo com elasticidade, enquanto o algodão premium oferece toque macio e zero transparência.</p>
+                  </>
+                ) : isCroppedSuedine ? (
+                  <>
+                    <p>O <strong>{produto.nome}</strong> é luxo em forma de streetwear. Com a malha premium Suedine de altíssima gramatura, entrega um caimento pesado e impecável.</p>
+                    <p>A modelagem cropped oversized eleva qualquer look, combinando conforto extremo com muito estilo.</p>
                   </>
                 ) : (
                   <>
                     <p>A <strong>{produto.nome}</strong> é a armadura definitiva para quem veste a rua com respeito. Produzida com modelagem exclusiva streetwear e acabamento de extrema qualidade.</p>
                     <p>Nossas peças passam por um rigoroso processo de pré-encolhimento (Zero Encolhimento), garantindo que o fit perfeito se mantenha intacto lavagem após lavagem.</p>
-                    <p>Tecido de alta gramatura, toque macio, estrutura pesada e zero transparência.</p>
                   </>
                 )}
               </div>
@@ -255,14 +270,23 @@ export default function ProdutoPage() {
                   <>
                     <li>Malha tecnológica 100% Poliamida de alta performance.</li>
                     <li>Gramatura ultra leve de {produto.tag.split(' ')[0]}.</li>
-                    <li>Proteção UV e tecnologia Anti-Odor.</li>
-                    <li>Secagem rápida e não amassa (Easy Care).</li>
+                  </>
+                ) : isBabyLook ? (
+                  <>
+                    <li>Malha premium 96% Algodão BCI e 4% Elastano.</li>
+                    <li>Gramatura de {produto.tag.split(' ')[0]}g/m².</li>
+                    <li>Modelagem justa e confortável (Fit perfeito).</li>
+                  </>
+                ) : isCroppedSuedine ? (
+                  <>
+                    <li>Malha Suedine luxuosa 100% Algodão.</li>
+                    <li>Fio de altíssima qualidade 40.1 penteado.</li>
+                    <li>Gramatura pesada de {produto.tag.split(' ')[0]}g/m².</li>
                   </>
                 ) : (
                   <>
                     <li>Malha 100% algodão super macio.</li>
                     <li>Gramatura de {produto.tag.split(' ')[0]}g/m².</li>
-                    <li>Tecnologia Zero Encolhimento (Peças pré-encolhidas).</li>
                   </>
                 )}
               </ul>
@@ -277,7 +301,6 @@ export default function ProdutoPage() {
           </div>
         </div>
 
-        {/* SEÇÃO DE AVALIAÇÕES */}
         <section id="avaliacoes" className="border-t border-zinc-200 pt-16 mt-16 mb-8">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 gap-4">
             <h2 className="text-3xl font-anton uppercase tracking-wide text-zinc-900">Avaliações da Galera</h2>
@@ -292,7 +315,6 @@ export default function ProdutoPage() {
           </div>
         </section>
 
-        {/* PRODUTOS RELACIONADOS */}
         {relacionadas.length > 0 && (
           <section className="border-t border-zinc-200 pt-16">
             <h2 className="text-3xl font-anton uppercase text-center mb-12 tracking-wide text-zinc-900">Você também pode gostar...</h2>

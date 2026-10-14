@@ -214,7 +214,7 @@ export const produtos: Produto[] = [
   },
 
   // ==========================================
-  // CATEGORIA: MANGA LONGA (NOVO!)
+  // CATEGORIA: MANGA LONGA
   // ==========================================
   {
     id: 'manga-longa-azul-estonado', nome: 'Camiseta Manga Longa B.SKW Azul Estonado', cor: 'Azul Estonado', hex: '#3B5998',
@@ -224,6 +224,40 @@ export const produtos: Produto[] = [
   {
     id: 'manga-longa-preto-vintage', nome: 'Camiseta Manga Longa B.SKW Preto Vintage', cor: 'Preto Vintage', hex: '#2C2C2C',
     preco: 229.90, precoOriginal: 269.90, precoKit: 179.90, categoria: 'manga-longa', tag: '180 g/m² Fio 26.1', imagens: ['/manga-longa-preto.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+
+  // ==========================================
+  // CATEGORIA: FEMININO (BABY LOOK E CROPPED)
+  // ==========================================
+  {
+    id: 'baby-look-preta', nome: 'Baby Look B.SKW Preta', cor: 'Preto', hex: '#000000',
+    preco: 109.90, precoOriginal: 129.90, precoKit: 69.90, categoria: 'feminino', tag: '190 g/m² Fio 26.1', imagens: ['/baby-look-preta.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'baby-look-off-white', nome: 'Baby Look B.SKW Off White', cor: 'Off White', hex: '#FAF9F6',
+    preco: 109.90, precoOriginal: 129.90, precoKit: 69.90, categoria: 'feminino', tag: '190 g/m² Fio 26.1', imagens: ['/baby-look-off-white.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'baby-look-verde-militar', nome: 'Baby Look B.SKW Verde Militar', cor: 'Verde Militar', hex: '#4B5320',
+    preco: 109.90, precoOriginal: 129.90, precoKit: 69.90, categoria: 'feminino', tag: '190 g/m² Fio 26.1', imagens: ['/baby-look-verde-militar.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'cropped-suedine-preto', nome: 'Cropped Oversized Suedine B.SKW Preto', cor: 'Preto', hex: '#000000',
+    preco: 139.90, precoOriginal: 169.90, precoKit: 119.90, categoria: 'feminino', tag: '250 g/m² Fio 40.1', imagens: ['/cropped-suedine-preto.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'cropped-suedine-off-white', nome: 'Cropped Oversized Suedine B.SKW Off White', cor: 'Off White', hex: '#FAF9F6',
+    preco: 139.90, precoOriginal: 169.90, precoKit: 119.90, categoria: 'feminino', tag: '250 g/m² Fio 40.1', imagens: ['/cropped-suedine-off-white.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'cropped-suedine-marrom', nome: 'Cropped Oversized Suedine B.SKW Marrom', cor: 'Marrom', hex: '#5E4B3C',
+    preco: 139.90, precoOriginal: 169.90, precoKit: 119.90, categoria: 'feminino', tag: '250 g/m² Fio 40.1', imagens: ['/cropped-suedine-marrom.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   }
 ];
