@@ -10,6 +10,7 @@ export interface Produto {
   precoKit?: number;
   categoria: string;
   tag: string;
+  promocao?: boolean;
   imagens: string[];
   tamanhos: Tamanho[];
   estoque: Record<Tamanho, number>;
@@ -18,12 +19,10 @@ export interface Produto {
 const estoquePadrao = { P: 3, M: 3, G: 3, GG: 3, G1: 0, G2: 0 };
 
 export const produtos: Produto[] = [
-  // ==========================================
   // CATEGORIA: CAMISETA BÁSICA
-  // ==========================================
   {
     id: 'basica-preta', nome: 'Camiseta Básica B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 109.90, precoOriginal: 129.90, precoKit: 79.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-preta.png'],
+    preco: 87.90, precoOriginal: 129.90, precoKit: 63.90, promocao: true, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -68,7 +67,7 @@ export const produtos: Produto[] = [
   },
   {
     id: 'basica-preto-estonado', nome: 'Camiseta Básica B.SKW Preto Estonado', cor: 'Preto Estonado', hex: '#2C2C2C',
-    preco: 149.90, precoOriginal: 179.90, precoKit: 119.90, categoria: 'camiseta-estonada', tag: 'Estonada Premium', imagens: ['/estonada-preta.png'],
+    preco: 119.90, precoOriginal: 179.90, precoKit: 95.90, promocao: true, categoria: 'camiseta-estonada', tag: 'Estonada Premium', imagens: ['/estonada-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -82,12 +81,10 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
-  // ==========================================
   // CATEGORIA: CAMISETA OVERSIZED
-  // ==========================================
   {
     id: 'oversized-preta', nome: 'Camiseta Oversized B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 139.90, precoOriginal: 169.90, precoKit: 99.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-preta.png'],
+    preco: 111.90, precoOriginal: 169.90, precoKit: 79.90, promocao: true, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -132,7 +129,7 @@ export const produtos: Produto[] = [
   },
   {
     id: 'oversized-preto-estonado', nome: 'Camiseta Oversized B.SKW Preto Estonado', cor: 'Preto Estonado', hex: '#2C2C2C',
-    preco: 189.90, precoOriginal: 229.90, precoKit: 159.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-preto-estonado.png'],
+    preco: 151.90, precoOriginal: 229.90, precoKit: 127.90, promocao: true, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-preto-estonado.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -156,12 +153,10 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
-  // ==========================================
   // CATEGORIA: CAMISETA SUEDINE
-  // ==========================================
   {
     id: 'suedine-preta', nome: 'Camiseta Suedine B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 189.90, precoOriginal: 239.90, precoKit: 159.90, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-preta.png'],
+    preco: 151.90, precoOriginal: 239.90, precoKit: 127.90, promocao: true, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -180,12 +175,10 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
-  // ==========================================
   // CATEGORIA: CAMISETA BOXY
-  // ==========================================
   {
     id: 'boxy-preta', nome: 'Camiseta Boxy B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 129.90, precoOriginal: 149.90, precoKit: 89.90, categoria: 'camiseta-boxy', tag: '200 g/m² Fio 26.1', imagens: ['/boxy-preta.png'],
+    preco: 103.90, precoOriginal: 149.90, precoKit: 71.90, promocao: true, categoria: 'camiseta-boxy', tag: '200 g/m² Fio 26.1', imagens: ['/boxy-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -199,12 +192,10 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
-  // ==========================================
   // CATEGORIA: CAMISETA POLIAMIDA
-  // ==========================================
   {
     id: 'poliamida-preta', nome: 'Camiseta Ultra Tech Poliamida B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 139.90, precoOriginal: 169.90, precoKit: 99.90, categoria: 'camiseta-poliamida', tag: '122 g/m²', imagens: ['/poliamida-preta.png'],
+    preco: 111.90, precoOriginal: 169.90, precoKit: 79.90, promocao: true, categoria: 'camiseta-poliamida', tag: '122 g/m²', imagens: ['/poliamida-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -213,9 +204,7 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
-  // ==========================================
   // CATEGORIA: MANGA LONGA
-  // ==========================================
   {
     id: 'manga-longa-azul-estonado', nome: 'Camiseta Manga Longa B.SKW Azul Estonado', cor: 'Azul Estonado', hex: '#3B5998',
     preco: 229.90, precoOriginal: 269.90, precoKit: 179.90, categoria: 'manga-longa', tag: '180 g/m² Fio 26.1', imagens: ['/manga-longa-azul.png'],
@@ -223,16 +212,14 @@ export const produtos: Produto[] = [
   },
   {
     id: 'manga-longa-preto-vintage', nome: 'Camiseta Manga Longa B.SKW Preto Vintage', cor: 'Preto Vintage', hex: '#2C2C2C',
-    preco: 229.90, precoOriginal: 269.90, precoKit: 179.90, categoria: 'manga-longa', tag: '180 g/m² Fio 26.1', imagens: ['/manga-longa-preto.png'],
+    preco: 183.90, precoOriginal: 269.90, precoKit: 143.90, promocao: true, categoria: 'manga-longa', tag: '180 g/m² Fio 26.1', imagens: ['/manga-longa-preto.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
-  // ==========================================
   // CATEGORIA: FEMININO
-  // ==========================================
   {
     id: 'baby-look-preta', nome: 'Baby Look B.SKW Preta', cor: 'Preto', hex: '#000000',
-    preco: 109.90, precoOriginal: 129.90, precoKit: 69.90, categoria: 'feminino', tag: '190 g/m² Fio 26.1', imagens: ['/baby-look-preta.png'],
+    preco: 87.90, precoOriginal: 129.90, precoKit: 55.90, promocao: true, categoria: 'feminino', tag: '190 g/m² Fio 26.1', imagens: ['/baby-look-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -247,7 +234,7 @@ export const produtos: Produto[] = [
   },
   {
     id: 'cropped-suedine-preto', nome: 'Cropped Oversized Suedine B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 139.90, precoOriginal: 169.90, precoKit: 119.90, categoria: 'feminino', tag: '250 g/m² Fio 40.1', imagens: ['/cropped-suedine-preto.png'],
+    preco: 111.90, precoOriginal: 169.90, precoKit: 95.90, promocao: true, categoria: 'feminino', tag: '250 g/m² Fio 40.1', imagens: ['/cropped-suedine-preto.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -261,12 +248,10 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
-  // ==========================================
   // CATEGORIA: MOLETOM
-  // ==========================================
   {
     id: 'moletom-oversized-preto', nome: 'Moletom Oversized B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 229.90, precoOriginal: 269.90, precoKit: 179.90, categoria: 'moletom', tag: '300 g/m²', imagens: ['/moletom-oversized-preto.png'],
+    preco: 183.90, precoOriginal: 269.90, precoKit: 143.90, promocao: true, categoria: 'moletom', tag: '300 g/m²', imagens: ['/moletom-oversized-preto.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -276,7 +261,7 @@ export const produtos: Produto[] = [
   },
   {
     id: 'moletom-canguru-preto', nome: 'Moletom Canguru B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 429.90, precoOriginal: 499.90, precoKit: 299.90, categoria: 'moletom', tag: '320 g/m²', imagens: ['/moletom-canguru-preto.png'],
+    preco: 343.90, precoOriginal: 499.90, precoKit: 239.90, promocao: true, categoria: 'moletom', tag: '320 g/m²', imagens: ['/moletom-canguru-preto.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -286,7 +271,7 @@ export const produtos: Produto[] = [
   },
   {
     id: 'calca-moletom-preta', nome: 'Calça Moletom Comfort B.SKW Preta', cor: 'Preto', hex: '#000000',
-    preco: 389.90, precoOriginal: 459.90, precoKit: 269.90, categoria: 'moletom', tag: '320 g/m²', imagens: ['/calca-moletom-preta.png'],
+    preco: 311.90, precoOriginal: 459.90, precoKit: 215.90, promocao: true, categoria: 'moletom', tag: '320 g/m²', imagens: ['/calca-moletom-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -295,21 +280,17 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
-  // ==========================================
   // CATEGORIA: REGATA OVERSIZED
-  // ==========================================
   {
     id: 'regata-oversized-preto-vintage', nome: 'Regata Oversized B.SKW Preto Vintage', cor: 'Preto Vintage', hex: '#2C2C2C',
-    preco: 169.90, precoOriginal: 199.90, precoKit: 129.90, categoria: 'regata-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/regata-preto-vintage.png'],
+    preco: 135.90, precoOriginal: 199.90, precoKit: 103.90, promocao: true, categoria: 'regata-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/regata-preto-vintage.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
-  // ==========================================
-  // CATEGORIA: SHORTS (NOVO!)
-  // ==========================================
+  // CATEGORIA: SHORTS
   {
     id: 'shorts-preto', nome: 'Shorts Poliamida B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 229.90, precoOriginal: 269.90, precoKit: 159.90, categoria: 'shorts', tag: 'Premium', imagens: ['/shorts-preto.png'],
+    preco: 183.90, precoOriginal: 269.90, precoKit: 127.90, promocao: true, categoria: 'shorts', tag: 'Premium', imagens: ['/shorts-preto.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
@@ -330,4 +311,11 @@ export const produtos: Produto[] = [
 ];
 
 export const getProdutoPorId = (id: string) => produtos.find(p => p.id === id);
-export const getProdutosPorCategoria = (categoriaSlug: string) => produtos.filter(p => p.categoria === categoriaSlug);
+
+// A MÁGICA DA ABA DE PROMOÇÕES (Puxa tudo que tem promocao = true)
+export const getProdutosPorCategoria = (categoriaSlug: string) => {
+  if (categoriaSlug === 'promocoes') {
+    return produtos.filter(p => p.promocao);
+  }
+  return produtos.filter(p => p.categoria === categoriaSlug);
+};
