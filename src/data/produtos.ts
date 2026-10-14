@@ -200,7 +200,7 @@ export const produtos: Produto[] = [
   },
 
   // ==========================================
-  // CATEGORIA: CAMISETA POLIAMIDA (ULTRA TECH)
+  // CATEGORIA: CAMISETA POLIAMIDA
   // ==========================================
   {
     id: 'poliamida-preta', nome: 'Camiseta Ultra Tech Poliamida B.SKW Preto', cor: 'Preto', hex: '#000000',
@@ -210,6 +210,20 @@ export const produtos: Produto[] = [
   {
     id: 'poliamida-branca', nome: 'Camiseta Ultra Tech Poliamida B.SKW Branca', cor: 'Branca', hex: '#FFFFFF',
     preco: 139.90, precoOriginal: 169.90, precoKit: 99.90, categoria: 'camiseta-poliamida', tag: '122 g/m²', imagens: ['/poliamida-branca.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+
+  // ==========================================
+  // CATEGORIA: MANGA LONGA (NOVO!)
+  // ==========================================
+  {
+    id: 'manga-longa-azul-estonado', nome: 'Camiseta Manga Longa B.SKW Azul Estonado', cor: 'Azul Estonado', hex: '#3B5998',
+    preco: 229.90, precoOriginal: 269.90, precoKit: 179.90, categoria: 'manga-longa', tag: '180 g/m² Fio 26.1', imagens: ['/manga-longa-azul.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'manga-longa-preto-vintage', nome: 'Camiseta Manga Longa B.SKW Preto Vintage', cor: 'Preto Vintage', hex: '#2C2C2C',
+    preco: 229.90, precoOriginal: 269.90, precoKit: 179.90, categoria: 'manga-longa', tag: '180 g/m² Fio 26.1', imagens: ['/manga-longa-preto.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   }
 ];
