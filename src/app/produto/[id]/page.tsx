@@ -35,13 +35,17 @@ export default function ProdutoPage() {
     );
   }
 
-  // Agrupa os produtos com base na categoria e tag para as bolinhas de cor
-  const grupoDeCores = produtos.filter(p => p.categoria === produto.categoria && p.precoOriginal === produto.precoOriginal);
+  const grupoDeCores = produtos.filter(p => p.categoria === produto.categoria && p.preco === produto.preco);
   const relacionadas = produtos.filter(p => p.categoria === produto.categoria && p.id !== produto.id).slice(0, 4);
 
-  const valorTotal = produto.preco * quantidade;
+  // LÊ O NOVO PREÇOKIT DA BASE DE DADOS
+  const p1 = produto.preco;
+  const p3 = produto.precoKit || produto.preco;
+  const p2 = Math.floor(p1 - ((p1 - p3) / 2)) + 0.90; 
   
-  // TRAVA DE ESTOQUE BLINDADA
+  const precoAtual = quantidade >= 3 ? p3 : quantidade === 2 ? p2 : p1;
+  const valorTotal = precoAtual * quantidade;
+  
   const maxDisponivel = tamanhoSelecionado ? produto.estoque[tamanhoSelecionado] : Math.max(...Object.values(produto.estoque));
   const isProntoParaComprar = tamanhoSelecionado !== null;
 
@@ -65,7 +69,8 @@ export default function ProdutoPage() {
   const handleComprar = () => {
     if (!session) { alert('Faça login para adicionar à sua armadura.'); router.push('/login'); return; }
     if (isProntoParaComprar) {
-      addToCart({ titulo: produto.nome, preco: produto.preco, cor: produto.cor, tamanho: tamanhoSelecionado, quantidade });
+      // Como o carrinho recalcula, nós só precisamos enviar a intenção de compra
+      addToCart({ titulo: produto.nome, preco: p1, cor: produto.cor, tamanho: tamanhoSelecionado, quantidade });
       setIsCartOpen(true);
     }
   };
@@ -78,7 +83,6 @@ export default function ProdutoPage() {
   return (
     <main className="min-h-screen bg-white text-black pb-24">
       
-      {/* MODAL DA TABELA DE MEDIDAS */}
       {showTabelaMedidas && (
         <div className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in-up" onClick={() => setShowTabelaMedidas(false)}>
           <div className="bg-white max-w-2xl w-full rounded-md p-2 relative shadow-2xl" onClick={e => e.stopPropagation()}>
@@ -94,7 +98,6 @@ export default function ProdutoPage() {
 
       <div className="max-w-[1200px] mx-auto px-4 md:px-6 pt-8 mt-4 md:mt-8">
         
-        {/* BREADCRUMBS */}
         <div className="flex items-center gap-2 text-xs text-zinc-500 mb-8">
           <Link href="/" className="hover:text-[#F59E0B] transition-colors"><Home className="w-3 h-3" /></Link>
           <span>/</span>
@@ -104,7 +107,6 @@ export default function ProdutoPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* GALERIA DE IMAGENS */}
           <div className="flex flex-col gap-4">
             <div className="w-full aspect-[4/5] bg-zinc-100 rounded-md flex items-center justify-center relative border border-zinc-200">
                <span className="text-zinc-400 font-medium text-center px-4">Imagem {produto.nome} <br/>(Aguardando Foto)</span>
@@ -119,12 +121,10 @@ export default function ProdutoPage() {
             </div>
           </div>
 
-          {/* INFORMAÇÕES DO PRODUTO */}
           <div className="flex flex-col pt-2">
             
             <h1 className="text-2xl md:text-3xl font-outfit font-medium text-zinc-900 mb-3">{produto.nome}</h1>
             
-            {/* AVALIAÇÕES */}
             <a href="#avaliacoes" className="flex items-center gap-2 mb-6 group cursor-pointer">
                <div className="flex text-zinc-300 group-hover:text-[#F59E0B] transition-colors">
                  {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
@@ -133,8 +133,8 @@ export default function ProdutoPage() {
             </a>
 
             <div className="mb-4">
-               <span className="text-3xl font-bold text-black block">R$ {produto.preco.toFixed(2).replace('.', ',')}</span>
-               <span className="text-sm text-zinc-500">em até <strong className="text-black">3x de R$ {(produto.preco / 3).toFixed(2).replace('.', ',')}</strong> sem juros</span>
+               <span className="text-3xl font-bold text-black block">R$ {precoAtual.toFixed(2).replace('.', ',')}</span>
+               <span className="text-sm text-zinc-500">em até <strong className="text-black">3x de R$ {(precoAtual / 3).toFixed(2).replace('.', ',')}</strong> sem juros</span>
             </div>
 
             <div className="flex items-center gap-2 text-sm text-zinc-600 mb-4 pb-4">
@@ -142,31 +142,41 @@ export default function ProdutoPage() {
                <span>Compre e receba <strong className="text-[#F59E0B]">FRETE GRÁTIS</strong> em compras acima de R$ 299</span>
             </div>
 
-            {/* ETIQUETAS */}
             <div className="flex items-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-600 mb-8 border-b border-zinc-100 pb-8">
               <span>{produto.tag}</span>
               <span className="w-1 h-1 rounded-full bg-zinc-400"></span>
               <span>100% Algodão</span>
             </div>
 
-            {/* SELEÇÃO DE COR */}
+            <div className="mb-8">
+              <span className="text-base text-zinc-800 mb-3 block">Quantidade</span>
+              <div className="grid grid-cols-3 gap-3">
+                <button onClick={() => handleSetQuantidade(1)} className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade === 1 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
+                   <span className="font-bold text-sm">1 un</span>
+                   <span className={`text-xs mt-1 ${quantidade === 1 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p1.toFixed(2).replace('.', ',')}/un</span>
+                </button>
+                <button onClick={() => handleSetQuantidade(2)} className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade === 2 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
+                   <span className="font-bold text-sm">Kit com 2</span>
+                   <span className={`text-xs mt-1 ${quantidade === 2 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p2.toFixed(2).replace('.', ',')}/un</span>
+                </button>
+                <button onClick={() => handleSetQuantidade(3)} className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade >= 3 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
+                   <span className="font-bold text-sm">Kit com {quantidade >= 3 ? quantidade : '3'}</span>
+                   <span className={`text-xs mt-1 ${quantidade >= 3 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p3.toFixed(2).replace('.', ',')}/un</span>
+                </button>
+              </div>
+            </div>
+
             <div className="mb-8">
               <span className="text-base text-zinc-800 mb-3 block">Cor: <strong className="font-bold">{produto.cor}</strong></span>
               <div className="flex gap-3 flex-wrap">
                 {grupoDeCores.map(p => (
-                   <Link 
-                     key={p.id} 
-                     href={`/produto/${p.id}`}
-                     className={`w-12 h-12 rounded-md border-2 transition-all flex items-center justify-center ${produto.id === p.id ? 'border-black p-0.5' : 'border-transparent hover:border-zinc-300'}`}
-                     title={p.cor}
-                   >
+                   <Link key={p.id} href={`/produto/${p.id}`} className={`w-12 h-12 rounded-md border-2 transition-all flex items-center justify-center ${produto.id === p.id ? 'border-black p-0.5' : 'border-transparent hover:border-zinc-300'}`} title={p.cor}>
                       <div className="w-full h-full rounded-sm border border-zinc-200 shadow-sm" style={{ backgroundColor: p.hex }}></div>
                    </Link>
                 ))}
               </div>
             </div>
 
-            {/* SELEÇÃO DE TAMANHO */}
             <div className="mb-10">
               <div className="flex justify-between items-end mb-3">
                 <span className="text-base text-zinc-800">Tamanho: <span className="font-bold">{tamanhoSelecionado || ''}</span></span>
@@ -174,17 +184,9 @@ export default function ProdutoPage() {
               </div>
               <div className="flex gap-2">
                 {produto.tamanhos.map((tam) => {
-                  const qtdEstoque = produto.estoque[tam];
-                  const emEstoque = qtdEstoque > 0;
+                  const emEstoque = produto.estoque[tam] > 0;
                   return (
-                    <button 
-                      key={tam} 
-                      onClick={() => emEstoque && handleSelectTamanho(tam)} 
-                      disabled={!emEstoque}
-                      className={`h-12 flex-1 max-w-[60px] flex items-center justify-center text-sm font-bold border rounded-sm transition-all
-                        ${!emEstoque ? 'bg-zinc-100 text-zinc-300 border-zinc-200 cursor-not-allowed line-through' : 
-                        tamanhoSelecionado === tam ? 'bg-black text-white border-black shadow-md' : 'bg-white text-zinc-600 border-zinc-300 hover:border-black'}`}
-                    >
+                    <button key={tam} onClick={() => emEstoque && handleSelectTamanho(tam)} disabled={!emEstoque} className={`h-12 flex-1 max-w-[60px] flex items-center justify-center text-sm font-bold border rounded-sm transition-all ${!emEstoque ? 'bg-zinc-100 text-zinc-300 border-zinc-200 cursor-not-allowed line-through' : tamanhoSelecionado === tam ? 'bg-black text-white border-black shadow-md' : 'bg-white text-zinc-600 border-zinc-300 hover:border-black'}`}>
                       {tam}
                     </button>
                   );
@@ -192,26 +194,18 @@ export default function ProdutoPage() {
               </div>
             </div>
 
-            {/* COMPRA E CONTADOR (SEM KITS) */}
             <div className="flex gap-4 mb-8">
               <div className="flex items-center border border-zinc-300 rounded-sm h-14 bg-white w-32 shrink-0">
                 <button onClick={() => handleSetQuantidade(quantidade - 1)} disabled={quantidade <= 1} className="px-4 h-full text-zinc-500 hover:text-black transition-colors">-</button>
                 <span className="flex-1 text-center font-bold text-lg">{quantidade}</span>
                 <button onClick={() => handleSetQuantidade(quantidade + 1)} className="px-4 h-full text-zinc-500 hover:text-black transition-colors">+</button>
               </div>
-              <button 
-                onClick={handleComprar} 
-                disabled={!isProntoParaComprar && !!session}
-                className={`flex-1 h-14 flex items-center justify-center gap-2 text-sm md:text-base font-bold uppercase tracking-widest rounded-sm transition-all duration-300 shadow-sm
-                  ${!session ? 'bg-zinc-900 text-white hover:bg-black' : 
-                  isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}
-              >
+              <button onClick={handleComprar} disabled={!isProntoParaComprar && !!session} className={`flex-1 h-14 flex items-center justify-center gap-2 text-sm md:text-base font-bold uppercase tracking-widest rounded-sm transition-all duration-300 shadow-sm ${!session ? 'bg-zinc-900 text-white hover:bg-black' : isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
                 <ShoppingCart className="w-5 h-5" />
                 {!session ? 'Faça Login' : isProntoParaComprar ? `Adicionar - R$ ${valorTotal.toFixed(2).replace('.', ',')}` : 'Selecione o Tamanho'}
               </button>
             </div>
 
-            {/* CÁLCULO DE FRETE */}
             <div className="bg-zinc-50 p-4 rounded-md border border-zinc-200 mb-8">
               <span className="text-sm font-bold uppercase block mb-3 text-zinc-700">Calcule o Frete</span>
               <div className="flex gap-2">
@@ -221,7 +215,6 @@ export default function ProdutoPage() {
               {frete !== null && <p className="text-green-600 text-sm font-bold mt-3">Frete Fixo: R$ {frete.toFixed(2).replace('.', ',')}</p>}
             </div>
 
-            {/* BADGES DE CONFIANÇA */}
             <div className="grid grid-cols-2 gap-4 mt-4 bg-zinc-50 p-4 rounded-md border border-zinc-100">
                <div className="flex items-center gap-3 text-xs font-bold uppercase text-zinc-600"><Package className="w-4 h-4 text-[#F59E0B]" /> Envio Imediato</div>
                <div className="flex items-center gap-3 text-xs font-bold uppercase text-zinc-600"><CreditCard className="w-4 h-4 text-[#F59E0B]" /> Até 3x Sem Juros</div>
@@ -231,21 +224,11 @@ export default function ProdutoPage() {
           </div>
         </div>
 
-        {/* ABAS DE INFORMAÇÃO */}
         <div className="mb-20">
           <div className="flex gap-8 border-b border-zinc-200 mb-8">
-            <button onClick={() => setAbaAtiva('descricao')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'descricao' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>
-              Descrição
-              {abaAtiva === 'descricao' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}
-            </button>
-            <button onClick={() => setAbaAtiva('tecnica')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'tecnica' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>
-              Informações Técnicas
-              {abaAtiva === 'tecnica' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}
-            </button>
-            <button onClick={() => setAbaAtiva('lavagem')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'lavagem' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>
-              Lavagem
-              {abaAtiva === 'lavagem' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}
-            </button>
+            <button onClick={() => setAbaAtiva('descricao')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'descricao' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>Descrição{abaAtiva === 'descricao' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}</button>
+            <button onClick={() => setAbaAtiva('tecnica')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'tecnica' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>Informações Técnicas{abaAtiva === 'tecnica' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}</button>
+            <button onClick={() => setAbaAtiva('lavagem')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'lavagem' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>Lavagem{abaAtiva === 'lavagem' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}</button>
           </div>
 
           <div className="text-zinc-600 text-sm leading-relaxed max-w-3xl">
@@ -254,57 +237,23 @@ export default function ProdutoPage() {
                 <p>A <strong>{produto.nome}</strong> é a armadura definitiva para quem veste a rua com respeito. Produzida com modelagem exclusiva streetwear e acabamento de extrema qualidade.</p>
                 <p>Nossas peças passam por um rigoroso processo de pré-encolhimento (Zero Encolhimento), garantindo que o fit perfeito se mantenha intacto lavagem após lavagem.</p>
                 <p>Tecido de alta gramatura, toque macio, estrutura pesada e zero transparência.</p>
-                <p>Feita para durar e te acompanhar no corre do dia a dia. Chegou a hora de elevar o nível do seu kit.</p>
               </div>
             )}
             {abaAtiva === 'tecnica' && (
               <ul className="list-disc pl-5 space-y-2">
-                <li>Fabricada com algodão premium BCI (Better Cotton Initiative).</li>
                 <li>Malha 100% algodão super macio.</li>
                 <li>Gramatura de {produto.tag.split(' ')[0]}g/m².</li>
-                <li>{produto.tag.replace(produto.tag.split(' ')[0] + ' g/m² ', '')}.</li>
                 <li>Tecnologia Zero Encolhimento (Peças pré-encolhidas).</li>
-                <li>Etiqueta interna de composição lateral, garantindo conforto sem arranhar.</li>
               </ul>
             )}
             {abaAtiva === 'lavagem' && (
               <ul className="list-disc pl-5 space-y-2">
                 <li>Lavar à mão ou em ciclo delicado na máquina.</li>
-                <li>Não usar alvejantes ou produtos químicos agressivos.</li>
                 <li>Secar à sombra para preservar a tonalidade original do tecido.</li>
-                <li>Passar com ferro em temperatura baixa/média.</li>
               </ul>
             )}
           </div>
         </div>
-
-        {/* SEÇÃO DE AVALIAÇÕES */}
-        <section id="avaliacoes" className="border-t border-zinc-200 pt-16 mt-16 mb-8">
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 gap-4">
-            <h2 className="text-3xl font-anton uppercase tracking-wide text-zinc-900">Avaliações da Galera</h2>
-            <button className="text-sm font-bold uppercase tracking-widest underline hover:text-[#F59E0B] transition-colors">Escrever uma avaliação</button>
-          </div>
-          <div className="bg-zinc-50 border border-zinc-200 rounded-md p-12 text-center flex flex-col items-center justify-center">
-            <div className="flex text-zinc-300 mb-4">
-              {[...Array(5)].map((_, i) => <Star key={i} className="w-8 h-8 fill-current" />)}
-            </div>
-            <p className="text-zinc-500 font-medium text-lg">Nenhuma avaliação ainda.</p>
-            <p className="text-zinc-400 text-sm mt-1">Seja o primeiro a avaliar esta armadura!</p>
-          </div>
-        </section>
-
-        {/* PRODUTOS RELACIONADOS */}
-        {relacionadas.length > 0 && (
-          <section className="border-t border-zinc-200 pt-16">
-            <h2 className="text-3xl font-anton uppercase text-center mb-12 tracking-wide text-zinc-900">Você também pode gostar...</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {relacionadas.map(prod => (
-                <QuickBuyCard key={prod.id} tituloGrupo={prod.nome} produtosDoGrupo={[prod]} />
-              ))}
-            </div>
-          </section>
-        )}
-
       </div>
     </main>
   );
