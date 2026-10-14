@@ -54,6 +54,7 @@ export default function ProdutoPage() {
   const isCroppedSuedine = produto.nome.includes('Cropped');
   const isMoletomOversized = produto.nome.includes('Moletom Oversized');
   const isMoletomCanguruOuCalca = produto.nome.includes('Canguru') || produto.nome.includes('Calça');
+  const isRegata = produto.categoria === 'regata-oversized';
   
   let composicaoTexto = '100% Algodão';
   if (isPoliamida) composicaoTexto = '100% Poliamida';
@@ -264,12 +265,11 @@ export default function ProdutoPage() {
                   <>
                     <p>A armadura de inverno definitiva. A linha <strong>{produto.nome}</strong> foi feita para reter o calor sem perder a elegância do estilo streetwear.</p>
                     <p>Com interior em felpa super macia e altíssima gramatura (320g/m²), esta peça é o conforto máximo para dias frios.</p>
-                    {produto.nome.includes('Canguru') && <p>Modelagem oversized pesada, bolso canguru oculto e capuz amplo estruturado para garantir a melhor estética.</p>}
                   </>
-                ) : isMoletomOversized ? (
+                ) : isRegata ? (
                   <>
-                    <p>O <strong>{produto.nome}</strong> é a peça coringa de meia-estação da B.SKW.</p>
-                    <p>Com modelagem streetwear estruturada e gramatura pesada (300g/m²), ele é construído sem felpa interna, oferecendo o peso de um moletom clássico sem esquentar excessivamente.</p>
+                    <p>A <strong>{produto.nome}</strong> é a peça essencial para manter o estilo streetwear nos dias mais quentes. Com modelagem oversized cavada, ela garante liberdade total de movimentos e máxima ventilação.</p>
+                    <p>Nossas peças passam por um rigoroso processo de pré-encolhimento (Zero Encolhimento), garantindo que o fit perfeito se mantenha intacto.</p>
                   </>
                 ) : (
                   <>
@@ -285,33 +285,27 @@ export default function ProdutoPage() {
                   <>
                     <li>Malha tecnológica 100% Poliamida de alta performance.</li>
                     <li>Gramatura ultra leve de {produto.tag.split(' ')[0]}.</li>
-                    <li>Proteção UV e tecnologia Anti-Odor.</li>
-                    <li>Secagem rápida e não amassa (Easy Care).</li>
                   </>
                 ) : isBabyLook ? (
                   <>
                     <li>Malha premium 96% Algodão BCI e 4% Elastano.</li>
                     <li>Gramatura de {produto.tag.split(' ')[0]}g/m².</li>
-                    <li>Modelagem justa e confortável (Fit perfeito).</li>
                   </>
                 ) : isCroppedSuedine ? (
                   <>
                     <li>Malha Suedine luxuosa 100% Algodão.</li>
                     <li>Fio de altíssima qualidade 40.1 penteado.</li>
-                    <li>Gramatura pesada de {produto.tag.split(' ')[0]}g/m².</li>
                   </>
                 ) : isMoletomCanguruOuCalca ? (
                   <>
                     <li>Moletom Premium 50% Algodão e 50% Poliéster.</li>
-                    <li>Gramatura Extra Pesada: {produto.tag.split(' ')[0]}g/m².</li>
                     <li>Interior forrado com felpa macia para isolamento térmico.</li>
-                    {produto.nome.includes('Canguru') && <li>Bolso canguru frontal e capuz forrado com cadarço ajustável.</li>}
                   </>
-                ) : isMoletomOversized ? (
+                ) : isRegata ? (
                   <>
-                    <li>Moletom Estruturado 75% Algodão e 25% Poliéster.</li>
-                    <li>Gramatura Pesada de {produto.tag.split(' ')[0]}g/m².</li>
-                    <li>Modelagem sem felpa interna (ideal para sobreposições).</li>
+                    <li>Malha 100% algodão super macio.</li>
+                    <li>Modelagem oversized cavada, ideal para treino ou uso casual.</li>
+                    <li>Tecnologia Zero Encolhimento (Peças pré-encolhidas).</li>
                   </>
                 ) : (
                   <>
@@ -326,8 +320,6 @@ export default function ProdutoPage() {
               <ul className="list-disc pl-5 space-y-2">
                 <li>Lavar à mão ou em ciclo delicado na máquina.</li>
                 <li>Secar à sombra para preservar a tonalidade original do tecido.</li>
-                {isPoliamida && <li>Não precisa passar. Caso necessário, utilizar temperatura baixíssima.</li>}
-                {(isMoletomOversized || isMoletomCanguruOuCalca) && <li>Para os moletons, recomendamos lavar do avesso e evitar secadora para não danificar as fibras.</li>}
               </ul>
             )}
           </div>
