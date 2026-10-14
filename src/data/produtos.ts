@@ -262,7 +262,7 @@ export const produtos: Produto[] = [
   },
 
   // ==========================================
-  // CATEGORIA: MOLETOM (NOVO!)
+  // CATEGORIA: MOLETOM
   // ==========================================
   {
     id: 'moletom-oversized-preto', nome: 'Moletom Oversized B.SKW Preto', cor: 'Preto', hex: '#000000',
@@ -292,6 +292,15 @@ export const produtos: Produto[] = [
   {
     id: 'calca-moletom-marrom', nome: 'Calça Moletom Comfort B.SKW Marrom', cor: 'Marrom', hex: '#5E4B3C',
     preco: 389.90, precoOriginal: 459.90, precoKit: 269.90, categoria: 'moletom', tag: '320 g/m²', imagens: ['/calca-moletom-marrom.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+
+  // ==========================================
+  // CATEGORIA: REGATA OVERSIZED (NOVO!)
+  // ==========================================
+  {
+    id: 'regata-oversized-preto-vintage', nome: 'Regata Oversized B.SKW Preto Vintage', cor: 'Preto Vintage', hex: '#2C2C2C',
+    preco: 169.90, precoOriginal: 199.90, precoKit: 129.90, categoria: 'regata-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/regata-preto-vintage.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   }
 ];
