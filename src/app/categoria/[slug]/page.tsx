@@ -43,42 +43,55 @@ export default async function CategoriaPage({ params }: { params: Promise<{ slug
            </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-12">
-            {produtosFiltrados.map((produto) => (
-              <Link href={`/produto/${produto.id}`} key={produto.id} className="group flex flex-col items-center text-center cursor-pointer">
-                <div className="w-full aspect-[4/5] bg-zinc-100 relative mb-4 overflow-hidden rounded-md flex items-center justify-center">
-                  {produto.promocao ? (
-                    <span className="absolute top-2 left-2 md:top-3 md:right-3 md:left-auto bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-sm shadow-md z-10 flex items-center gap-1">
-                      🔥 20% OFF
-                    </span>
-                  ) : produto.tag && (
-                    <span className="absolute top-2 left-2 md:top-3 md:right-3 md:left-auto bg-[#F59E0B] text-[#000000] text-[10px] font-bold px-2 py-1 rounded-sm z-10">
-                      {produto.tag}
-                    </span>
-                  )}
-                  <span className="text-zinc-400 text-sm font-medium">Produto em breve</span>
-                </div>
+            {produtosFiltrados.map((produto) => {
+              const isEsgotado = Object.values(produto.estoque).every(qtd => qtd === 0);
+              
+              return (
+                <Link href={`/produto/${produto.id}`} key={produto.id} className="group flex flex-col items-center text-center cursor-pointer">
+                  <div className="w-full aspect-[4/5] bg-zinc-100 relative mb-4 overflow-hidden rounded-md flex items-center justify-center">
+                    
+                    <div className="absolute top-2 left-2 md:top-3 md:right-3 md:left-auto flex flex-col gap-1.5 z-10 items-start md:items-end">
+                      {isEsgotado && (
+                        <span className="bg-zinc-900 text-white text-[10px] font-bold px-2 py-1 rounded-sm shadow-md uppercase tracking-wide">
+                          Esgotado
+                        </span>
+                      )}
+                      {produto.promocao ? (
+                        <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-sm shadow-md flex items-center gap-1">
+                          🔥 20% OFF
+                        </span>
+                      ) : produto.tag && !isEsgotado && (
+                        <span className="bg-[#F59E0B] text-[#000000] text-[10px] font-bold px-2 py-1 rounded-sm shadow-md">
+                          {produto.tag}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <span className="text-zinc-400 text-sm font-medium">Produto em breve</span>
+                  </div>
 
-                <h3 className="text-sm font-medium text-zinc-900 mb-1 line-clamp-1">{produto.nome}</h3>
+                  <h3 className="text-sm font-medium text-zinc-900 mb-1 line-clamp-1">{produto.nome}</h3>
 
-                <div className="flex items-center gap-1 mb-2">
-                  <div className="flex text-[#F59E0B]">{[...Array(5)].map((_, i) => (<Star key={i} className="w-3 h-3 fill-current" />))}</div>
-                  <span className="text-xs text-zinc-500">(0)</span>
-                </div>
+                  <div className="flex items-center gap-1 mb-2">
+                    <div className="flex text-[#F59E0B]">{[...Array(5)].map((_, i) => (<Star key={i} className="w-3 h-3 fill-current" />))}</div>
+                    <span className="text-xs text-zinc-500">(0)</span>
+                  </div>
 
-                <div className="flex items-center gap-2 mb-3">
-                  {produto.promocao ? (
-                     <span className="text-xs text-zinc-400 line-through">R$ {produto.precoOriginal.toFixed(2).replace('.', ',')}</span>
-                  ) : produto.precoOriginal > produto.preco && (
-                    <span className="text-xs text-zinc-400 line-through">R$ {produto.precoOriginal.toFixed(2).replace('.', ',')}</span>
-                  )}
-                  <span className="text-sm font-bold text-black">R$ {produto.preco.toFixed(2).replace('.', ',')}</span>
-                </div>
+                  <div className="flex items-center gap-2 mb-3">
+                    {produto.promocao ? (
+                       <span className="text-xs text-zinc-400 line-through">R$ {produto.precoOriginal.toFixed(2).replace('.', ',')}</span>
+                    ) : produto.precoOriginal > produto.preco && (
+                      <span className="text-xs text-zinc-400 line-through">R$ {produto.precoOriginal.toFixed(2).replace('.', ',')}</span>
+                    )}
+                    <span className="text-sm font-bold text-black">R$ {produto.preco.toFixed(2).replace('.', ',')}</span>
+                  </div>
 
-                <div className="flex items-center justify-center gap-1.5">
-                  <div className="w-4 h-4 rounded-full border border-zinc-300 shadow-sm" style={{ backgroundColor: produto.hex }} title={produto.cor} />
-                </div>
-              </Link>
-            ))}
+                  <div className="flex items-center justify-center gap-1.5">
+                    <div className="w-4 h-4 rounded-full border border-zinc-300 shadow-sm" style={{ backgroundColor: produto.hex }} title={produto.cor} />
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>

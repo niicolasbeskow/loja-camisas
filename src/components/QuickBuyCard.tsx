@@ -23,6 +23,7 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: { tituloG
   const produtoAtivo = produtosDoGrupo.find(p => p.id === idAtivo) || produtosDoGrupo[0];
 
   const isProntoParaComprar = corSelecionadaId !== null && tamanhoSelecionado !== null;
+  const isEsgotado = Object.values(produtoAtivo.estoque).every(qtd => qtd === 0);
 
   const handleComprar = () => {
     if (!session) { alert('Faça login para adicionar itens à sua armadura.'); router.push('/login'); return; }
@@ -40,12 +41,19 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: { tituloG
   return (
     <div className="flex flex-col border border-zinc-200 rounded-md overflow-hidden bg-white hover:shadow-lg transition-shadow duration-300 relative group">
       
-      {/* ETIQUETA DE PROMOÇÃO */}
-      {produtoAtivo.promocao && (
-        <span className="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-sm shadow-md z-10 flex items-center gap-1">
-           🔥 20% OFF
-        </span>
-      )}
+      {/* ETIQUETAS EMPILHADAS */}
+      <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+        {isEsgotado && (
+          <span className="bg-zinc-900 text-white text-[10px] font-bold px-2 py-1 rounded-sm shadow-md uppercase tracking-wide">
+             ESGOTADO
+          </span>
+        )}
+        {produtoAtivo.promocao && (
+          <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-sm shadow-md flex items-center gap-1">
+             🔥 20% OFF
+          </span>
+        )}
+      </div>
 
       <div className="w-full aspect-[4/5] bg-zinc-100 relative flex items-center justify-center transition-colors duration-300">
         <div className="text-center px-4">
@@ -61,7 +69,6 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: { tituloG
         <div>
           <h3 className="font-bold text-zinc-900 uppercase text-sm line-clamp-1" title={produtoAtivo.nome}>{produtoAtivo.nome}</h3>
           <div className="flex items-center gap-2">
-            {/* SE ESTIVER EM PROMOÇÃO, MOSTRA O PREÇO ORIGINAL RISCADO */}
             {produtoAtivo.promocao && <span className="text-sm text-zinc-400 line-through">R$ {produtoAtivo.precoOriginal.toFixed(2).replace('.', ',')}</span>}
             <span className="font-bold text-black text-lg">R$ {produtoAtivo.preco.toFixed(2).replace('.', ',')}</span>
           </div>
@@ -90,11 +97,11 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: { tituloG
         </div>
         
         <button 
-          onClick={handleComprar} disabled={!isProntoParaComprar && !!session} 
-          className={`mt-2 flex items-center justify-center gap-2 w-full py-3 text-xs font-bold uppercase tracking-widest rounded-sm transition-all duration-300 ${!session ? 'bg-zinc-900 text-white hover:bg-black' : isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}
+          onClick={handleComprar} disabled={(!isProntoParaComprar || isEsgotado) && !!session} 
+          className={`mt-2 flex items-center justify-center gap-2 w-full py-3 text-xs font-bold uppercase tracking-widest rounded-sm transition-all duration-300 ${!session ? 'bg-zinc-900 text-white hover:bg-black' : isEsgotado ? 'bg-zinc-300 text-zinc-500 cursor-not-allowed' : isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}
         >
           <ShoppingCart className="w-4 h-4" />
-          {!session ? 'Faça Login para Comprar' : isProntoParaComprar ? 'Comprar Rápido' : (!corSelecionadaId ? 'Selecione a Cor' : 'Selecione o Tamanho')}
+          {!session ? 'Faça Login' : isEsgotado ? 'Esgotado' : isProntoParaComprar ? 'Comprar Rápido' : (!corSelecionadaId ? 'Selecione a Cor' : 'Selecione o Tamanho')}
         </button>
       </div>
     </div>

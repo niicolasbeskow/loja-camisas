@@ -47,6 +47,7 @@ export default function ProdutoPage() {
   
   const maxDisponivel = tamanhoSelecionado ? produto.estoque[tamanhoSelecionado] : Math.max(...Object.values(produto.estoque));
   const isProntoParaComprar = tamanhoSelecionado !== null;
+  const isProdutoEsgotado = Object.values(produto.estoque).every(qtd => qtd === 0);
 
   const isPoliamida = produto.categoria === 'camiseta-poliamida';
   const isBabyLook = produto.nome.includes('Baby Look');
@@ -95,12 +96,15 @@ export default function ProdutoPage() {
 
   return (
     <main className="min-h-screen bg-white text-black pb-24">
+      
       {showTabelaMedidas && (
         <div className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in-up" onClick={() => setShowTabelaMedidas(false)}>
           <div className="bg-white max-w-2xl w-full rounded-md p-2 relative shadow-2xl" onClick={e => e.stopPropagation()}>
             <button onClick={() => setShowTabelaMedidas(false)} className="absolute top-2 right-4 text-zinc-500 hover:text-black font-bold text-3xl z-10">&times;</button>
             <div className="w-full aspect-[4/3] bg-zinc-100 flex items-center justify-center rounded-sm">
-              <span className="text-zinc-400 font-bold uppercase tracking-widest text-center px-4">Imagem da Tabela de Medidas<br/>(Aguardando Foto)</span>
+              <span className="text-zinc-400 font-bold uppercase tracking-widest text-center px-4">
+                Imagem da Tabela de Medidas<br/>(Aguardando Foto)
+              </span>
             </div>
           </div>
         </div>
@@ -120,15 +124,31 @@ export default function ProdutoPage() {
           <div className="flex flex-col gap-4">
             <div className="w-full aspect-[4/5] bg-zinc-100 rounded-md flex items-center justify-center relative border border-zinc-200">
                <span className="text-zinc-400 font-medium text-center px-4">Imagem {produto.nome} <br/>(Aguardando Foto)</span>
-               {produto.promocao ? (
-                  <span className="absolute top-4 right-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-widest shadow-md flex items-center gap-1">🔥 20% OFF</span>
-               ) : (
-                  <span className="absolute top-4 right-4 bg-[#F59E0B] text-black text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-widest">Lançamento</span>
-               )}
+               
+               {/* ETIQUETAS EMPILHADAS NA PÁGINA DO PRODUTO */}
+               <div className="absolute top-4 right-4 flex flex-col items-end gap-2 z-10">
+                 {isProdutoEsgotado && (
+                   <span className="bg-zinc-900 text-white text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-widest shadow-md">
+                     Esgotado
+                   </span>
+                 )}
+                 {produto.promocao ? (
+                   <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-widest shadow-md flex items-center gap-1">
+                     🔥 20% OFF
+                   </span>
+                 ) : produto.tag && !isProdutoEsgotado && (
+                   <span className="bg-[#F59E0B] text-black text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-widest shadow-md">
+                     {produto.tag}
+                   </span>
+                 )}
+               </div>
+               
             </div>
             <div className="grid grid-cols-4 gap-4">
                {[1, 2, 3, 4].map(i => (
-                 <div key={i} className="aspect-square bg-zinc-100 rounded-md flex items-center justify-center border border-zinc-200 cursor-pointer hover:border-black transition-colors"><span className="text-zinc-400 text-xs">Foto {i}</span></div>
+                 <div key={i} className="aspect-square bg-zinc-100 rounded-md flex items-center justify-center border border-zinc-200 cursor-pointer hover:border-black transition-colors">
+                   <span className="text-zinc-400 text-xs">Foto {i}</span>
+                 </div>
                ))}
             </div>
           </div>
@@ -137,7 +157,9 @@ export default function ProdutoPage() {
             <h1 className="text-2xl md:text-3xl font-outfit font-medium text-zinc-900 mb-3">{produto.nome}</h1>
             
             <a href="#avaliacoes" className="flex items-center gap-2 mb-6 group cursor-pointer">
-               <div className="flex text-zinc-300 group-hover:text-[#F59E0B] transition-colors">{[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}</div>
+               <div className="flex text-zinc-300 group-hover:text-[#F59E0B] transition-colors">
+                 {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
+               </div>
                <span className="text-sm text-zinc-500 group-hover:text-black transition-colors underline">(0) Avaliações</span>
             </a>
 
@@ -155,20 +177,25 @@ export default function ProdutoPage() {
             </div>
 
             <div className="flex items-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-600 mb-8 border-b border-zinc-100 pb-8">
-              <span>{produto.tag}</span><span className="w-1 h-1 rounded-full bg-zinc-400"></span><span>{composicaoTexto}</span>
+              <span>{produto.tag}</span>
+              <span className="w-1 h-1 rounded-full bg-zinc-400"></span>
+              <span>{composicaoTexto}</span>
             </div>
 
             <div className="mb-8">
               <span className="text-base text-zinc-800 mb-3 block">Quantidade</span>
               <div className="grid grid-cols-3 gap-3">
                 <button onClick={() => handleSetQuantidade(1)} className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade === 1 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
-                   <span className="font-bold text-sm">1 un</span><span className={`text-xs mt-1 ${quantidade === 1 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p1.toFixed(2).replace('.', ',')}/un</span>
+                   <span className="font-bold text-sm">1 un</span>
+                   <span className={`text-xs mt-1 ${quantidade === 1 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p1.toFixed(2).replace('.', ',')}/un</span>
                 </button>
                 <button onClick={() => handleSetQuantidade(2)} className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade === 2 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
-                   <span className="font-bold text-sm">Kit com 2</span><span className={`text-xs mt-1 ${quantidade === 2 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p2.toFixed(2).replace('.', ',')}/un</span>
+                   <span className="font-bold text-sm">Kit com 2</span>
+                   <span className={`text-xs mt-1 ${quantidade === 2 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p2.toFixed(2).replace('.', ',')}/un</span>
                 </button>
                 <button onClick={() => handleSetQuantidade(3)} className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade >= 3 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
-                   <span className="font-bold text-sm">Kit com {quantidade >= 3 ? quantidade : '3'}</span><span className={`text-xs mt-1 ${quantidade >= 3 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p3.toFixed(2).replace('.', ',')}/un</span>
+                   <span className="font-bold text-sm">Kit com {quantidade >= 3 ? quantidade : '3'}</span>
+                   <span className={`text-xs mt-1 ${quantidade >= 3 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p3.toFixed(2).replace('.', ',')}/un</span>
                 </button>
               </div>
             </div>
@@ -207,9 +234,9 @@ export default function ProdutoPage() {
                 <span className="flex-1 text-center font-bold text-lg">{quantidade}</span>
                 <button onClick={() => handleSetQuantidade(quantidade + 1)} className="px-4 h-full text-zinc-500 hover:text-black transition-colors">+</button>
               </div>
-              <button onClick={handleComprar} disabled={!isProntoParaComprar && !!session} className={`flex-1 h-14 flex items-center justify-center gap-2 text-sm md:text-base font-bold uppercase tracking-widest rounded-sm transition-all duration-300 shadow-sm ${!session ? 'bg-zinc-900 text-white hover:bg-black' : isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
+              <button onClick={handleComprar} disabled={(!isProntoParaComprar || isProdutoEsgotado) && !!session} className={`flex-1 h-14 flex items-center justify-center gap-2 text-sm md:text-base font-bold uppercase tracking-widest rounded-sm transition-all duration-300 shadow-sm ${!session ? 'bg-zinc-900 text-white hover:bg-black' : isProdutoEsgotado ? 'bg-zinc-300 text-zinc-500 cursor-not-allowed' : isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
                 <ShoppingCart className="w-5 h-5" />
-                {!session ? 'Faça Login' : isProntoParaComprar ? `Adicionar - R$ ${valorTotal.toFixed(2).replace('.', ',')}` : 'Selecione o Tamanho'}
+                {!session ? 'Faça Login' : isProdutoEsgotado ? 'Esgotado' : isProntoParaComprar ? `Adicionar - R$ ${valorTotal.toFixed(2).replace('.', ',')}` : 'Selecione o Tamanho'}
               </button>
             </div>
 
@@ -238,7 +265,6 @@ export default function ProdutoPage() {
             <button onClick={() => setAbaAtiva('lavagem')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'lavagem' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>Lavagem{abaAtiva === 'lavagem' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}</button>
           </div>
           <div className="text-zinc-600 text-sm leading-relaxed max-w-3xl">
-             {/* O conteúdo dinâmico das abas permanece o mesmo de antes, para não poluir este bloco. */}
              <p>Acesse as informações completas da <strong>{produto.nome}</strong> escolhendo uma das abas acima!</p>
           </div>
         </div>
