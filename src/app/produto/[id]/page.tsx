@@ -38,7 +38,6 @@ export default function ProdutoPage() {
   const grupoDeCores = produtos.filter(p => p.categoria === produto.categoria && p.preco === produto.preco);
   const relacionadas = produtos.filter(p => p.categoria === produto.categoria && p.id !== produto.id).slice(0, 4);
 
-  // LÊ O NOVO PREÇOKIT DA BASE DE DADOS
   const p1 = produto.preco;
   const p3 = produto.precoKit || produto.preco;
   const p2 = Math.floor(p1 - ((p1 - p3) / 2)) + 0.90; 
@@ -48,6 +47,8 @@ export default function ProdutoPage() {
   
   const maxDisponivel = tamanhoSelecionado ? produto.estoque[tamanhoSelecionado] : Math.max(...Object.values(produto.estoque));
   const isProntoParaComprar = tamanhoSelecionado !== null;
+
+  const isPoliamida = produto.categoria === 'camiseta-poliamida';
 
   const handleSetQuantidade = (novaQtd: number) => {
     if (novaQtd < 1) return;
@@ -69,7 +70,6 @@ export default function ProdutoPage() {
   const handleComprar = () => {
     if (!session) { alert('Faça login para adicionar à sua armadura.'); router.push('/login'); return; }
     if (isProntoParaComprar) {
-      // Como o carrinho recalcula, nós só precisamos enviar a intenção de compra
       addToCart({ titulo: produto.nome, preco: p1, cor: produto.cor, tamanho: tamanhoSelecionado, quantidade });
       setIsCartOpen(true);
     }
@@ -145,7 +145,7 @@ export default function ProdutoPage() {
             <div className="flex items-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-600 mb-8 border-b border-zinc-100 pb-8">
               <span>{produto.tag}</span>
               <span className="w-1 h-1 rounded-full bg-zinc-400"></span>
-              <span>100% Algodão</span>
+              <span>{isPoliamida ? '100% Poliamida' : '100% Algodão'}</span>
             </div>
 
             <div className="mb-8">
@@ -234,26 +234,76 @@ export default function ProdutoPage() {
           <div className="text-zinc-600 text-sm leading-relaxed max-w-3xl">
             {abaAtiva === 'descricao' && (
               <div className="space-y-4">
-                <p>A <strong>{produto.nome}</strong> é a armadura definitiva para quem veste a rua com respeito. Produzida com modelagem exclusiva streetwear e acabamento de extrema qualidade.</p>
-                <p>Nossas peças passam por um rigoroso processo de pré-encolhimento (Zero Encolhimento), garantindo que o fit perfeito se mantenha intacto lavagem após lavagem.</p>
-                <p>Tecido de alta gramatura, toque macio, estrutura pesada e zero transparência.</p>
+                {isPoliamida ? (
+                  <>
+                    <p>A <strong>{produto.nome}</strong> é a sua armadura tecnológica de alta performance. Desenvolvida para quem exige o máximo de conforto em movimento.</p>
+                    <p>Com um tecido absurdamente leve, ela absorve o suor, seca extremamente rápido e desamassa no corpo, sem precisar de ferro de passar.</p>
+                    <p>Tecnologia anti-odor (não pega mau cheiro) e proteção UV integrada para te acompanhar em qualquer corre, seja no treino ou na rua.</p>
+                  </>
+                ) : (
+                  <>
+                    <p>A <strong>{produto.nome}</strong> é a armadura definitiva para quem veste a rua com respeito. Produzida com modelagem exclusiva streetwear e acabamento de extrema qualidade.</p>
+                    <p>Nossas peças passam por um rigoroso processo de pré-encolhimento (Zero Encolhimento), garantindo que o fit perfeito se mantenha intacto lavagem após lavagem.</p>
+                    <p>Tecido de alta gramatura, toque macio, estrutura pesada e zero transparência.</p>
+                  </>
+                )}
               </div>
             )}
             {abaAtiva === 'tecnica' && (
               <ul className="list-disc pl-5 space-y-2">
-                <li>Malha 100% algodão super macio.</li>
-                <li>Gramatura de {produto.tag.split(' ')[0]}g/m².</li>
-                <li>Tecnologia Zero Encolhimento (Peças pré-encolhidas).</li>
+                {isPoliamida ? (
+                  <>
+                    <li>Malha tecnológica 100% Poliamida de alta performance.</li>
+                    <li>Gramatura ultra leve de {produto.tag.split(' ')[0]}.</li>
+                    <li>Proteção UV e tecnologia Anti-Odor.</li>
+                    <li>Secagem rápida e não amassa (Easy Care).</li>
+                  </>
+                ) : (
+                  <>
+                    <li>Malha 100% algodão super macio.</li>
+                    <li>Gramatura de {produto.tag.split(' ')[0]}g/m².</li>
+                    <li>Tecnologia Zero Encolhimento (Peças pré-encolhidas).</li>
+                  </>
+                )}
               </ul>
             )}
             {abaAtiva === 'lavagem' && (
               <ul className="list-disc pl-5 space-y-2">
                 <li>Lavar à mão ou em ciclo delicado na máquina.</li>
                 <li>Secar à sombra para preservar a tonalidade original do tecido.</li>
+                {isPoliamida && <li>Não precisa passar. Caso necessário, utilizar temperatura baixíssima.</li>}
               </ul>
             )}
           </div>
         </div>
+
+        {/* SEÇÃO DE AVALIAÇÕES */}
+        <section id="avaliacoes" className="border-t border-zinc-200 pt-16 mt-16 mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 gap-4">
+            <h2 className="text-3xl font-anton uppercase tracking-wide text-zinc-900">Avaliações da Galera</h2>
+            <button className="text-sm font-bold uppercase tracking-widest underline hover:text-[#F59E0B] transition-colors">Escrever uma avaliação</button>
+          </div>
+          <div className="bg-zinc-50 border border-zinc-200 rounded-md p-12 text-center flex flex-col items-center justify-center">
+            <div className="flex text-zinc-300 mb-4">
+              {[...Array(5)].map((_, i) => <Star key={i} className="w-8 h-8 fill-current" />)}
+            </div>
+            <p className="text-zinc-500 font-medium text-lg">Nenhuma avaliação ainda.</p>
+            <p className="text-zinc-400 text-sm mt-1">Seja o primeiro a avaliar esta armadura!</p>
+          </div>
+        </section>
+
+        {/* PRODUTOS RELACIONADOS */}
+        {relacionadas.length > 0 && (
+          <section className="border-t border-zinc-200 pt-16">
+            <h2 className="text-3xl font-anton uppercase text-center mb-12 tracking-wide text-zinc-900">Você também pode gostar...</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              {relacionadas.map(prod => (
+                <QuickBuyCard key={prod.id} tituloGrupo={prod.nome} produtosDoGrupo={[prod]} />
+              ))}
+            </div>
+          </section>
+        )}
+
       </div>
     </main>
   );
