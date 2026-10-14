@@ -7,7 +7,7 @@ export interface Produto {
   hex: string;
   preco: number;
   precoOriginal: number;
-  precoKit?: number; // ADICIONAMOS O VALOR PROMOCIONAL AQUI!
+  precoKit?: number;
   categoria: string;
   tag: string;
   imagens: string[];
@@ -18,7 +18,9 @@ export interface Produto {
 const estoquePadrao = { P: 3, M: 3, G: 3, GG: 3, G1: 0, G2: 0 };
 
 export const produtos: Produto[] = [
-  // BÁSICAS
+  // ==========================================
+  // CATEGORIA: CAMISETA BÁSICA
+  // ==========================================
   {
     id: 'basica-preta', nome: 'Camiseta Básica B.SKW Preto', cor: 'Preto', hex: '#000000',
     preco: 99.90, precoOriginal: 119.90, precoKit: 78.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-preta.png'],
@@ -65,7 +67,9 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
-  // OVERSIZED
+  // ==========================================
+  // CATEGORIA: CAMISETA OVERSIZED
+  // ==========================================
   {
     id: 'oversized-preta', nome: 'Camiseta Oversized B.SKW Preto', cor: 'Preto', hex: '#000000',
     preco: 129.90, precoOriginal: 149.90, precoKit: 98.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-preta.png'],
@@ -134,6 +138,30 @@ export const produtos: Produto[] = [
   {
     id: 'oversized-azul-envelhecido', nome: 'Camiseta Oversized B.SKW Azul Envelhecido', cor: 'Azul Envelhecido', hex: '#4682B4',
     preco: 199.90, precoOriginal: 229.90, precoKit: 152.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-azul-envelhecido.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+
+  // ==========================================
+  // CATEGORIA: CAMISETA SUEDINE (NOVO!)
+  // ==========================================
+  {
+    id: 'suedine-preta', nome: 'Camiseta Suedine B.SKW Preto', cor: 'Preto', hex: '#000000',
+    preco: 157.90, precoOriginal: 189.90, precoKit: 69.90, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-preta.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'suedine-off-white', nome: 'Camiseta Suedine B.SKW Off White', cor: 'Off White', hex: '#FAF9F6',
+    preco: 157.90, precoOriginal: 189.90, precoKit: 69.90, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-off-white.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'suedine-marrom', nome: 'Camiseta Suedine B.SKW Marrom', cor: 'Marrom', hex: '#5E4B3C',
+    preco: 157.90, precoOriginal: 189.90, precoKit: 69.90, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-marrom.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'suedine-cinza', nome: 'Camiseta Suedine B.SKW Cinza', cor: 'Cinza', hex: '#808080',
+    preco: 202.90, precoOriginal: 239.90, precoKit: 89.90, categoria: 'camiseta-suedine', tag: '230 g/m² Fio 40.1', imagens: ['/suedine-cinza.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   }
 ];
