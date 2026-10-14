@@ -23,47 +23,47 @@ export const produtos: Produto[] = [
   // ==========================================
   {
     id: 'basica-preta', nome: 'Camiseta Básica B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 99.90, precoOriginal: 119.90, precoKit: 78.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-preta.png'],
+    preco: 99.90, precoOriginal: 129.90, precoKit: 78.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'basica-off-white', nome: 'Camiseta Básica B.SKW Off White', cor: 'Off White', hex: '#FAF9F6',
-    preco: 99.90, precoOriginal: 119.90, precoKit: 78.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-offwhite.png'],
+    preco: 99.90, precoOriginal: 129.90, precoKit: 78.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-offwhite.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'basica-marrom', nome: 'Camiseta Básica B.SKW Marrom', cor: 'Marrom', hex: '#5E4B3C',
-    preco: 109.90, precoOriginal: 129.90, precoKit: 89.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-marrom.png'],
+    preco: 109.90, precoOriginal: 139.90, precoKit: 89.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-marrom.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'basica-verde', nome: 'Camiseta Básica B.SKW Verde Militar', cor: 'Verde Militar', hex: '#4B5320',
-    preco: 109.90, precoOriginal: 129.90, precoKit: 89.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-verde.png'],
+    preco: 109.90, precoOriginal: 139.90, precoKit: 89.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-verde.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'basica-azul-marinho', nome: 'Camiseta Básica B.SKW Azul Marinho', cor: 'Azul Marinho', hex: '#000080',
-    preco: 109.90, precoOriginal: 129.90, precoKit: 89.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-azul-marinho.png'],
+    preco: 109.90, precoOriginal: 139.90, precoKit: 89.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-azul-marinho.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'basica-bordo', nome: 'Camiseta Básica B.SKW Bordô', cor: 'Bordô', hex: '#800000',
-    preco: 109.90, precoOriginal: 129.90, precoKit: 89.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-bordo.png'],
+    preco: 109.90, precoOriginal: 139.90, precoKit: 89.90, categoria: 'camiseta-basica', tag: '200 g/m² Fio 26.1', imagens: ['/basica-bordo.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'basica-preto-estonado', nome: 'Camiseta Básica B.SKW Preto Estonado', cor: 'Preto Estonado', hex: '#2C2C2C',
-    preco: 139.90, precoOriginal: 159.90, precoKit: 112.90, categoria: 'camiseta-estonada', tag: 'Estonada Premium', imagens: ['/estonada-preta.png'],
+    preco: 139.90, precoOriginal: 169.90, precoKit: 112.90, categoria: 'camiseta-estonada', tag: 'Estonada Premium', imagens: ['/estonada-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'basica-cinza-envelhecido', nome: 'Camiseta Básica B.SKW Cinza Envelhecido', cor: 'Cinza Envelhecido', hex: '#808080',
-    preco: 139.90, precoOriginal: 159.90, precoKit: 112.90, categoria: 'camiseta-estonada', tag: 'Estonada Premium', imagens: ['/estonada-cinza.png'],
+    preco: 139.90, precoOriginal: 169.90, precoKit: 112.90, categoria: 'camiseta-estonada', tag: 'Estonada Premium', imagens: ['/estonada-cinza.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'basica-azul-envelhecido', nome: 'Básica Vintage B.SKW Azul', cor: 'Azul Envelhecido', hex: '#4682B4',
-    preco: 149.90, precoOriginal: 169.90, precoKit: 123.90, categoria: 'camiseta-vintage', tag: 'Vintage Wash', imagens: ['/vintage-azul.png'],
+    preco: 149.90, precoOriginal: 179.90, precoKit: 123.90, categoria: 'camiseta-vintage', tag: 'Vintage Wash', imagens: ['/vintage-azul.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
@@ -72,96 +72,96 @@ export const produtos: Produto[] = [
   // ==========================================
   {
     id: 'oversized-preta', nome: 'Camiseta Oversized B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 129.90, precoOriginal: 149.90, precoKit: 98.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-preta.png'],
+    preco: 139.90, precoOriginal: 169.90, precoKit: 99.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-off-white', nome: 'Camiseta Oversized B.SKW Off White', cor: 'Off White', hex: '#FAF9F6',
-    preco: 129.90, precoOriginal: 149.90, precoKit: 98.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-offwhite.png'],
+    preco: 139.90, precoOriginal: 169.90, precoKit: 99.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-offwhite.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-branca', nome: 'Camiseta Oversized B.SKW Branca', cor: 'Branca', hex: '#FFFFFF',
-    preco: 139.90, precoOriginal: 159.90, precoKit: 103.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-branca.png'],
+    preco: 139.90, precoOriginal: 169.90, precoKit: 109.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-branca.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-marrom', nome: 'Camiseta Oversized B.SKW Marrom', cor: 'Marrom', hex: '#5E4B3C',
-    preco: 149.90, precoOriginal: 169.90, precoKit: 107.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-marrom.png'],
+    preco: 149.90, precoOriginal: 179.90, precoKit: 109.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-marrom.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-azul-marinho', nome: 'Camiseta Oversized B.SKW Azul Marinho', cor: 'Azul Marinho', hex: '#000080',
-    preco: 149.90, precoOriginal: 169.90, precoKit: 107.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-azul-marinho.png'],
+    preco: 149.90, precoOriginal: 179.90, precoKit: 109.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-azul-marinho.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-verde-claro', nome: 'Camiseta Oversized B.SKW Verde Claro', cor: 'Verde Claro', hex: '#90EE90',
-    preco: 149.90, precoOriginal: 169.90, precoKit: 107.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-verde-claro.png'],
+    preco: 149.90, precoOriginal: 179.90, precoKit: 109.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-verde-claro.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-roxo', nome: 'Camiseta Oversized B.SKW Roxo', cor: 'Roxo', hex: '#800080',
-    preco: 149.90, precoOriginal: 169.90, precoKit: 107.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-roxo.png'],
+    preco: 149.90, precoOriginal: 179.90, precoKit: 109.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-roxo.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-bordo', nome: 'Camiseta Oversized B.SKW Bordô', cor: 'Bordô', hex: '#800000',
-    preco: 149.90, precoOriginal: 169.90, precoKit: 107.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-bordo.png'],
+    preco: 149.90, precoOriginal: 179.90, precoKit: 109.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-bordo.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-verde-militar', nome: 'Camiseta Oversized B.SKW Verde Militar', cor: 'Verde Militar', hex: '#4B5320',
-    preco: 149.90, precoOriginal: 169.90, precoKit: 107.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-verde-militar.png'],
+    preco: 149.90, precoOriginal: 179.90, precoKit: 109.90, categoria: 'camiseta-oversized', tag: '200 g/m² Fio 26.1', imagens: ['/oversized-verde-militar.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-preto-estonado', nome: 'Camiseta Oversized B.SKW Preto Estonado', cor: 'Preto Estonado', hex: '#2C2C2C',
-    preco: 199.90, precoOriginal: 229.90, precoKit: 152.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-preto-estonado.png'],
+    preco: 189.90, precoOriginal: 229.90, precoKit: 159.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-preto-estonado.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-destroyed', nome: 'Camiseta Oversized B.SKW Destroyed', cor: 'Destroyed', hex: '#424242',
-    preco: 199.90, precoOriginal: 229.90, precoKit: 152.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-destroyed.png'],
+    preco: 189.90, precoOriginal: 229.90, precoKit: 159.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-destroyed.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-azul-estonado', nome: 'Camiseta Oversized B.SKW Azul Estonado', cor: 'Azul Estonado', hex: '#3B5998',
-    preco: 199.90, precoOriginal: 229.90, precoKit: 152.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-azul-estonado.png'],
+    preco: 189.90, precoOriginal: 229.90, precoKit: 159.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-azul-estonado.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-cinza-envelhecido', nome: 'Camiseta Oversized B.SKW Cinza Envelhecido', cor: 'Cinza Envelhecido', hex: '#808080',
-    preco: 199.90, precoOriginal: 229.90, precoKit: 152.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-cinza-envelhecido.png'],
+    preco: 189.90, precoOriginal: 229.90, precoKit: 159.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-cinza-envelhecido.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'oversized-azul-envelhecido', nome: 'Camiseta Oversized B.SKW Azul Envelhecido', cor: 'Azul Envelhecido', hex: '#4682B4',
-    preco: 199.90, precoOriginal: 229.90, precoKit: 152.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-azul-envelhecido.png'],
+    preco: 189.90, precoOriginal: 229.90, precoKit: 159.90, categoria: 'camiseta-oversized', tag: '180 g/m² Fio 26.1', imagens: ['/oversized-azul-envelhecido.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
 
   // ==========================================
-  // CATEGORIA: CAMISETA SUEDINE (NOVO!)
+  // CATEGORIA: CAMISETA SUEDINE
   // ==========================================
   {
     id: 'suedine-preta', nome: 'Camiseta Suedine B.SKW Preto', cor: 'Preto', hex: '#000000',
-    preco: 157.90, precoOriginal: 189.90, precoKit: 69.90, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-preta.png'],
+    preco: 189.90, precoOriginal: 239.90, precoKit: 159.90, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-preta.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'suedine-off-white', nome: 'Camiseta Suedine B.SKW Off White', cor: 'Off White', hex: '#FAF9F6',
-    preco: 157.90, precoOriginal: 189.90, precoKit: 69.90, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-off-white.png'],
+    preco: 189.90, precoOriginal: 239.90, precoKit: 159.90, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-off-white.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'suedine-marrom', nome: 'Camiseta Suedine B.SKW Marrom', cor: 'Marrom', hex: '#5E4B3C',
-    preco: 157.90, precoOriginal: 189.90, precoKit: 69.90, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-marrom.png'],
+    preco: 189.90, precoOriginal: 239.90, precoKit: 159.90, categoria: 'camiseta-suedine', tag: '250 g/m² Fio 40.1', imagens: ['/suedine-marrom.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   },
   {
     id: 'suedine-cinza', nome: 'Camiseta Suedine B.SKW Cinza', cor: 'Cinza', hex: '#808080',
-    preco: 202.90, precoOriginal: 239.90, precoKit: 89.90, categoria: 'camiseta-suedine', tag: '230 g/m² Fio 40.1', imagens: ['/suedine-cinza.png'],
+    preco: 229.90, precoOriginal: 279.90, precoKit: 199.90, categoria: 'camiseta-suedine', tag: '230 g/m² Fio 40.1', imagens: ['/suedine-cinza.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   }
 ];
