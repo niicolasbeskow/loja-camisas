@@ -181,7 +181,7 @@ export const produtos: Produto[] = [
   },
 
   // ==========================================
-  // CATEGORIA: CAMISETA BOXY (NOVO!)
+  // CATEGORIA: CAMISETA BOXY
   // ==========================================
   {
     id: 'boxy-preta', nome: 'Camiseta Boxy B.SKW Preto', cor: 'Preto', hex: '#000000',
@@ -196,6 +196,20 @@ export const produtos: Produto[] = [
   {
     id: 'boxy-azul-marinho', nome: 'Camiseta Boxy B.SKW Azul Marinho', cor: 'Azul Marinho', hex: '#000080',
     preco: 129.90, precoOriginal: 149.90, precoKit: 89.90, categoria: 'camiseta-boxy', tag: '200 g/m² Fio 26.1', imagens: ['/boxy-azul-marinho.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+
+  // ==========================================
+  // CATEGORIA: CAMISETA POLIAMIDA (ULTRA TECH)
+  // ==========================================
+  {
+    id: 'poliamida-preta', nome: 'Camiseta Ultra Tech Poliamida B.SKW Preto', cor: 'Preto', hex: '#000000',
+    preco: 139.90, precoOriginal: 169.90, precoKit: 99.90, categoria: 'camiseta-poliamida', tag: '122 g/m²', imagens: ['/poliamida-preta.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'poliamida-branca', nome: 'Camiseta Ultra Tech Poliamida B.SKW Branca', cor: 'Branca', hex: '#FFFFFF',
+    preco: 139.90, precoOriginal: 169.90, precoKit: 99.90, categoria: 'camiseta-poliamida', tag: '122 g/m²', imagens: ['/poliamida-branca.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   }
 ];
