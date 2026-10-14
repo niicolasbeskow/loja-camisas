@@ -55,12 +55,14 @@ export default function ProdutoPage() {
   const isMoletomOversized = produto.nome.includes('Moletom Oversized');
   const isMoletomCanguruOuCalca = produto.nome.includes('Canguru') || produto.nome.includes('Calça');
   const isRegata = produto.categoria === 'regata-oversized';
+  const isShorts = produto.categoria === 'shorts';
   
   let composicaoTexto = '100% Algodão';
   if (isPoliamida) composicaoTexto = '100% Poliamida';
   if (isBabyLook) composicaoTexto = '96% Algodão, 4% Elastano';
   if (isMoletomOversized) composicaoTexto = '75% Algodão, 25% Poliéster';
   if (isMoletomCanguruOuCalca) composicaoTexto = '50% Algodão, 50% Poliéster';
+  if (isShorts) composicaoTexto = '83% Poliamida, 17% Elastano';
 
   const handleSetQuantidade = (novaQtd: number) => {
     if (novaQtd < 1) return;
@@ -251,6 +253,12 @@ export default function ProdutoPage() {
                     <p>A <strong>{produto.nome}</strong> é a sua armadura tecnológica de alta performance. Desenvolvida para quem exige o máximo de conforto em movimento.</p>
                     <p>Com um tecido absurdamente leve, ela absorve o suor, seca extremamente rápido e desamassa no corpo.</p>
                   </>
+                ) : isShorts ? (
+                  <>
+                    <p>O <strong>{produto.nome}</strong> foi criado para quem busca versatilidade, conforto e acabamento impecável.</p>
+                    <p>Com toque leve, macio e forro interno, ele é perfeito tanto para o treino quanto para o lifestyle urbano.</p>
+                    <p>Conta com bolsos frontais e bolso traseiro com zíper para máxima segurança e praticidade no seu corre.</p>
+                  </>
                 ) : isBabyLook ? (
                   <>
                     <p>A <strong>{produto.nome}</strong> traz o caimento perfeito para o corpo feminino, unindo conforto e estilo streetwear.</p>
@@ -265,6 +273,11 @@ export default function ProdutoPage() {
                   <>
                     <p>A armadura de inverno definitiva. A linha <strong>{produto.nome}</strong> foi feita para reter o calor sem perder a elegância do estilo streetwear.</p>
                     <p>Com interior em felpa super macia e altíssima gramatura (320g/m²), esta peça é o conforto máximo para dias frios.</p>
+                  </>
+                ) : isMoletomOversized ? (
+                  <>
+                    <p>O <strong>{produto.nome}</strong> é a peça coringa de meia-estação da B.SKW.</p>
+                    <p>Com modelagem streetwear estruturada e gramatura pesada (300g/m²), ele é construído sem felpa interna, oferecendo o peso de um moletom clássico sem esquentar excessivamente.</p>
                   </>
                 ) : isRegata ? (
                   <>
@@ -281,15 +294,25 @@ export default function ProdutoPage() {
             )}
             {abaAtiva === 'tecnica' && (
               <ul className="list-disc pl-5 space-y-2">
-                {isPoliamida ? (
+                {isShorts ? (
+                  <>
+                    <li>Fabricado com 83% Poliamida e 17% Elastano.</li>
+                    <li>Cós elástico super confortável com modelagem anatômica e forro interno.</li>
+                    <li>Dois bolsos frontais e um bolso traseiro com zíper de segurança.</li>
+                    <li>Secagem rápida e excelente respirabilidade.</li>
+                  </>
+                ) : isPoliamida ? (
                   <>
                     <li>Malha tecnológica 100% Poliamida de alta performance.</li>
                     <li>Gramatura ultra leve de {produto.tag.split(' ')[0]}.</li>
+                    <li>Proteção UV e tecnologia Anti-Odor.</li>
+                    <li>Secagem rápida e não amassa (Easy Care).</li>
                   </>
                 ) : isBabyLook ? (
                   <>
                     <li>Malha premium 96% Algodão BCI e 4% Elastano.</li>
                     <li>Gramatura de {produto.tag.split(' ')[0]}g/m².</li>
+                    <li>Modelagem justa e confortável (Fit perfeito).</li>
                   </>
                 ) : isCroppedSuedine ? (
                   <>
@@ -320,6 +343,8 @@ export default function ProdutoPage() {
               <ul className="list-disc pl-5 space-y-2">
                 <li>Lavar à mão ou em ciclo delicado na máquina.</li>
                 <li>Secar à sombra para preservar a tonalidade original do tecido.</li>
+                {(isPoliamida || isShorts) && <li>Não precisa passar. Caso necessário, utilizar temperatura baixíssima.</li>}
+                {(isMoletomOversized || isMoletomCanguruOuCalca) && <li>Para os moletons, recomendamos lavar do avesso e evitar secadora para não danificar as fibras.</li>}
               </ul>
             )}
           </div>
