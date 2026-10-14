@@ -228,7 +228,7 @@ export const produtos: Produto[] = [
   },
 
   // ==========================================
-  // CATEGORIA: FEMININO (BABY LOOK E CROPPED)
+  // CATEGORIA: FEMININO
   // ==========================================
   {
     id: 'baby-look-preta', nome: 'Baby Look B.SKW Preta', cor: 'Preto', hex: '#000000',
@@ -258,6 +258,40 @@ export const produtos: Produto[] = [
   {
     id: 'cropped-suedine-marrom', nome: 'Cropped Oversized Suedine B.SKW Marrom', cor: 'Marrom', hex: '#5E4B3C',
     preco: 139.90, precoOriginal: 169.90, precoKit: 119.90, categoria: 'feminino', tag: '250 g/m² Fio 40.1', imagens: ['/cropped-suedine-marrom.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+
+  // ==========================================
+  // CATEGORIA: MOLETOM (NOVO!)
+  // ==========================================
+  {
+    id: 'moletom-oversized-preto', nome: 'Moletom Oversized B.SKW Preto', cor: 'Preto', hex: '#000000',
+    preco: 229.90, precoOriginal: 269.90, precoKit: 179.90, categoria: 'moletom', tag: '300 g/m²', imagens: ['/moletom-oversized-preto.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'moletom-oversized-off-white', nome: 'Moletom Oversized B.SKW Off White', cor: 'Off White', hex: '#FAF9F6',
+    preco: 229.90, precoOriginal: 269.90, precoKit: 179.90, categoria: 'moletom', tag: '300 g/m²', imagens: ['/moletom-oversized-off-white.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'moletom-canguru-preto', nome: 'Moletom Canguru B.SKW Preto', cor: 'Preto', hex: '#000000',
+    preco: 429.90, precoOriginal: 499.90, precoKit: 299.90, categoria: 'moletom', tag: '320 g/m²', imagens: ['/moletom-canguru-preto.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'moletom-canguru-marrom', nome: 'Moletom Canguru B.SKW Marrom', cor: 'Marrom', hex: '#5E4B3C',
+    preco: 429.90, precoOriginal: 499.90, precoKit: 299.90, categoria: 'moletom', tag: '320 g/m²', imagens: ['/moletom-canguru-marrom.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'calca-moletom-preta', nome: 'Calça Moletom Comfort B.SKW Preta', cor: 'Preto', hex: '#000000',
+    preco: 389.90, precoOriginal: 459.90, precoKit: 269.90, categoria: 'moletom', tag: '320 g/m²', imagens: ['/calca-moletom-preta.png'],
+    tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
+  },
+  {
+    id: 'calca-moletom-marrom', nome: 'Calça Moletom Comfort B.SKW Marrom', cor: 'Marrom', hex: '#5E4B3C',
+    preco: 389.90, precoOriginal: 459.90, precoKit: 269.90, categoria: 'moletom', tag: '320 g/m²', imagens: ['/calca-moletom-marrom.png'],
     tamanhos: ['P', 'M', 'G', 'GG', 'G1', 'G2'], estoque: estoquePadrao
   }
 ];
