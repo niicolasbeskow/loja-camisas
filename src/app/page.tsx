@@ -17,11 +17,11 @@ export default async function Home() {
       <div className="w-full px-3 pt-3 md:px-0 md:pt-0">
         <section className="relative w-full aspect-[4/3] sm:aspect-video md:aspect-[16/9] bg-zinc-900 flex items-center justify-start overflow-hidden rounded-xl md:rounded-none">
           
-          {/* A mesma imagem para tudo, mas comportando-se como um banner */}
+          {/* AQUI ESTÁ A MUDANÇA: object-[90%_center] no mobile para mostrar a logo na camisa dele */}
           <img 
             src="/files/capa-principal.jpg" 
             alt="Capa B.SKW" 
-            className="absolute inset-0 w-full h-full object-cover object-[75%_center] md:object-center opacity-75"
+            className="absolute inset-0 w-full h-full object-cover object-[90%_center] md:object-center opacity-75"
           />
           
           {/* Gradiente escuro focado apenas no lado esquerdo */}
