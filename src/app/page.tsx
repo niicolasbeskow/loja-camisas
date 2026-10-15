@@ -1,36 +1,165 @@
 import { produtos } from '@/data/produtos';
 import QuickBuyCard from '@/components/QuickBuyCard';
+import Link from 'next/link';
+import { Truck, ShieldCheck, RefreshCw, Leaf } from 'lucide-react';
 
 export default async function Home() {
+  // 1. Destaques (Estoque MVP - Tiro de Sniper)
   const basicaEmEstoque = produtos.filter(p => p.categoria === 'camiseta-basica' && Object.values(p.estoque).some(qtd => qtd > 0));
   const overEmEstoque = produtos.filter(p => p.categoria === 'camiseta-oversized' && Object.values(p.estoque).some(qtd => qtd > 0));
   const boxyEmEstoque = produtos.filter(p => p.categoria === 'camiseta-boxy' && Object.values(p.estoque).some(qtd => qtd > 0));
   const poliamidaEmEstoque = produtos.filter(p => p.categoria === 'camiseta-poliamida' && Object.values(p.estoque).some(qtd => qtd > 0));
 
+  // 2. Peças em Promoção (Para a seção final)
+  const promocoes = produtos.filter(p => p.promocao && Object.values(p.estoque).some(qtd => qtd > 0));
+
   return (
-    <main className="min-h-screen">
-      {/* BANNER PRINCIPAL AJUSTADO PARA MOBILE */}
-      <section className="bg-[#9A9A9A] bg-[url('/files/textura.png')] bg-cover bg-center bg-blend-multiply py-20 md:py-40 px-4 flex justify-center w-full">
-        <img
-          src="/files/BSKW_empilhado_cor-branco-ambar.png"
-          alt="B.SKW Logo"
-          className="max-w-[200px] md:max-w-[400px] w-full object-contain mx-auto pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]"
-        />
+    <main className="min-h-screen bg-white">
+      
+      {/* 1. HERO SECTION (IMAGEM DE CAPA FULL WIDTH) */}
+      <section className="relative w-full h-[60vh] md:h-[80vh] bg-zinc-900 flex items-center justify-start overflow-hidden">
+        {/* A imagem de fundo (placeholder) */}
+        <div className="absolute inset-0 bg-[url('/files/capa-principal.jpg')] bg-cover bg-center opacity-60"></div>
+        
+        {/* Conteúdo sobre a imagem */}
+        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-6 md:px-12 lg:px-24">
+          <div className="max-w-xl">
+            <span className="text-zinc-300 text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-4 block">
+              Streetwear / Cultura / B.SKW
+            </span>
+            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-anton uppercase leading-[0.9] mb-6 tracking-wide drop-shadow-lg">
+              Feito para<br />os reais.
+            </h1>
+            <p className="text-zinc-200 text-sm md:text-base mb-8 max-w-md font-medium">
+              Mais do que roupa — é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
+            </p>
+            <Link href="/categoria/promocoes" className="inline-block border-2 border-white text-white px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors duration-300">
+              Comprar Agora →
+            </Link>
+          </div>
+        </div>
+        
+        {/* Coordenadas estéticas (Detalhe do design WST) */}
+        <div className="absolute bottom-8 right-8 text-right hidden md:block z-10">
+           <span className="text-zinc-400 text-[10px] font-bold tracking-widest uppercase block mb-1">Est. 2024</span>
+           <span className="text-zinc-500 text-[10px] tracking-widest font-mono">27.5954° S<br/>48.5480° W</span>
+           <div className="w-12 h-[1px] bg-zinc-500 mt-2 ml-auto"></div>
+        </div>
       </section>
 
-      <section className="max-w-[1600px] mx-auto px-3 md:px-6 pt-12 md:pt-16 pb-20">
-        <h2 className="text-3xl md:text-5xl font-anton uppercase text-center mb-8 md:mb-12 tracking-wide text-zinc-900">
-          Destaques B<span className="text-[#F59E0B]">.</span>SKW
-        </h2>
+      {/* 2. COMPRAS RÁPIDAS (MVP) */}
+      <section className="max-w-[1600px] mx-auto px-4 md:px-6 py-16 md:py-24">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 gap-4">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-anton uppercase tracking-wide text-zinc-900 leading-none">Coleções</h2>
+            <p className="text-zinc-500 text-sm mt-2 font-medium">O essencial para o seu corre diário.</p>
+          </div>
+        </div>
 
-        {/* GRID DE 2 COLUNAS NO MOBILE E 4 NO DESKTOP */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 md:gap-y-12 gap-x-3 md:gap-x-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-4 md:gap-x-6">
           {basicaEmEstoque.length > 0 && <QuickBuyCard tituloGrupo="Camiseta Básica" produtosDoGrupo={basicaEmEstoque} />}
           {overEmEstoque.length > 0 && <QuickBuyCard tituloGrupo="Oversized" produtosDoGrupo={overEmEstoque} />}
           {boxyEmEstoque.length > 0 && <QuickBuyCard tituloGrupo="Modelagem Boxy" produtosDoGrupo={boxyEmEstoque} />}
           {poliamidaEmEstoque.length > 0 && <QuickBuyCard tituloGrupo="Ultra Tech (Treino)" produtosDoGrupo={poliamidaEmEstoque} />}
         </div>
       </section>
+
+      {/* 3. BANNER DE CHAMADA (MEIO DO SITE) */}
+      <section className="w-full bg-zinc-100 py-16 md:py-24">
+        <div className="max-w-[1600px] mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            
+            {/* Texto da Esquerda */}
+            <div className="order-2 lg:order-1 flex flex-col justify-center max-w-lg">
+              <span className="text-zinc-500 text-xs font-bold tracking-[0.2em] uppercase mb-4 block">
+                Novo Lançamento
+              </span>
+              <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-6 tracking-wide text-zinc-900">
+                Fresh<br/>Drops
+              </h2>
+              <p className="text-zinc-600 text-sm md:text-base mb-8">
+                As últimas peças adicionadas ao catálogo. Estoque limitado para garantir exclusividade. Não fique de fora.
+              </p>
+              <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-fit">
+                Ver Coleção Oversized →
+              </Link>
+            </div>
+
+            {/* Imagem da Direita */}
+            <div className="order-1 lg:order-2 w-full aspect-[4/3] md:aspect-[16/9] bg-zinc-200 relative overflow-hidden flex items-center justify-center">
+               {/* Aqui entra a imagem banner-meio.jpg */}
+               <div className="absolute inset-0 bg-[url('/files/banner-meio.jpg')] bg-cover bg-center"></div>
+               <span className="relative z-10 text-zinc-500 text-sm font-medium tracking-widest uppercase bg-white/80 px-4 py-2">Imagem de Campanha</span>
+               
+               {/* Assinatura Estética (Canto Superior Direito) */}
+               <div className="absolute top-8 right-8 z-10 text-right hidden md:block mix-blend-difference text-white">
+                 <span className="block text-sm font-medium uppercase tracking-[0.2em] mb-1">Mesmo Mindset.</span>
+                 <span className="block text-sm font-medium uppercase tracking-[0.2em]">Energia Diferente.</span>
+                 <div className="w-12 h-[1px] bg-white mt-4 ml-auto"></div>
+               </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 4. BARRA DE BENEFÍCIOS (TRUST BADGES) */}
+      <section className="border-y border-zinc-200 bg-white">
+        <div className="max-w-[1600px] mx-auto px-4 md:px-6 py-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4">
+              <Truck className="w-8 h-8 text-black shrink-0" strokeWidth={1.5} />
+              <div>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900 mb-1">Envio Rápido</h4>
+                <p className="text-[10px] text-zinc-500 font-medium">Entregamos em todo o Brasil.</p>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4">
+              <ShieldCheck className="w-8 h-8 text-black shrink-0" strokeWidth={1.5} />
+              <div>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900 mb-1">Pagamento Seguro</h4>
+                <p className="text-[10px] text-zinc-500 font-medium">Até 3x Sem Juros no Cartão.</p>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4">
+              <RefreshCw className="w-8 h-8 text-black shrink-0" strokeWidth={1.5} />
+              <div>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900 mb-1">Troca Fácil</h4>
+                <p className="text-[10px] text-zinc-500 font-medium">Processo simples e sem dor de cabeça.</p>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4">
+              <Leaf className="w-8 h-8 text-black shrink-0" strokeWidth={1.5} />
+              <div>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900 mb-1">Qualidade Premium</h4>
+                <p className="text-[10px] text-zinc-500 font-medium">Malha BCI. Feito para durar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. PROMOÇÕES EM DESTAQUE */}
+      {promocoes.length > 0 && (
+        <section className="max-w-[1600px] mx-auto px-4 md:px-6 py-16 md:py-24">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 gap-4">
+            <div>
+              <span className="text-red-600 text-xs font-bold tracking-[0.2em] uppercase mb-2 block">Oportunidade</span>
+              <h2 className="text-3xl md:text-4xl font-anton uppercase tracking-wide text-zinc-900 leading-none">Black Promo</h2>
+            </div>
+            <Link href="/categoria/promocoes" className="text-xs font-bold uppercase tracking-widest text-zinc-500 hover:text-black transition-colors flex items-center gap-2">
+              Ver Tudo →
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-4 md:gap-x-6">
+            {promocoes.slice(0, 4).map(produto => (
+              <QuickBuyCard key={produto.id} tituloGrupo={produto.nome} produtosDoGrupo={[produto]} />
+            ))}
+          </div>
+        </section>
+      )}
+
     </main>
   );
 }
