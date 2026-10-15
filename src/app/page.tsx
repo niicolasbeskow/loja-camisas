@@ -13,16 +13,17 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* 1. HERO SECTION (ENQUADRAMENTO PERFEITO RESTAURADO) */}
-      <section className="relative w-full h-[75vh] md:h-[85vh] bg-zinc-900 flex items-center justify-start overflow-hidden">
+      {/* 1. HERO SECTION (PROPORÇÃO ORIGINAL 16:9 - ZERO CORTES NO DESKTOP) */}
+      <section className="relative w-full h-[75vh] md:h-auto md:aspect-[16/9] bg-zinc-900 flex items-center justify-start overflow-hidden">
         
-        {/* A SOLUÇÃO: object-[80%_center] restaura o equilíbrio perfeito sem cortar a cabeça nem focar no chão vazio */}
+        {/* A Imagem agora preenche uma caixa que tem exatamente o formato dela, eliminando o "zoom" e os cortes. */}
         <img 
           src="/files/capa-principal.jpg" 
           alt="Capa B.SKW" 
-          className="absolute inset-0 w-full h-full object-cover object-[65%_center] md:object-[80%_center] opacity-60 md:opacity-70"
+          className="absolute inset-0 w-full h-full object-cover object-[65%_center] md:object-center opacity-60 md:opacity-70"
         />
         
+        {/* Gradiente mobile */}
         <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/95 via-zinc-900/60 to-transparent md:hidden z-0"></div>
         
         <div className="relative z-10 max-w-[1600px] w-full mx-auto px-5 md:px-12 lg:px-24 mt-4 md:mt-0">
@@ -31,16 +32,16 @@ export default async function Home() {
             <img 
               src="/files/BSKW_empilhado_cor-branco-ambar.png" 
               alt="B.SKW Logo" 
-              className="max-w-[160px] md:max-w-[400px] w-full object-contain mb-3 md:mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
+              className="max-w-[160px] md:max-w-[320px] lg:max-w-[400px] w-full object-contain mb-3 md:mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
             />
             
-            <h1 className="text-white text-lg md:text-3xl font-outfit font-bold uppercase tracking-[0.15em] md:tracking-[0.2em] mb-3 md:mb-4 drop-shadow-md">
+            <h1 className="text-white text-lg md:text-2xl lg:text-3xl font-outfit font-bold uppercase tracking-[0.15em] md:tracking-[0.2em] mb-3 md:mb-4 drop-shadow-md">
               Feito para os reais.
             </h1>
 
             <div className="w-10 md:w-16 h-[2px] bg-white mb-4 md:mb-6 drop-shadow-sm"></div>
 
-            <p className="text-zinc-300 md:text-zinc-200 text-xs md:text-base mb-6 md:mb-8 font-medium drop-shadow-md leading-relaxed">
+            <p className="text-zinc-300 md:text-zinc-200 text-xs md:text-sm lg:text-base mb-6 md:mb-8 font-medium drop-shadow-md leading-relaxed max-w-sm">
               Mais do que roupa, é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
             </p>
 
@@ -50,7 +51,7 @@ export default async function Home() {
           </div>
         </div>
         
-        <div className="absolute bottom-8 right-8 text-right hidden md:block z-10">
+        <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 text-right hidden md:block z-10">
            <span className="text-zinc-300 text-[10px] font-bold tracking-widest uppercase block mb-1">Est. 2026</span>
            <span className="text-zinc-400 text-[10px] tracking-widest font-mono">27.5954° S<br/>48.5480° W</span>
            <div className="w-12 h-[1px] bg-zinc-400 mt-2 ml-auto"></div>
