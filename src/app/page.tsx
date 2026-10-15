@@ -13,60 +13,65 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* 1. HERO SECTION (AJUSTADO PARA SUBIR O TEXTO) */}
-      <section className="relative w-full h-[75vh] md:h-auto md:aspect-[16/9] bg-zinc-900 flex items-center justify-start overflow-hidden">
-        
-        <img 
-          src="/files/capa-principal.jpg" 
-          alt="Capa B.SKW" 
-          className="absolute inset-0 w-full h-full object-cover object-[65%_center] md:object-center opacity-60 md:opacity-70"
-        />
-        
-        <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/95 via-zinc-900/60 to-transparent md:hidden z-0"></div>
-        
-        {/* Adicionei margens negativas (-mt-16 e -mt-24) para puxar o bloco inteiro para cima */}
-        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-5 md:px-12 lg:px-24 -mt-12 md:-mt-16 lg:-mt-24">
-          <div className="max-w-[260px] sm:max-w-sm md:max-w-xl flex flex-col items-start text-left">
-            
-            <img 
-              src="/files/BSKW_empilhado_cor-branco-ambar.png" 
-              alt="B.SKW Logo" 
-              className="max-w-[160px] md:max-w-[320px] lg:max-w-[400px] w-full object-contain mb-3 md:mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
-            />
-            
-            <h1 className="text-white text-lg md:text-2xl lg:text-3xl font-outfit font-bold uppercase tracking-[0.15em] md:tracking-[0.2em] mb-3 md:mb-4 drop-shadow-md">
-              Feito para os reais.
-            </h1>
+      {/* 1. HERO SECTION (CARD BANNER NO MOBILE / FULL WIDTH NO DESKTOP) */}
+      <div className="w-full px-3 pt-3 md:px-0 md:pt-0">
+        <section className="relative w-full aspect-[4/3] sm:aspect-video md:aspect-[16/9] bg-zinc-900 flex items-center justify-start overflow-hidden rounded-xl md:rounded-none">
+          
+          {/* A mesma imagem para tudo, mas comportando-se como um banner */}
+          <img 
+            src="/files/capa-principal.jpg" 
+            alt="Capa B.SKW" 
+            className="absolute inset-0 w-full h-full object-cover object-[75%_center] md:object-center opacity-75"
+          />
+          
+          {/* Gradiente escuro focado apenas no lado esquerdo */}
+          <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/95 via-zinc-900/50 to-transparent md:bg-gradient-to-r md:from-zinc-900/80 md:via-zinc-900/40 md:to-transparent z-0"></div>
+          
+          {/* Conteúdo com tamanhos reduzidos e delicados para o mobile */}
+          <div className="relative z-10 w-full px-5 md:px-12 lg:px-24">
+            <div className="max-w-[170px] sm:max-w-[260px] md:max-w-xl flex flex-col items-start text-left">
+              
+              <img 
+                src="/files/BSKW_empilhado_cor-branco-ambar.png" 
+                alt="B.SKW Logo" 
+                className="w-20 sm:w-28 md:w-full md:max-w-[320px] lg:max-w-[400px] object-contain mb-2 md:mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
+              />
+              
+              <h1 className="text-white text-[11px] sm:text-base md:text-2xl lg:text-3xl font-outfit font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] mb-1.5 md:mb-4 drop-shadow-md">
+                Feito para os reais.
+              </h1>
 
-            <div className="w-10 md:w-16 h-[2px] bg-white mb-4 md:mb-6 drop-shadow-sm"></div>
+              <div className="w-6 md:w-16 h-[1px] md:h-[2px] bg-white mb-2 md:mb-6 drop-shadow-sm"></div>
 
-            <p className="text-zinc-300 md:text-zinc-200 text-xs md:text-sm lg:text-base mb-6 md:mb-8 font-medium drop-shadow-md leading-relaxed max-w-sm">
-              Mais do que roupa, é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
-            </p>
+              <p className="text-zinc-200 text-[8px] sm:text-xs md:text-sm lg:text-base mb-3 md:mb-8 font-medium drop-shadow-md leading-snug md:leading-relaxed">
+                Mais do que roupa, é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
+              </p>
 
-            <Link href="/categoria/promocoes" className="inline-block border-2 border-white text-white px-6 md:px-8 py-3 md:py-4 font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
-              Comprar Agora
-            </Link>
+              <Link href="/categoria/promocoes" className="inline-block border md:border-2 border-white text-white px-3 md:px-8 py-1.5 md:py-4 font-bold text-[7px] md:text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
+                Comprar Agora
+              </Link>
+            </div>
           </div>
-        </div>
-        
-        <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 text-right hidden md:block z-10">
-           <span className="text-zinc-300 text-[10px] font-bold tracking-widest uppercase block mb-1">Est. 2026</span>
-           <span className="text-zinc-400 text-[10px] tracking-widest font-mono">27.5954° S<br/>48.5480° W</span>
-           <div className="w-12 h-[1px] bg-zinc-400 mt-2 ml-auto"></div>
-        </div>
-      </section>
+          
+          {/* Coordenadas (Escondidas no mobile para manter limpo) */}
+          <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 text-right hidden md:block z-10">
+             <span className="text-zinc-300 text-[10px] font-bold tracking-widest uppercase block mb-1">Est. 2026</span>
+             <span className="text-zinc-400 text-[10px] tracking-widest font-mono">27.5954° S<br/>48.5480° W</span>
+             <div className="w-12 h-[1px] bg-zinc-400 mt-2 ml-auto"></div>
+          </div>
+        </section>
+      </div>
 
       {/* 2. COMPRAS RÁPIDAS (MVP) */}
-      <section className="max-w-[1600px] mx-auto px-4 md:px-6 py-16 md:py-24">
-        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 gap-4">
-          <div>
+      <section className="max-w-[1600px] mx-auto px-4 md:px-6 py-12 md:py-24">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 md:mb-12 gap-4">
+          <div className="text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-anton uppercase tracking-wide text-zinc-900 leading-none">Coleções</h2>
-            <p className="text-zinc-500 text-sm mt-2 font-medium">O essencial para o seu corre diário.</p>
+            <p className="text-zinc-500 text-xs md:text-sm mt-1.5 md:mt-2 font-medium">O essencial para o seu corre diário.</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-4 md:gap-x-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 md:gap-y-12 gap-x-3 md:gap-x-6">
           {basicaEmEstoque.length > 0 && <QuickBuyCard tituloGrupo="Camiseta Básica" produtosDoGrupo={basicaEmEstoque} />}
           {overEmEstoque.length > 0 && <QuickBuyCard tituloGrupo="Oversized" produtosDoGrupo={overEmEstoque} />}
           {boxyEmEstoque.length > 0 && <QuickBuyCard tituloGrupo="Modelagem Boxy" produtosDoGrupo={boxyEmEstoque} />}
@@ -78,13 +83,13 @@ export default async function Home() {
       <section className="w-full bg-zinc-100 py-16 md:py-24">
         <div className="max-w-[1600px] mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <div className="order-2 lg:order-1 flex flex-col justify-center max-w-lg">
+            <div className="order-2 lg:order-1 flex flex-col justify-center max-w-lg text-center md:text-left mx-auto md:mx-0">
               <span className="text-zinc-500 text-xs font-bold tracking-[0.2em] uppercase mb-4 block">Novo Lançamento</span>
               <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-6 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
               <p className="text-zinc-600 text-sm md:text-base mb-8">As últimas peças adicionadas ao catálogo. Estoque limitado para garantir exclusividade. Não fique de fora.</p>
-              <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-fit">Ver Coleção Oversized →</Link>
+              <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-fit mx-auto md:mx-0">Ver Coleção Oversized →</Link>
             </div>
-            <div className="order-1 lg:order-2 w-full aspect-[4/3] md:aspect-[16/9] bg-zinc-200 relative overflow-hidden flex items-center justify-center">
+            <div className="order-1 lg:order-2 w-full aspect-[4/3] md:aspect-[16/9] bg-zinc-200 relative overflow-hidden flex items-center justify-center rounded-xl md:rounded-none">
                <img src="/files/banner-meio.jpg" alt="Campanha" className="absolute inset-0 w-full h-full object-cover" />
                <span className="relative z-10 text-zinc-500 text-sm font-medium tracking-widest uppercase bg-white/80 px-4 py-2 opacity-0">Campanha</span>
                <div className="absolute top-8 right-8 z-10 text-right hidden md:block mix-blend-difference text-white">
@@ -137,7 +142,7 @@ export default async function Home() {
       {promocoes.length > 0 && (
         <section className="max-w-[1600px] mx-auto px-4 md:px-6 py-16 md:py-24">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 gap-4">
-            <div>
+            <div className="text-center md:text-left">
               <span className="text-red-600 text-xs font-bold tracking-[0.2em] uppercase mb-2 block">Oportunidade</span>
               <h2 className="text-3xl md:text-4xl font-anton uppercase tracking-wide text-zinc-900 leading-none">Black Promo</h2>
             </div>
