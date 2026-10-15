@@ -13,31 +13,29 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* 1. HERO SECTION (ALINHAMENTO PERFEITO OBSIDIAN + MOBILE FIX) */}
-      <section className="relative w-full h-[70vh] md:h-[85vh] bg-zinc-900 flex items-center justify-start overflow-hidden">
+      {/* 1. HERO SECTION (ALTURA RESTAURADA E ALINHAMENTO MANTIDO) */}
+      <section className="relative w-full h-[75vh] md:h-[85vh] bg-zinc-900 flex items-center justify-start overflow-hidden">
         
-        {/* Foco da imagem ajustado para não cortar o modelo no mobile */}
+        {/* Imagem de fundo: object-center para não cortar os pés do modelo no desktop */}
         <img 
           src="/files/capa-principal.jpg" 
           alt="Capa B.SKW" 
-          className="absolute inset-0 w-full h-full object-cover object-[65%_center] md:object-[80%_center] opacity-60 md:opacity-70"
+          className="absolute inset-0 w-full h-full object-cover object-[65%_center] md:object-center opacity-60 md:opacity-70"
         />
         
-        {/* Truque Mobile: Gradiente escuro apenas na esquerda para dar leitura ao texto */}
+        {/* Gradiente escuro para leitura no mobile */}
         <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/95 via-zinc-900/60 to-transparent md:hidden z-0"></div>
         
-        {/* Conteúdo sobre a imagem - Container principal */}
+        {/* Conteúdo alinhado à esquerda */}
         <div className="relative z-10 max-w-[1600px] w-full mx-auto px-5 md:px-12 lg:px-24 mt-4 md:mt-0">
           <div className="max-w-[260px] sm:max-w-sm md:max-w-xl flex flex-col items-start text-left">
             
-            {/* Logo redimensionada no mobile */}
             <img 
               src="/files/BSKW_empilhado_cor-branco-ambar.png" 
               alt="B.SKW Logo" 
               className="max-w-[160px] md:max-w-[400px] w-full object-contain mb-3 md:mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
             />
             
-            {/* Títulos e textos compactos no mobile */}
             <h1 className="text-white text-lg md:text-3xl font-outfit font-bold uppercase tracking-[0.15em] md:tracking-[0.2em] mb-3 md:mb-4 drop-shadow-md">
               Feito para os reais.
             </h1>
