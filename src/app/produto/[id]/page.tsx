@@ -64,9 +64,6 @@ export default function ProdutoPage() {
   if (isMoletomCanguruOuCalca) composicaoTexto = '50% Algodão, 50% Poliéster';
   if (isShorts) composicaoTexto = '83% Poliamida, 17% Elastano';
 
-  // ==========================================
-  // DESCRIÇÕES DIRETAS E EXPLICATIVAS (SEM DUPLO SENTIDO)
-  // ==========================================
   let descricaoTexto = null;
 
   if (produto.categoria === 'camiseta-boxy') {
@@ -161,7 +158,6 @@ export default function ProdutoPage() {
       );
     }
   } else {
-    // DEFAULT: Camiseta Básica, Vintage e Estonada
     descricaoTexto = (
       <>
         <p>A <strong>{produto.nome}</strong> é o item essencial que não pode faltar no seu guarda-roupa. Com uma modelagem reta e clássica, ela veste de forma equilibrada no corpo — nem tão justa, nem muito folgada.</p>
@@ -214,9 +210,9 @@ export default function ProdutoPage() {
         </div>
       )}
 
-      <div className="max-w-[1200px] mx-auto px-4 md:px-6 pt-8 mt-4 md:mt-8">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-6 pt-6 md:pt-8 mt-4 md:mt-8">
         
-        <div className="flex items-center gap-2 text-xs text-zinc-500 mb-8">
+        <div className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs text-zinc-500 mb-6 md:mb-8 overflow-x-auto whitespace-nowrap no-scrollbar pb-2">
           <Link href="/" className="hover:text-[#F59E0B] transition-colors"><Home className="w-3 h-3" /></Link>
           <span>/</span>
           <Link href={`/categoria/${produto.categoria}`} className="hover:text-[#F59E0B] transition-colors capitalize">{produto.categoria.replace('-', ' ')}</Link>
@@ -224,89 +220,89 @@ export default function ProdutoPage() {
           <span className="text-black font-medium">{produto.nome}</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 mb-12 md:mb-16">
+          <div className="flex flex-col gap-3 md:gap-4">
             <div className="w-full aspect-[4/5] bg-zinc-100 rounded-md flex items-center justify-center relative border border-zinc-200">
                <span className="text-zinc-400 font-medium text-center px-4">Imagem {produto.nome} <br/>(Aguardando Foto)</span>
-               <div className="absolute top-4 right-4 flex flex-col items-end gap-2 z-10">
-                 {isProdutoEsgotado && <span className="bg-zinc-900 text-white text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-widest shadow-md">Esgotado</span>}
+               <div className="absolute top-3 right-3 md:top-4 md:right-4 flex flex-col items-end gap-1.5 z-10">
+                 {isProdutoEsgotado && <span className="bg-zinc-900 text-white text-[10px] md:text-xs font-bold px-2 py-1 md:px-3 rounded-sm uppercase tracking-widest shadow-md">Esgotado</span>}
                  {produto.promocao ? (
-                   <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-widest shadow-md flex items-center gap-1">🔥 20% OFF</span>
+                   <span className="bg-red-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 md:px-3 rounded-sm uppercase tracking-widest shadow-md flex items-center gap-1">🔥 20% OFF</span>
                  ) : produto.tag && !isProdutoEsgotado && (
-                   <span className="bg-[#F59E0B] text-black text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-widest shadow-md">{produto.tag}</span>
+                   <span className="bg-[#F59E0B] text-black text-[10px] md:text-xs font-bold px-2 py-1 md:px-3 rounded-sm uppercase tracking-widest shadow-md">{produto.tag}</span>
                  )}
                </div>
             </div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-3 md:gap-4">
                {[1, 2, 3, 4].map(i => (
                  <div key={i} className="aspect-square bg-zinc-100 rounded-md flex items-center justify-center border border-zinc-200 cursor-pointer hover:border-black transition-colors">
-                   <span className="text-zinc-400 text-xs">Foto {i}</span>
+                   <span className="text-zinc-400 text-[10px] md:text-xs">Foto {i}</span>
                  </div>
                ))}
             </div>
           </div>
 
           <div className="flex flex-col pt-2">
-            <h1 className="text-2xl md:text-3xl font-outfit font-medium text-zinc-900 mb-3">{produto.nome}</h1>
+            <h1 className="text-xl md:text-3xl font-outfit font-medium text-zinc-900 mb-2 md:mb-3 leading-tight">{produto.nome}</h1>
             
-            <a href="#avaliacoes" className="flex items-center gap-2 mb-6 group cursor-pointer">
-               <div className="flex text-zinc-300 group-hover:text-[#F59E0B] transition-colors">{[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}</div>
-               <span className="text-sm text-zinc-500 group-hover:text-black transition-colors underline">(0) Avaliações</span>
+            <a href="#avaliacoes" className="flex items-center gap-2 mb-4 md:mb-6 group cursor-pointer">
+               <div className="flex text-zinc-300 group-hover:text-[#F59E0B] transition-colors">{[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 md:w-5 md:h-5 fill-current" />)}</div>
+               <span className="text-xs md:text-sm text-zinc-500 group-hover:text-black transition-colors underline">(0) Avaliações</span>
             </a>
 
             <div className="mb-4">
                <div className="flex items-center gap-3">
-                 {produto.promocao && <span className="text-lg text-zinc-400 line-through">R$ {produto.precoOriginal.toFixed(2).replace('.', ',')}</span>}
-                 <span className="text-3xl font-bold text-black block">R$ {precoAtual.toFixed(2).replace('.', ',')}</span>
+                 {produto.promocao && <span className="text-base md:text-lg text-zinc-400 line-through">R$ {produto.precoOriginal.toFixed(2).replace('.', ',')}</span>}
+                 <span className="text-2xl md:text-3xl font-bold text-black block">R$ {precoAtual.toFixed(2).replace('.', ',')}</span>
                </div>
-               <span className="text-sm text-zinc-500 mt-1 block">em até <strong className="text-black">3x de R$ {(precoAtual / 3).toFixed(2).replace('.', ',')}</strong> sem juros</span>
+               <span className="text-xs md:text-sm text-zinc-500 mt-1 block">em até <strong className="text-black">3x de R$ {(precoAtual / 3).toFixed(2).replace('.', ',')}</strong> sem juros</span>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-zinc-600 mb-4 pb-4">
+            <div className="flex items-center gap-2 text-xs md:text-sm text-zinc-600 mb-4 pb-4">
                <span>🚚</span>
                <span>Compre e receba <strong className="text-[#F59E0B]">FRETE GRÁTIS</strong> em compras acima de R$ 299</span>
             </div>
 
-            <div className="flex items-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-600 mb-8 border-b border-zinc-100 pb-8">
-              <span>{produto.tag}</span><span className="w-1 h-1 rounded-full bg-zinc-400"></span><span>{composicaoTexto}</span>
+            <div className="flex items-center gap-2 md:gap-3 text-[10px] md:text-sm font-bold uppercase tracking-widest text-zinc-600 mb-6 md:mb-8 border-b border-zinc-100 pb-6 md:pb-8 flex-wrap">
+              <span>{produto.tag}</span><span className="hidden md:inline w-1 h-1 rounded-full bg-zinc-400"></span><span>{composicaoTexto}</span>
             </div>
 
-            <div className="mb-8">
-              <span className="text-base text-zinc-800 mb-3 block">Quantidade</span>
-              <div className="grid grid-cols-3 gap-3">
-                <button onClick={() => handleSetQuantidade(1)} className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade === 1 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
-                   <span className="font-bold text-sm">1 un</span><span className={`text-xs mt-1 ${quantidade === 1 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p1.toFixed(2).replace('.', ',')}/un</span>
+            <div className="mb-6 md:mb-8">
+              <span className="text-sm md:text-base text-zinc-800 mb-3 block">Quantidade</span>
+              <div className="grid grid-cols-3 gap-2 md:gap-3">
+                <button onClick={() => handleSetQuantidade(1)} className={`flex flex-col items-center justify-center py-2 md:py-3 px-1 md:px-2 rounded-md border-2 transition-all ${quantidade === 1 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
+                   <span className="font-bold text-xs md:text-sm">1 un</span><span className={`text-[10px] md:text-xs mt-0.5 md:mt-1 ${quantidade === 1 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p1.toFixed(2).replace('.', ',')}/un</span>
                 </button>
-                <button onClick={() => handleSetQuantidade(2)} className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade === 2 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
-                   <span className="font-bold text-sm">Kit com 2</span><span className={`text-xs mt-1 ${quantidade === 2 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p2.toFixed(2).replace('.', ',')}/un</span>
+                <button onClick={() => handleSetQuantidade(2)} className={`flex flex-col items-center justify-center py-2 md:py-3 px-1 md:px-2 rounded-md border-2 transition-all ${quantidade === 2 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
+                   <span className="font-bold text-xs md:text-sm">Kit c/ 2</span><span className={`text-[10px] md:text-xs mt-0.5 md:mt-1 ${quantidade === 2 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p2.toFixed(2).replace('.', ',')}/un</span>
                 </button>
-                <button onClick={() => handleSetQuantidade(3)} className={`flex flex-col items-center justify-center py-3 px-2 rounded-md border-2 transition-all ${quantidade >= 3 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
-                   <span className="font-bold text-sm">Kit com {quantidade >= 3 ? quantidade : '3'}</span><span className={`text-xs mt-1 ${quantidade >= 3 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p3.toFixed(2).replace('.', ',')}/un</span>
+                <button onClick={() => handleSetQuantidade(3)} className={`flex flex-col items-center justify-center py-2 md:py-3 px-1 md:px-2 rounded-md border-2 transition-all ${quantidade >= 3 ? 'border-black bg-black text-white' : 'border-zinc-200 bg-white hover:border-black'}`}>
+                   <span className="font-bold text-xs md:text-sm">Kit c/ {quantidade >= 3 ? quantidade : '3'}</span><span className={`text-[10px] md:text-xs mt-0.5 md:mt-1 ${quantidade >= 3 ? 'opacity-90' : 'text-zinc-500'}`}>R$ {p3.toFixed(2).replace('.', ',')}/un</span>
                 </button>
               </div>
             </div>
 
-            <div className="mb-8">
-              <span className="text-base text-zinc-800 mb-3 block">Cor: <strong className="font-bold">{produto.cor}</strong></span>
-              <div className="flex gap-3 flex-wrap">
+            <div className="mb-6 md:mb-8">
+              <span className="text-sm md:text-base text-zinc-800 mb-3 block">Cor: <strong className="font-bold">{produto.cor}</strong></span>
+              <div className="flex gap-2.5 md:gap-3 flex-wrap">
                 {grupoDeCores.map(p => (
-                   <Link key={p.id} href={`/produto/${p.id}`} className={`w-12 h-12 rounded-md border-2 transition-all flex items-center justify-center ${produto.id === p.id ? 'border-black p-0.5' : 'border-transparent hover:border-zinc-300'}`} title={p.cor}>
+                   <Link key={p.id} href={`/produto/${p.id}`} className={`w-10 h-10 md:w-12 md:h-12 rounded-md border-2 transition-all flex items-center justify-center ${produto.id === p.id ? 'border-black p-0.5' : 'border-transparent hover:border-zinc-300'}`} title={p.cor}>
                       <div className="w-full h-full rounded-sm border border-zinc-200 shadow-sm" style={{ backgroundColor: p.hex }}></div>
                    </Link>
                 ))}
               </div>
             </div>
 
-            <div className="mb-10">
+            <div className="mb-8 md:mb-10">
               <div className="flex justify-between items-end mb-3">
-                <span className="text-base text-zinc-800">Tamanho: <span className="font-bold">{tamanhoSelecionado || ''}</span></span>
-                <button onClick={() => setShowTabelaMedidas(true)} className="text-xs text-zinc-500 underline hover:text-black transition-colors">Tabela de Medidas</button>
+                <span className="text-sm md:text-base text-zinc-800">Tamanho: <span className="font-bold">{tamanhoSelecionado || ''}</span></span>
+                <button onClick={() => setShowTabelaMedidas(true)} className="text-[10px] md:text-xs text-zinc-500 underline hover:text-black transition-colors">Tabela de Medidas</button>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-1.5 md:gap-2">
                 {produto.tamanhos.map((tam) => {
                   const emEstoque = produto.estoque[tam] > 0;
                   return (
-                    <button key={tam} onClick={() => emEstoque && handleSelectTamanho(tam)} disabled={!emEstoque} className={`h-12 flex-1 max-w-[60px] flex items-center justify-center text-sm font-bold border rounded-sm transition-all ${!emEstoque ? 'bg-zinc-100 text-zinc-300 border-zinc-200 cursor-not-allowed line-through' : tamanhoSelecionado === tam ? 'bg-black text-white border-black shadow-md' : 'bg-white text-zinc-600 border-zinc-300 hover:border-black'}`}>
+                    <button key={tam} onClick={() => emEstoque && handleSelectTamanho(tam)} disabled={!emEstoque} className={`h-10 md:h-12 flex-1 max-w-[60px] flex items-center justify-center text-xs md:text-sm font-bold border rounded-sm transition-all ${!emEstoque ? 'bg-zinc-100 text-zinc-300 border-zinc-200 cursor-not-allowed line-through' : tamanhoSelecionado === tam ? 'bg-black text-white border-black shadow-md' : 'bg-white text-zinc-600 border-zinc-300 hover:border-black'}`}>
                       {tam}
                     </button>
                   );
@@ -314,50 +310,46 @@ export default function ProdutoPage() {
               </div>
             </div>
 
-            <div className="flex gap-4 mb-8">
-              <div className="flex items-center border border-zinc-300 rounded-sm h-14 bg-white w-32 shrink-0">
-                <button onClick={() => handleSetQuantidade(quantidade - 1)} disabled={quantidade <= 1} className="px-4 h-full text-zinc-500 hover:text-black transition-colors">-</button>
-                <span className="flex-1 text-center font-bold text-lg">{quantidade}</span>
-                <button onClick={() => handleSetQuantidade(quantidade + 1)} className="px-4 h-full text-zinc-500 hover:text-black transition-colors">+</button>
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-8">
+              <div className="flex items-center border border-zinc-300 rounded-sm h-12 md:h-14 bg-white w-full sm:w-32 shrink-0">
+                <button onClick={() => handleSetQuantidade(quantidade - 1)} disabled={quantidade <= 1} className="flex-1 sm:px-4 h-full text-zinc-500 hover:text-black transition-colors">-</button>
+                <span className="w-10 text-center font-bold text-base md:text-lg">{quantidade}</span>
+                <button onClick={() => handleSetQuantidade(quantidade + 1)} className="flex-1 sm:px-4 h-full text-zinc-500 hover:text-black transition-colors">+</button>
               </div>
-              <button onClick={handleComprar} disabled={(!isProntoParaComprar || isProdutoEsgotado) && !!session} className={`flex-1 h-14 flex items-center justify-center gap-2 text-sm md:text-base font-bold uppercase tracking-widest rounded-sm transition-all duration-300 shadow-sm ${!session ? 'bg-zinc-900 text-white hover:bg-black' : isProdutoEsgotado ? 'bg-zinc-300 text-zinc-500 cursor-not-allowed' : isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
-                <ShoppingCart className="w-5 h-5" />
+              <button onClick={handleComprar} disabled={(!isProntoParaComprar || isProdutoEsgotado) && !!session} className={`w-full h-12 md:h-14 flex items-center justify-center gap-2 text-xs md:text-base font-bold uppercase tracking-widest rounded-sm transition-all duration-300 shadow-sm ${!session ? 'bg-zinc-900 text-white hover:bg-black' : isProdutoEsgotado ? 'bg-zinc-300 text-zinc-500 cursor-not-allowed' : isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}>
+                <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" />
                 {!session ? 'Faça Login' : isProdutoEsgotado ? 'Esgotado' : isProntoParaComprar ? `Adicionar - R$ ${valorTotal.toFixed(2).replace('.', ',')}` : 'Selecione o Tamanho'}
               </button>
             </div>
 
-            <div className="bg-zinc-50 p-4 rounded-md border border-zinc-200 mb-8">
-              <span className="text-sm font-bold uppercase block mb-3 text-zinc-700">Calcule o Frete</span>
+            <div className="bg-zinc-50 p-3 md:p-4 rounded-md border border-zinc-200 mb-8">
+              <span className="text-xs md:text-sm font-bold uppercase block mb-2 md:mb-3 text-zinc-700">Calcule o Frete</span>
               <div className="flex gap-2">
-                <input type="text" placeholder="Seu CEP" value={cep} onChange={(e) => setCep(e.target.value)} maxLength={9} className="flex-1 border border-zinc-300 px-4 h-12 rounded-sm text-sm outline-none focus:border-black" />
-                <button onClick={calcularFrete} className="bg-black text-white px-6 font-bold uppercase tracking-widest text-xs hover:bg-zinc-800 transition-colors">Consultar</button>
+                <input type="text" placeholder="Seu CEP" value={cep} onChange={(e) => setCep(e.target.value)} maxLength={9} className="flex-1 border border-zinc-300 px-3 md:px-4 h-10 md:h-12 rounded-sm text-xs md:text-sm outline-none focus:border-black" />
+                <button onClick={calcularFrete} className="bg-black text-white px-4 md:px-6 font-bold uppercase tracking-widest text-[10px] md:text-xs hover:bg-zinc-800 transition-colors">Consultar</button>
               </div>
-              {frete !== null && <p className="text-green-600 text-sm font-bold mt-3">Frete Fixo: R$ {frete.toFixed(2).replace('.', ',')}</p>}
+              {frete !== null && <p className="text-green-600 text-xs md:text-sm font-bold mt-2 md:mt-3">Frete Fixo: R$ {frete.toFixed(2).replace('.', ',')}</p>}
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mt-4 bg-zinc-50 p-4 rounded-md border border-zinc-100">
-               <div className="flex items-center gap-3 text-xs font-bold uppercase text-zinc-600"><Package className="w-4 h-4 text-[#F59E0B]" /> Envio Imediato</div>
-               <div className="flex items-center gap-3 text-xs font-bold uppercase text-zinc-600"><CreditCard className="w-4 h-4 text-[#F59E0B]" /> Até 3x Sem Juros</div>
-               <div className="flex items-center gap-3 text-xs font-bold uppercase text-zinc-600"><Truck className="w-4 h-4 text-[#F59E0B]" /> Enviamos p/ Todo Brasil</div>
-               <div className="flex items-center gap-3 text-xs font-bold uppercase text-zinc-600"><ShieldCheck className="w-4 h-4 text-[#F59E0B]" /> Qualidade Garantida</div>
+            <div className="grid grid-cols-2 gap-3 md:gap-4 mt-4 bg-zinc-50 p-3 md:p-4 rounded-md border border-zinc-100">
+               <div className="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs font-bold uppercase text-zinc-600"><Package className="w-3 h-3 md:w-4 md:h-4 text-[#F59E0B]" /> Envio Imediato</div>
+               <div className="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs font-bold uppercase text-zinc-600"><CreditCard className="w-3 h-3 md:w-4 md:h-4 text-[#F59E0B]" /> Até 3x Sem Juros</div>
+               <div className="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs font-bold uppercase text-zinc-600"><Truck className="w-3 h-3 md:w-4 md:h-4 text-[#F59E0B]" /> Envio Nacional</div>
+               <div className="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs font-bold uppercase text-zinc-600"><ShieldCheck className="w-3 h-3 md:w-4 md:h-4 text-[#F59E0B]" /> Qualidade Top</div>
             </div>
           </div>
         </div>
 
-        <div className="mb-20">
-          <div className="flex gap-8 border-b border-zinc-200 mb-8">
-            <button onClick={() => setAbaAtiva('descricao')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'descricao' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>Descrição{abaAtiva === 'descricao' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}</button>
-            <button onClick={() => setAbaAtiva('tecnica')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'tecnica' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>Informações Técnicas{abaAtiva === 'tecnica' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}</button>
-            <button onClick={() => setAbaAtiva('lavagem')} className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'lavagem' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>Lavagem{abaAtiva === 'lavagem' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}</button>
+        <div className="mb-16 md:mb-20">
+          <div className="flex gap-4 md:gap-8 border-b border-zinc-200 mb-6 md:mb-8 overflow-x-auto whitespace-nowrap no-scrollbar pb-1">
+            <button onClick={() => setAbaAtiva('descricao')} className={`pb-3 md:pb-4 text-xs md:text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'descricao' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>Descrição{abaAtiva === 'descricao' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}</button>
+            <button onClick={() => setAbaAtiva('tecnica')} className={`pb-3 md:pb-4 text-xs md:text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'tecnica' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>Informações Técnicas{abaAtiva === 'tecnica' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}</button>
+            <button onClick={() => setAbaAtiva('lavagem')} className={`pb-3 md:pb-4 text-xs md:text-sm font-bold uppercase tracking-widest transition-colors relative ${abaAtiva === 'lavagem' ? 'text-black' : 'text-zinc-400 hover:text-black'}`}>Lavagem{abaAtiva === 'lavagem' && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>}</button>
           </div>
-          <div className="text-zinc-600 text-sm leading-relaxed max-w-3xl">
-             {abaAtiva === 'descricao' && (
-               <div className="space-y-4">
-                 {descricaoTexto}
-               </div>
-             )}
+          <div className="text-zinc-600 text-xs md:text-sm leading-relaxed max-w-3xl">
+             {abaAtiva === 'descricao' && <div className="space-y-3 md:space-y-4">{descricaoTexto}</div>}
              {abaAtiva === 'tecnica' && (
-               <ul className="list-disc pl-5 space-y-2">
+               <ul className="list-disc pl-4 md:pl-5 space-y-1.5 md:space-y-2">
                  {isShorts ? (
                    <>
                      <li>Fabricado com 83% Poliamida e 17% Elastano.</li>
@@ -413,7 +405,7 @@ export default function ProdutoPage() {
                </ul>
              )}
              {abaAtiva === 'lavagem' && (
-               <ul className="list-disc pl-5 space-y-2">
+               <ul className="list-disc pl-4 md:pl-5 space-y-1.5 md:space-y-2">
                  <li>Lavar à máquina em ciclo delicado com cores semelhantes.</li>
                  <li>Secar à sombra na vertical para preservar a tonalidade original do tecido.</li>
                  {(isPoliamida || isShorts) && <li>Não precisa passar a ferro. Caso sinta necessidade, utilizar temperatura baixíssima.</li>}
@@ -424,24 +416,24 @@ export default function ProdutoPage() {
           </div>
         </div>
 
-        <section id="avaliacoes" className="border-t border-zinc-200 pt-16 mt-16 mb-8">
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-8 gap-4">
-            <h2 className="text-3xl font-anton uppercase tracking-wide text-zinc-900">Avaliações da Galera</h2>
-            <button className="text-sm font-bold uppercase tracking-widest underline hover:text-[#F59E0B] transition-colors">Escrever uma avaliação</button>
+        <section id="avaliacoes" className="border-t border-zinc-200 pt-12 md:pt-16 mt-12 md:mt-16 mb-6 md:mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center sm:items-end mb-6 md:mb-8 gap-3 md:gap-4">
+            <h2 className="text-2xl md:text-3xl font-anton uppercase tracking-wide text-zinc-900">Avaliações da Galera</h2>
+            <button className="text-[10px] md:text-sm font-bold uppercase tracking-widest underline hover:text-[#F59E0B] transition-colors">Escrever uma avaliação</button>
           </div>
-          <div className="bg-zinc-50 border border-zinc-200 rounded-md p-12 text-center flex flex-col items-center justify-center">
-            <div className="flex text-zinc-300 mb-4">
-              {[...Array(5)].map((_, i) => <Star key={i} className="w-8 h-8 fill-current" />)}
+          <div className="bg-zinc-50 border border-zinc-200 rounded-md p-8 md:p-12 text-center flex flex-col items-center justify-center">
+            <div className="flex text-zinc-300 mb-3 md:mb-4">
+              {[...Array(5)].map((_, i) => <Star key={i} className="w-6 h-6 md:w-8 md:h-8 fill-current" />)}
             </div>
-            <p className="text-zinc-500 font-medium text-lg">Nenhuma avaliação ainda.</p>
-            <p className="text-zinc-400 text-sm mt-1">Seja o primeiro a avaliar esta peça!</p>
+            <p className="text-zinc-500 font-medium text-base md:text-lg">Nenhuma avaliação ainda.</p>
+            <p className="text-zinc-400 text-xs md:text-sm mt-1">Seja o primeiro a avaliar esta peça!</p>
           </div>
         </section>
 
         {relacionadas.length > 0 && (
-          <section className="border-t border-zinc-200 pt-16">
-            <h2 className="text-3xl font-anton uppercase text-center mb-12 tracking-wide text-zinc-900">Você também pode gostar...</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <section className="border-t border-zinc-200 pt-12 md:pt-16">
+            <h2 className="text-2xl md:text-3xl font-anton uppercase text-center mb-8 md:mb-12 tracking-wide text-zinc-900">Você também pode gostar...</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
               {relacionadas.map(prod => (
                 <QuickBuyCard key={prod.id} tituloGrupo={prod.nome} produtosDoGrupo={[prod]} />
               ))}
