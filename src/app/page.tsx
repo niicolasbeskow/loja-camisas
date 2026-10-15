@@ -13,20 +13,19 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* 1. HERO SECTION (PROPORÇÃO ORIGINAL 16:9 - ZERO CORTES NO DESKTOP) */}
+      {/* 1. HERO SECTION (AJUSTADO PARA SUBIR O TEXTO) */}
       <section className="relative w-full h-[75vh] md:h-auto md:aspect-[16/9] bg-zinc-900 flex items-center justify-start overflow-hidden">
         
-        {/* A Imagem agora preenche uma caixa que tem exatamente o formato dela, eliminando o "zoom" e os cortes. */}
         <img 
           src="/files/capa-principal.jpg" 
           alt="Capa B.SKW" 
           className="absolute inset-0 w-full h-full object-cover object-[65%_center] md:object-center opacity-60 md:opacity-70"
         />
         
-        {/* Gradiente mobile */}
         <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/95 via-zinc-900/60 to-transparent md:hidden z-0"></div>
         
-        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-5 md:px-12 lg:px-24 mt-4 md:mt-0">
+        {/* Adicionei margens negativas (-mt-16 e -mt-24) para puxar o bloco inteiro para cima */}
+        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-5 md:px-12 lg:px-24 -mt-12 md:-mt-16 lg:-mt-24">
           <div className="max-w-[260px] sm:max-w-sm md:max-w-xl flex flex-col items-start text-left">
             
             <img 
