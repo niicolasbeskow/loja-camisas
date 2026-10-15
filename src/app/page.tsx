@@ -10,40 +10,45 @@ export default async function Home() {
   const boxyEmEstoque = produtos.filter(p => p.categoria === 'camiseta-boxy' && Object.values(p.estoque).some(qtd => qtd > 0));
   const poliamidaEmEstoque = produtos.filter(p => p.categoria === 'camiseta-poliamida' && Object.values(p.estoque).some(qtd => qtd > 0));
 
-  // 2. Peças em Promoção (Para a seção final)
+  // 2. Peças em Promoção
   const promocoes = produtos.filter(p => p.promocao && Object.values(p.estoque).some(qtd => qtd > 0));
 
   return (
     <main className="min-h-screen bg-white">
       
-      {/* 1. HERO SECTION (IMAGEM DE CAPA FULL WIDTH) */}
-      <section className="relative w-full h-[60vh] md:h-[80vh] bg-zinc-900 flex items-center justify-start overflow-hidden">
-        {/* A imagem de fundo (placeholder) */}
-        <div className="absolute inset-0 bg-[url('/files/capa-principal.jpg')] bg-cover bg-center opacity-60"></div>
+      {/* 1. HERO SECTION (CAPA PRINCIPAL COM A LOGO) */}
+      <section className="relative w-full h-[60vh] md:h-[85vh] bg-zinc-900 flex items-center justify-start overflow-hidden">
+        {/* A imagem de fundo (gerada no Nanobanana) */}
+        <div className="absolute inset-0 bg-[url('/files/capa-principal.jpg')] bg-cover bg-center md:bg-[center_top] opacity-70"></div>
         
         {/* Conteúdo sobre a imagem */}
-        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-6 md:px-12 lg:px-24">
+        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-6 md:px-12 lg:px-24 pt-16">
           <div className="max-w-xl">
-            <span className="text-zinc-300 text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-4 block">
-              Streetwear / Cultura / B.SKW
-            </span>
-            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-anton uppercase leading-[0.9] mb-6 tracking-wide drop-shadow-lg">
+            
+            {/* A NOSSA LOGO AQUI */}
+            <img 
+              src="/files/BSKW_empilhado_cor-branco-ambar.png" 
+              alt="B.SKW Logo" 
+              className="max-w-[140px] md:max-w-[200px] w-full object-contain mb-6 md:mb-8 drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
+            />
+            
+            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-anton uppercase leading-[0.95] mb-6 tracking-wide drop-shadow-lg">
               Feito para<br />os reais.
             </h1>
-            <p className="text-zinc-200 text-sm md:text-base mb-8 max-w-md font-medium">
+            <p className="text-zinc-200 text-sm md:text-base mb-8 max-w-md font-medium drop-shadow-md">
               Mais do que roupa — é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
             </p>
-            <Link href="/categoria/promocoes" className="inline-block border-2 border-white text-white px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors duration-300">
+            <Link href="/categoria/promocoes" className="inline-block bg-black/40 backdrop-blur-sm border-2 border-white text-white px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
               Comprar Agora →
             </Link>
           </div>
         </div>
         
-        {/* Coordenadas estéticas (Detalhe do design WST) */}
+        {/* Coordenadas estéticas */}
         <div className="absolute bottom-8 right-8 text-right hidden md:block z-10">
-           <span className="text-zinc-400 text-[10px] font-bold tracking-widest uppercase block mb-1">Est. 2024</span>
-           <span className="text-zinc-500 text-[10px] tracking-widest font-mono">27.5954° S<br/>48.5480° W</span>
-           <div className="w-12 h-[1px] bg-zinc-500 mt-2 ml-auto"></div>
+           <span className="text-zinc-300 text-[10px] font-bold tracking-widest uppercase block mb-1">Est. 2026</span>
+           <span className="text-zinc-400 text-[10px] tracking-widest font-mono">27.5954° S<br/>48.5480° W</span>
+           <div className="w-12 h-[1px] bg-zinc-400 mt-2 ml-auto"></div>
         </div>
       </section>
 
@@ -87,11 +92,9 @@ export default async function Home() {
 
             {/* Imagem da Direita */}
             <div className="order-1 lg:order-2 w-full aspect-[4/3] md:aspect-[16/9] bg-zinc-200 relative overflow-hidden flex items-center justify-center">
-               {/* Aqui entra a imagem banner-meio.jpg */}
                <div className="absolute inset-0 bg-[url('/files/banner-meio.jpg')] bg-cover bg-center"></div>
                <span className="relative z-10 text-zinc-500 text-sm font-medium tracking-widest uppercase bg-white/80 px-4 py-2">Imagem de Campanha</span>
                
-               {/* Assinatura Estética (Canto Superior Direito) */}
                <div className="absolute top-8 right-8 z-10 text-right hidden md:block mix-blend-difference text-white">
                  <span className="block text-sm font-medium uppercase tracking-[0.2em] mb-1">Mesmo Mindset.</span>
                  <span className="block text-sm font-medium uppercase tracking-[0.2em]">Energia Diferente.</span>
