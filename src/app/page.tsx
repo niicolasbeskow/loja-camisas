@@ -4,42 +4,50 @@ import Link from 'next/link';
 import { Truck, ShieldCheck, RefreshCw, Leaf } from 'lucide-react';
 
 export default async function Home() {
-  // 1. Destaques (Estoque MVP - Tiro de Sniper)
   const basicaEmEstoque = produtos.filter(p => p.categoria === 'camiseta-basica' && Object.values(p.estoque).some(qtd => qtd > 0));
   const overEmEstoque = produtos.filter(p => p.categoria === 'camiseta-oversized' && Object.values(p.estoque).some(qtd => qtd > 0));
   const boxyEmEstoque = produtos.filter(p => p.categoria === 'camiseta-boxy' && Object.values(p.estoque).some(qtd => qtd > 0));
   const poliamidaEmEstoque = produtos.filter(p => p.categoria === 'camiseta-poliamida' && Object.values(p.estoque).some(qtd => qtd > 0));
-
-  // 2. Peças em Promoção
   const promocoes = produtos.filter(p => p.promocao && Object.values(p.estoque).some(qtd => qtd > 0));
 
   return (
     <main className="min-h-screen bg-white">
       
-      {/* 1. HERO SECTION (CAPA PRINCIPAL COM A LOGO) */}
-      <section className="relative w-full h-[60vh] md:h-[85vh] bg-zinc-900 flex items-center justify-start overflow-hidden">
-        {/* A imagem de fundo (gerada no Nanobanana) */}
-        <div className="absolute inset-0 bg-[url('/files/capa-principal.jpg')] bg-cover bg-center md:bg-[center_top] opacity-70"></div>
+      {/* 1. HERO SECTION (ESTILO OBSIDIAN) */}
+      <section className="relative w-full h-[65vh] md:h-[85vh] bg-zinc-900 flex items-center justify-start overflow-hidden">
+        {/* Usando tag img nativa para garantir que a imagem carrega sempre 100% */}
+        <img 
+          src="/files/capa-principal.jpg" 
+          alt="Capa B.SKW" 
+          className="absolute inset-0 w-full h-full object-cover object-[center_right] opacity-60"
+        />
         
         {/* Conteúdo sobre a imagem */}
-        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-6 md:px-12 lg:px-24 pt-16">
-          <div className="max-w-xl">
+        <div className="relative z-10 max-w-[1600px] w-full mx-auto px-6 md:px-12 lg:px-24">
+          <div className="max-w-xl flex flex-col items-start">
             
-            {/* A NOSSA LOGO AQUI */}
+            {/* LOGO GIGANTE NO LUGAR DE "OBSIDIAN" */}
             <img 
               src="/files/BSKW_empilhado_cor-branco-ambar.png" 
               alt="B.SKW Logo" 
-              className="max-w-[140px] md:max-w-[200px] w-full object-contain mb-6 md:mb-8 drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
+              className="max-w-[280px] md:max-w-[450px] w-full object-contain mb-4 md:mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
             />
             
-            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-anton uppercase leading-[0.95] mb-6 tracking-wide drop-shadow-lg">
-              Feito para<br />os reais.
+            {/* SUBTÍTULO NO LUGAR DE "BUILT DIFFERENT" */}
+            <h1 className="text-white text-xl md:text-3xl font-outfit font-bold uppercase tracking-[0.2em] mb-4 drop-shadow-md">
+              Feito para os reais.
             </h1>
-            <p className="text-zinc-200 text-sm md:text-base mb-8 max-w-md font-medium drop-shadow-md">
-              Mais do que roupa — é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
+
+            {/* LINHA SEPARADORA */}
+            <div className="w-16 h-[2px] bg-white mb-6 drop-shadow-sm"></div>
+
+            {/* TEXTO DE APOIO (ADAPTADO SEM TRAVESSÃO) */}
+            <p className="text-zinc-200 text-sm md:text-base mb-8 max-w-sm font-medium drop-shadow-md leading-relaxed">
+              Mais do que roupa, é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
             </p>
-            <Link href="/categoria/promocoes" className="inline-block bg-black/40 backdrop-blur-sm border-2 border-white text-white px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
-              Comprar Agora →
+
+            <Link href="/categoria/promocoes" className="inline-block border-2 border-white text-white px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
+              Comprar Agora
             </Link>
           </div>
         </div>
@@ -73,35 +81,21 @@ export default async function Home() {
       <section className="w-full bg-zinc-100 py-16 md:py-24">
         <div className="max-w-[1600px] mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            
-            {/* Texto da Esquerda */}
             <div className="order-2 lg:order-1 flex flex-col justify-center max-w-lg">
-              <span className="text-zinc-500 text-xs font-bold tracking-[0.2em] uppercase mb-4 block">
-                Novo Lançamento
-              </span>
-              <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-6 tracking-wide text-zinc-900">
-                Fresh<br/>Drops
-              </h2>
-              <p className="text-zinc-600 text-sm md:text-base mb-8">
-                As últimas peças adicionadas ao catálogo. Estoque limitado para garantir exclusividade. Não fique de fora.
-              </p>
-              <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-fit">
-                Ver Coleção Oversized →
-              </Link>
+              <span className="text-zinc-500 text-xs font-bold tracking-[0.2em] uppercase mb-4 block">Novo Lançamento</span>
+              <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-6 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
+              <p className="text-zinc-600 text-sm md:text-base mb-8">As últimas peças adicionadas ao catálogo. Estoque limitado para garantir exclusividade. Não fique de fora.</p>
+              <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-fit">Ver Coleção Oversized →</Link>
             </div>
-
-            {/* Imagem da Direita */}
             <div className="order-1 lg:order-2 w-full aspect-[4/3] md:aspect-[16/9] bg-zinc-200 relative overflow-hidden flex items-center justify-center">
-               <div className="absolute inset-0 bg-[url('/files/banner-meio.jpg')] bg-cover bg-center"></div>
-               <span className="relative z-10 text-zinc-500 text-sm font-medium tracking-widest uppercase bg-white/80 px-4 py-2">Imagem de Campanha</span>
-               
+               <img src="/files/banner-meio.jpg" alt="Campanha" className="absolute inset-0 w-full h-full object-cover" />
+               <span className="relative z-10 text-zinc-500 text-sm font-medium tracking-widest uppercase bg-white/80 px-4 py-2 opacity-0">Campanha</span>
                <div className="absolute top-8 right-8 z-10 text-right hidden md:block mix-blend-difference text-white">
                  <span className="block text-sm font-medium uppercase tracking-[0.2em] mb-1">Mesmo Mindset.</span>
                  <span className="block text-sm font-medium uppercase tracking-[0.2em]">Energia Diferente.</span>
                  <div className="w-12 h-[1px] bg-white mt-4 ml-auto"></div>
                </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -154,7 +148,6 @@ export default async function Home() {
               Ver Tudo →
             </Link>
           </div>
-
           <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-4 md:gap-x-6">
             {promocoes.slice(0, 4).map(produto => (
               <QuickBuyCard key={produto.id} tituloGrupo={produto.nome} produtosDoGrupo={[produto]} />
