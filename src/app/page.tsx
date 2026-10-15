@@ -13,35 +13,32 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* 1. HERO SECTION (ESTILO OBSIDIAN) */}
+      {/* 1. HERO SECTION (ALINHAMENTO PERFEITO OBSIDIAN) */}
       <section className="relative w-full h-[65vh] md:h-[85vh] bg-zinc-900 flex items-center justify-start overflow-hidden">
-        {/* Usando tag img nativa para garantir que a imagem carrega sempre 100% */}
+        {/* Foco da imagem na direita para não cortar o modelo */}
         <img 
           src="/files/capa-principal.jpg" 
           alt="Capa B.SKW" 
-          className="absolute inset-0 w-full h-full object-cover object-[center_right] opacity-60"
+          className="absolute inset-0 w-full h-full object-cover object-right md:object-[80%_center] opacity-60"
         />
         
-        {/* Conteúdo sobre a imagem */}
+        {/* Conteúdo sobre a imagem - Container principal */}
         <div className="relative z-10 max-w-[1600px] w-full mx-auto px-6 md:px-12 lg:px-24">
-          <div className="max-w-xl flex flex-col items-start">
+          {/* Tudo alinhado à esquerda perfeitamente */}
+          <div className="max-w-xl flex flex-col items-start text-left">
             
-            {/* LOGO GIGANTE NO LUGAR DE "OBSIDIAN" */}
             <img 
               src="/files/BSKW_empilhado_cor-branco-ambar.png" 
               alt="B.SKW Logo" 
-              className="max-w-[280px] md:max-w-[450px] w-full object-contain mb-4 md:mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
+              className="max-w-[280px] md:max-w-[400px] w-full object-contain mb-4 md:mb-6 drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
             />
             
-            {/* SUBTÍTULO NO LUGAR DE "BUILT DIFFERENT" */}
             <h1 className="text-white text-xl md:text-3xl font-outfit font-bold uppercase tracking-[0.2em] mb-4 drop-shadow-md">
               Feito para os reais.
             </h1>
 
-            {/* LINHA SEPARADORA */}
             <div className="w-16 h-[2px] bg-white mb-6 drop-shadow-sm"></div>
 
-            {/* TEXTO DE APOIO (ADAPTADO SEM TRAVESSÃO) */}
             <p className="text-zinc-200 text-sm md:text-base mb-8 max-w-sm font-medium drop-shadow-md leading-relaxed">
               Mais do que roupa, é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
             </p>
@@ -52,7 +49,6 @@ export default async function Home() {
           </div>
         </div>
         
-        {/* Coordenadas estéticas */}
         <div className="absolute bottom-8 right-8 text-right hidden md:block z-10">
            <span className="text-zinc-300 text-[10px] font-bold tracking-widest uppercase block mb-1">Est. 2026</span>
            <span className="text-zinc-400 text-[10px] tracking-widest font-mono">27.5954° S<br/>48.5480° W</span>
