@@ -10,12 +10,13 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
-      {/* BANNER PRINCIPAL */}
+      {/* BANNER PRINCIPAL COM SOMBRA NA LOGO */}
       <section className="bg-[#9A9A9A] bg-[url('/files/textura.png')] bg-cover bg-center bg-blend-multiply py-32 md:py-40 px-4 flex justify-center w-full">
         <img
           src="/files/BSKW_empilhado_cor-branco-ambar.png"
           alt="B.SKW Logo"
-          className="max-w-[250px] md:max-w-[400px] w-full object-contain mx-auto pointer-events-none select-none"
+          // Adicionada a classe drop-shadow personalizada para dar destaque e profundidade
+          className="max-w-[250px] md:max-w-[400px] w-full object-contain mx-auto pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]"
         />
       </section>
 
