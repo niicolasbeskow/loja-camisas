@@ -13,14 +13,14 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* 1. HERO SECTION */}
+      {/* 1. HERO SECTION (ENQUADRAMENTO PERFEITO RESTAURADO) */}
       <section className="relative w-full h-[75vh] md:h-[85vh] bg-zinc-900 flex items-center justify-start overflow-hidden">
         
-        {/* A SOLUÇÃO: object-[65%_bottom] no mobile e object-[80%_bottom] no desktop. Isso obriga o site a NUNCA cortar a parte de baixo da foto! */}
+        {/* A SOLUÇÃO: object-[80%_center] restaura o equilíbrio perfeito sem cortar a cabeça nem focar no chão vazio */}
         <img 
           src="/files/capa-principal.jpg" 
           alt="Capa B.SKW" 
-          className="absolute inset-0 w-full h-full object-cover object-[65%_bottom] md:object-[80%_bottom] opacity-60 md:opacity-70"
+          className="absolute inset-0 w-full h-full object-cover object-[65%_center] md:object-[80%_center] opacity-60 md:opacity-70"
         />
         
         <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/95 via-zinc-900/60 to-transparent md:hidden z-0"></div>
