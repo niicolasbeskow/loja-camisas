@@ -68,39 +68,52 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 3. BANNER DE CHAMADA (MEIO DO SITE) - OTIMIZADO PARA MOBILE E DESKTOP */}
-      <section className="w-full bg-zinc-100 flex flex-col lg:flex-row items-stretch overflow-hidden">
-        
-        {/* TEXTO: Padding reduzido no mobile, botão w-full no mobile, textos adaptados */}
-        <div className="w-full lg:w-[45%] xl:w-[40%] flex justify-end">
-          <div className="w-full max-w-[800px] px-4 md:px-6 py-12 md:py-24 flex flex-col justify-center text-center lg:text-left lg:pr-12 lg:pl-12 xl:pl-24">
-            <span className="text-zinc-500 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-3 md:mb-4 block">Novo Lançamento</span>
-            <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-4 md:mb-6 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
+      {/* 3. BANNER DE CHAMADA (MEIO DO SITE) - CARROSSEL NO MOBILE */}
+      <section className="w-full bg-white md:bg-zinc-100 py-6 md:py-0">
+        <div className="w-full px-3 md:px-0">
+          
+          {/* CONTAINER FLEXÍVEL: Scroll horizontal no Mobile, Full Width no Desktop */}
+          <div className="w-full flex flex-row items-stretch overflow-x-auto snap-x snap-mandatory lg:overflow-visible rounded-xl md:rounded-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-zinc-100 shadow-sm md:shadow-none border border-zinc-200 md:border-none">
             
-            <p className="text-zinc-600 text-xs md:text-base mb-6 md:mb-8">
-              As últimas peças adicionadas ao catálogo.<br className="hidden md:block" />
-              Estoque limitado para garantir exclusividade.<br className="hidden md:block" />
-              Não fique de fora.
-            </p>
+            {/* SLIDE 1 (TEXTO) */}
+            <div className="w-full shrink-0 snap-center lg:shrink lg:w-[45%] xl:w-[40%] flex justify-end">
+              <div className="w-full max-w-[800px] px-6 py-16 md:py-24 flex flex-col justify-center text-center lg:text-left lg:pr-12 lg:pl-12 xl:pl-24">
+                <span className="text-zinc-500 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-3 md:mb-4 block">Novo Lançamento</span>
+                <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-4 md:mb-6 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
+                
+                <p className="text-zinc-600 text-sm md:text-base mb-8">
+                  As últimas peças adicionadas ao catálogo.<br className="hidden md:block" />
+                  Estoque limitado para garantir exclusividade.<br className="hidden md:block" />
+                  Não fique de fora.
+                </p>
+                
+                <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-6 md:px-8 py-4 md:py-4 font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-full lg:w-fit mx-auto lg:mx-0">Ver Coleção Oversized →</Link>
+              </div>
+            </div>
             
-            <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-6 md:px-8 py-4 md:py-4 font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-full lg:w-fit mx-auto lg:mx-0">Ver Coleção Oversized →</Link>
+            {/* SLIDE 2 (IMAGEM) */}
+            <div className="w-full shrink-0 snap-center lg:shrink lg:w-[55%] xl:w-[60%] relative min-h-[450px] md:min-h-[500px] lg:min-h-0 bg-zinc-200">
+               <img src="/files/banner-meio.jpg" alt="Campanha Fresh Drops" className="absolute inset-0 w-full h-full object-cover object-left" />
+               
+               <div className="absolute top-8 right-8 md:top-12 md:right-12 z-10 text-right hidden md:block mix-blend-difference text-white">
+                 <span className="block text-sm font-medium uppercase tracking-[0.2em] mb-1">Mesmo Mindset.</span>
+                 <span className="block text-sm font-medium uppercase tracking-[0.2em]">Energia Diferente.</span>
+                 <div className="w-12 h-[1px] bg-white mt-4 ml-auto"></div>
+               </div>
+            </div>
           </div>
-        </div>
-        
-        {/* IMAGEM: Quadrada no mobile (aspect-square), preenchimento total flexível no desktop */}
-        <div className="w-full lg:w-[55%] xl:w-[60%] relative aspect-square lg:aspect-auto">
-           <img src="/files/banner-meio.jpg" alt="Campanha Fresh Drops" className="absolute inset-0 w-full h-full object-cover object-left" />
-           
-           <div className="absolute top-8 right-8 md:top-12 md:right-12 z-10 text-right hidden md:block mix-blend-difference text-white">
-             <span className="block text-sm font-medium uppercase tracking-[0.2em] mb-1">Mesmo Mindset.</span>
-             <span className="block text-sm font-medium uppercase tracking-[0.2em]">Energia Diferente.</span>
-             <div className="w-12 h-[1px] bg-white mt-4 ml-auto"></div>
-           </div>
+
+          {/* INDICADORES DO CARROSSEL (APENAS NO MOBILE) */}
+          <div className="flex justify-center gap-1.5 mt-4 lg:hidden">
+            <div className="w-12 h-1 rounded-full bg-black"></div>
+            <div className="w-12 h-1 rounded-full bg-zinc-200"></div>
+          </div>
+
         </div>
       </section>
 
       {/* 4. BARRA DE BENEFÍCIOS (TRUST BADGES) */}
-      <section className="border-y border-zinc-200 bg-white">
+      <section className="border-y border-zinc-200 bg-white mt-6 md:mt-0">
         <div className="max-w-[1600px] mx-auto px-4 md:px-6 py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4">
