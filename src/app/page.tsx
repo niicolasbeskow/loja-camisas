@@ -13,42 +13,80 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* 1. HERO SECTION */}
+      {/* 1. CARROSSEL DE TOPO (MOBILE: 2 SLIDES | DESKTOP: APENAS HERO) */}
       <div className="w-full px-3 pt-3 md:px-0 md:pt-0">
-        <section className="relative w-full aspect-[4/3] sm:aspect-video md:aspect-[16/9] bg-zinc-900 flex items-center justify-start overflow-hidden rounded-xl md:rounded-none">
-          <img 
-            src="/files/capa-principal.jpg" 
-            alt="Capa B.SKW" 
-            className="absolute inset-0 w-full h-full object-cover object-[90%_center] md:object-center opacity-75"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/95 via-zinc-900/50 to-transparent md:bg-gradient-to-r md:from-zinc-900/80 md:via-zinc-900/40 md:to-transparent z-0"></div>
+        <div className="w-full flex flex-row overflow-x-auto snap-x snap-mandatory md:overflow-visible md:block [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] gap-3 md:gap-0">
           
-          <div className="relative z-10 w-full px-5 md:px-12 lg:px-24">
-            <div className="max-w-[170px] sm:max-w-[260px] md:max-w-xl flex flex-col items-start text-left">
-              <img 
-                src="/files/BSKW_empilhado_cor-branco-ambar.png" 
-                alt="B.SKW Logo" 
-                className="w-20 sm:w-28 md:w-full md:max-w-[320px] lg:max-w-[400px] object-contain mb-2 md:mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
-              />
-              <h1 className="text-white text-[11px] sm:text-base md:text-2xl lg:text-3xl font-outfit font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] mb-1.5 md:mb-4 drop-shadow-md">
-                Feito para os reais.
-              </h1>
-              <div className="w-6 md:w-16 h-[1px] md:h-[2px] bg-white mb-2 md:mb-6 drop-shadow-sm"></div>
-              <p className="text-zinc-200 text-[8px] sm:text-xs md:text-sm lg:text-base mb-3 md:mb-8 font-medium drop-shadow-md leading-snug md:leading-relaxed">
-                Mais do que roupa, é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
-              </p>
-              <Link href="/categoria/promocoes" className="inline-block border md:border-2 border-white text-white px-3 md:px-8 py-1.5 md:py-4 font-bold text-[7px] md:text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
-                Comprar Agora
-              </Link>
+          {/* SLIDE 1: CAPA PRINCIPAL (HERO) */}
+          <section className="shrink-0 snap-center w-full relative aspect-[4/3] sm:aspect-video md:aspect-[16/9] bg-zinc-900 flex items-center justify-start overflow-hidden rounded-xl md:rounded-none">
+            <img 
+              src="/files/capa-principal.jpg" 
+              alt="Capa B.SKW" 
+              className="absolute inset-0 w-full h-full object-cover object-[90%_center] md:object-center opacity-75"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/95 via-zinc-900/50 to-transparent md:bg-gradient-to-r md:from-zinc-900/80 md:via-zinc-900/40 md:to-transparent z-0"></div>
+            
+            <div className="relative z-10 w-full px-5 md:px-12 lg:px-24">
+              <div className="max-w-[170px] sm:max-w-[260px] md:max-w-xl flex flex-col items-start text-left">
+                <img 
+                  src="/files/BSKW_empilhado_cor-branco-ambar.png" 
+                  alt="B.SKW Logo" 
+                  className="w-20 sm:w-28 md:w-full md:max-w-[320px] lg:max-w-[400px] object-contain mb-2 md:mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
+                />
+                <h1 className="text-white text-[11px] sm:text-base md:text-2xl lg:text-3xl font-outfit font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] mb-1.5 md:mb-4 drop-shadow-md">
+                  Feito para os reais.
+                </h1>
+                <div className="w-6 md:w-16 h-[1px] md:h-[2px] bg-white mb-2 md:mb-6 drop-shadow-sm"></div>
+                <p className="text-zinc-200 text-[8px] sm:text-xs md:text-sm lg:text-base mb-3 md:mb-8 font-medium drop-shadow-md leading-snug md:leading-relaxed">
+                  Mais do que roupa, é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
+                </p>
+                <Link href="/categoria/promocoes" className="inline-block border md:border-2 border-white text-white px-3 md:px-8 py-1.5 md:py-4 font-bold text-[7px] md:text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
+                  Comprar Agora
+                </Link>
+              </div>
             </div>
-          </div>
-          
-          <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 text-right hidden md:block z-10">
-             <span className="text-zinc-300 text-[10px] font-bold tracking-widest uppercase block mb-1">Est. 2026</span>
-             <span className="text-zinc-400 text-[10px] tracking-widest font-mono">27.5954° S<br/>48.5480° W</span>
-             <div className="w-12 h-[1px] bg-zinc-400 mt-2 ml-auto"></div>
-          </div>
-        </section>
+            
+            <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 text-right hidden md:block z-10">
+               <span className="text-zinc-300 text-[10px] font-bold tracking-widest uppercase block mb-1">Est. 2026</span>
+               <span className="text-zinc-400 text-[10px] tracking-widest font-mono">27.5954° S<br/>48.5480° W</span>
+               <div className="w-12 h-[1px] bg-zinc-400 mt-2 ml-auto"></div>
+            </div>
+          </section>
+
+          {/* SLIDE 2: FRESH DROPS (APENAS MOBILE - Fica escondido no PC) */}
+          <section className="shrink-0 snap-center w-full md:hidden relative aspect-[4/3] sm:aspect-video bg-[#f2eee9] flex items-center justify-end overflow-hidden rounded-xl border border-zinc-200">
+            {/* Imagem do rapaz colada à esquerda */}
+            <img 
+              src="/files/banner-meio.jpg" 
+              alt="Campanha Fresh Drops" 
+              className="absolute inset-0 w-full h-full object-cover object-left" 
+            />
+            {/* Gradiente branco vindo da direita para o texto ficar legível */}
+            <div className="absolute inset-0 bg-gradient-to-l from-[#f2eee9] via-[#f2eee9]/80 to-transparent z-0"></div>
+            
+            {/* Textos formatados como um cartão unificado à direita */}
+            <div className="relative z-10 w-full px-5 flex flex-col items-end text-right">
+              <div className="max-w-[160px]">
+                <span className="text-zinc-500 text-[8px] font-bold tracking-[0.2em] uppercase mb-1.5 block">Novo Lançamento</span>
+                <h2 className="text-3xl font-anton uppercase leading-[0.9] mb-3 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
+                <div className="w-6 h-[2px] bg-black mb-3 ml-auto"></div>
+                <p className="text-zinc-600 text-[9px] mb-4 font-medium leading-snug">
+                  As últimas peças adicionadas. Estoque limitado. Não fique de fora.
+                </p>
+                <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white px-4 py-2.5 font-bold text-[7px] uppercase tracking-widest">
+                  Ver Coleção
+                </Link>
+              </div>
+            </div>
+          </section>
+
+        </div>
+        
+        {/* PONTINHOS DO CARROSSEL (APENAS MOBILE) */}
+        <div className="flex justify-center gap-1.5 mt-3 md:hidden">
+           <div className="w-6 h-1 rounded-full bg-black"></div>
+           <div className="w-6 h-1 rounded-full bg-zinc-300"></div>
+        </div>
       </div>
 
       {/* 2. COMPRAS RÁPIDAS (MVP) */}
@@ -68,52 +106,36 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 3. BANNER DE CHAMADA (MEIO DO SITE) - CARROSSEL NO MOBILE */}
-      <section className="w-full bg-white md:bg-zinc-100 py-6 md:py-0">
-        <div className="w-full px-3 md:px-0">
-          
-          {/* CONTAINER FLEXÍVEL: Scroll horizontal no Mobile, Full Width no Desktop */}
-          <div className="w-full flex flex-row items-stretch overflow-x-auto snap-x snap-mandatory lg:overflow-visible rounded-xl md:rounded-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-zinc-100 shadow-sm md:shadow-none border border-zinc-200 md:border-none">
+      {/* 3. BANNER DE CHAMADA (MEIO DO SITE) - APENAS DESKTOP */}
+      <section className="hidden md:flex w-full bg-zinc-100 flex-col lg:flex-row items-stretch">
+        <div className="w-full lg:w-[45%] xl:w-[40%] flex justify-end">
+          <div className="w-full max-w-[800px] px-4 md:px-6 py-16 md:py-24 flex flex-col justify-center text-center lg:text-left lg:pr-12 lg:pl-12 xl:pl-24">
+            <span className="text-zinc-500 text-xs font-bold tracking-[0.2em] uppercase mb-4 block">Novo Lançamento</span>
+            <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-6 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
             
-            {/* SLIDE 1 (TEXTO) */}
-            <div className="w-full shrink-0 snap-center lg:shrink lg:w-[45%] xl:w-[40%] flex justify-end">
-              <div className="w-full max-w-[800px] px-6 py-16 md:py-24 flex flex-col justify-center text-center lg:text-left lg:pr-12 lg:pl-12 xl:pl-24">
-                <span className="text-zinc-500 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-3 md:mb-4 block">Novo Lançamento</span>
-                <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-4 md:mb-6 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
-                
-                <p className="text-zinc-600 text-sm md:text-base mb-8">
-                  As últimas peças adicionadas ao catálogo.<br className="hidden md:block" />
-                  Estoque limitado para garantir exclusividade.<br className="hidden md:block" />
-                  Não fique de fora.
-                </p>
-                
-                <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-6 md:px-8 py-4 md:py-4 font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-full lg:w-fit mx-auto lg:mx-0">Ver Coleção Oversized →</Link>
-              </div>
-            </div>
+            <p className="text-zinc-600 text-sm md:text-base mb-8">
+              As últimas peças adicionadas ao catálogo.<br className="hidden md:block" />
+              Estoque limitado para garantir exclusividade.<br className="hidden md:block" />
+              Não fique de fora.
+            </p>
             
-            {/* SLIDE 2 (IMAGEM) */}
-            <div className="w-full shrink-0 snap-center lg:shrink lg:w-[55%] xl:w-[60%] relative min-h-[450px] md:min-h-[500px] lg:min-h-0 bg-zinc-200">
-               <img src="/files/banner-meio.jpg" alt="Campanha Fresh Drops" className="absolute inset-0 w-full h-full object-cover object-left" />
-               
-               <div className="absolute top-8 right-8 md:top-12 md:right-12 z-10 text-right hidden md:block mix-blend-difference text-white">
-                 <span className="block text-sm font-medium uppercase tracking-[0.2em] mb-1">Mesmo Mindset.</span>
-                 <span className="block text-sm font-medium uppercase tracking-[0.2em]">Energia Diferente.</span>
-                 <div className="w-12 h-[1px] bg-white mt-4 ml-auto"></div>
-               </div>
-            </div>
+            <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-fit mx-auto lg:mx-0">Ver Coleção Oversized →</Link>
           </div>
-
-          {/* INDICADORES DO CARROSSEL (APENAS NO MOBILE) */}
-          <div className="flex justify-center gap-1.5 mt-4 lg:hidden">
-            <div className="w-12 h-1 rounded-full bg-black"></div>
-            <div className="w-12 h-1 rounded-full bg-zinc-200"></div>
-          </div>
-
+        </div>
+        
+        <div className="w-full lg:w-[55%] xl:w-[60%] relative min-h-[400px] md:min-h-[500px] lg:min-h-0">
+           <img src="/files/banner-meio.jpg" alt="Campanha Fresh Drops" className="absolute inset-0 w-full h-full object-cover object-left" />
+           
+           <div className="absolute top-8 right-8 md:top-12 md:right-12 z-10 text-right hidden md:block mix-blend-difference text-white">
+             <span className="block text-sm font-medium uppercase tracking-[0.2em] mb-1">Mesmo Mindset.</span>
+             <span className="block text-sm font-medium uppercase tracking-[0.2em]">Energia Diferente.</span>
+             <div className="w-12 h-[1px] bg-white mt-4 ml-auto"></div>
+           </div>
         </div>
       </section>
 
       {/* 4. BARRA DE BENEFÍCIOS (TRUST BADGES) */}
-      <section className="border-y border-zinc-200 bg-white mt-6 md:mt-0">
+      <section className="border-y border-zinc-200 bg-white">
         <div className="max-w-[1600px] mx-auto px-4 md:px-6 py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4">
