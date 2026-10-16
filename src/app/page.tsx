@@ -75,13 +75,19 @@ export default async function Home() {
             <div className="order-2 lg:order-1 flex flex-col justify-center max-w-lg text-center md:text-left mx-auto md:mx-0">
               <span className="text-zinc-500 text-xs font-bold tracking-[0.2em] uppercase mb-4 block">Novo Lançamento</span>
               <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-6 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
-              <p className="text-zinc-600 text-sm md:text-base mb-8">As últimas peças adicionadas ao catálogo. Estoque limitado para garantir exclusividade. Não fique de fora.</p>
+              
+              {/* Ajuste do texto solicitado: Estoque limitado em nova linha */}
+              <p className="text-zinc-600 text-sm md:text-base mb-8">
+                As últimas peças adicionadas ao catálogo.<br className="hidden md:block" />
+                Estoque limitado para garantir exclusividade. Não fique de fora.
+              </p>
+              
               <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-fit mx-auto md:mx-0">Ver Coleção Oversized →</Link>
             </div>
             
-            {/* AQUI: Foco ajustado para 'object-[80%_center]' para garantir que o modelo agachado na direita aparece perfeito */}
+            {/* O container da imagem */}
             <div className="order-1 lg:order-2 w-full aspect-[4/3] md:aspect-[16/9] bg-zinc-200 relative overflow-hidden flex items-center justify-center rounded-xl md:rounded-none">
-               <img src="/files/banner-meio.jpg" alt="Campanha Fresh Drops" className="absolute inset-0 w-full h-full object-cover object-[80%_center]" />
+               <img src="/files/banner-meio.jpg" alt="Campanha Fresh Drops" className="absolute inset-0 w-full h-full object-cover object-center" />
                
                <div className="absolute top-8 right-8 z-10 text-right hidden md:block mix-blend-difference text-white">
                  <span className="block text-sm font-medium uppercase tracking-[0.2em] mb-1">Mesmo Mindset.</span>
