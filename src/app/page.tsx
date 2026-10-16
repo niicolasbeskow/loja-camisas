@@ -1,9 +1,23 @@
+"use client";
+
+import { useState } from 'react';
 import { produtos } from '@/data/produtos';
 import QuickBuyCard from '@/components/QuickBuyCard';
 import Link from 'next/link';
 import { Truck, ShieldCheck, RefreshCw, Leaf } from 'lucide-react';
 
-export default async function Home() {
+export default function Home() {
+  // Estado para controlar qual slide do carrossel está ativo no mobile
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  // Função que deteta o scroll/arrasto no telemóvel e muda o pontinho
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollLeft = e.currentTarget.scrollLeft;
+    const width = e.currentTarget.offsetWidth;
+    const slideIndex = Math.round(scrollLeft / width);
+    setActiveSlide(slideIndex);
+  };
+
   const basicaEmEstoque = produtos.filter(p => p.categoria === 'camiseta-basica' && Object.values(p.estoque).some(qtd => qtd > 0));
   const overEmEstoque = produtos.filter(p => p.categoria === 'camiseta-oversized' && Object.values(p.estoque).some(qtd => qtd > 0));
   const boxyEmEstoque = produtos.filter(p => p.categoria === 'camiseta-boxy' && Object.values(p.estoque).some(qtd => qtd > 0));
@@ -15,7 +29,10 @@ export default async function Home() {
       
       {/* 1. CARROSSEL DE TOPO (MOBILE: 2 SLIDES | DESKTOP: APENAS HERO) */}
       <div className="w-full px-3 pt-3 md:px-0 md:pt-0">
-        <div className="w-full flex flex-row overflow-x-auto snap-x snap-mandatory md:overflow-visible md:block [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] gap-3 md:gap-0">
+        <div 
+          className="w-full flex flex-row overflow-x-auto snap-x snap-mandatory md:overflow-visible md:block [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] gap-3 md:gap-0"
+          onScroll={handleScroll}
+        >
           
           {/* SLIDE 1: CAPA PRINCIPAL (HERO) */}
           <section className="shrink-0 snap-center w-full relative aspect-[4/3] sm:aspect-video md:aspect-[16/9] bg-zinc-900 flex items-center justify-start overflow-hidden rounded-xl md:rounded-none">
@@ -53,24 +70,22 @@ export default async function Home() {
             </div>
           </section>
 
-          {/* SLIDE 2: FRESH DROPS (APENAS MOBILE - Fica escondido no PC) */}
+          {/* SLIDE 2: FRESH DROPS (APENAS MOBILE - Sem o efeito de clareamento) */}
           <section className="shrink-0 snap-center w-full md:hidden relative aspect-[4/3] sm:aspect-video bg-[#f2eee9] flex items-center justify-end overflow-hidden rounded-xl border border-zinc-200">
-            {/* Imagem do rapaz colada à esquerda */}
+            {/* Imagem do rapaz colada à esquerda (object-left) 100% nítida */}
             <img 
               src="/files/banner-meio.jpg" 
               alt="Campanha Fresh Drops" 
               className="absolute inset-0 w-full h-full object-cover object-left" 
             />
-            {/* Gradiente branco vindo da direita para o texto ficar legível */}
-            <div className="absolute inset-0 bg-gradient-to-l from-[#f2eee9] via-[#f2eee9]/80 to-transparent z-0"></div>
             
             {/* Textos formatados como um cartão unificado à direita */}
             <div className="relative z-10 w-full px-5 flex flex-col items-end text-right">
               <div className="max-w-[160px]">
                 <span className="text-zinc-500 text-[8px] font-bold tracking-[0.2em] uppercase mb-1.5 block">Novo Lançamento</span>
-                <h2 className="text-3xl font-anton uppercase leading-[0.9] mb-3 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
+                <h2 className="text-3xl font-anton uppercase leading-[0.9] mb-3 tracking-wide text-zinc-900 drop-shadow-sm">Fresh<br/>Drops</h2>
                 <div className="w-6 h-[2px] bg-black mb-3 ml-auto"></div>
-                <p className="text-zinc-600 text-[9px] mb-4 font-medium leading-snug">
+                <p className="text-zinc-800 text-[9px] mb-4 font-medium leading-snug drop-shadow-sm">
                   As últimas peças adicionadas. Estoque limitado. Não fique de fora.
                 </p>
                 <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white px-4 py-2.5 font-bold text-[7px] uppercase tracking-widest">
@@ -82,10 +97,10 @@ export default async function Home() {
 
         </div>
         
-        {/* PONTINHOS DO CARROSSEL (APENAS MOBILE) */}
+        {/* PONTINHOS DO CARROSSEL DINÂMICOS (APENAS MOBILE) */}
         <div className="flex justify-center gap-1.5 mt-3 md:hidden">
-           <div className="w-6 h-1 rounded-full bg-black"></div>
-           <div className="w-6 h-1 rounded-full bg-zinc-300"></div>
+           <div className={`w-6 h-1 rounded-full transition-colors duration-300 ${activeSlide === 0 ? 'bg-black' : 'bg-zinc-300'}`}></div>
+           <div className={`w-6 h-1 rounded-full transition-colors duration-300 ${activeSlide === 1 ? 'bg-black' : 'bg-zinc-300'}`}></div>
         </div>
       </div>
 
