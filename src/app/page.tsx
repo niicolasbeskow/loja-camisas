@@ -72,15 +72,12 @@ export default async function Home() {
       <section className="w-full bg-zinc-100 py-16 md:py-24">
         <div className="max-w-[1600px] mx-auto px-4 md:px-6">
           
-          {/* MUDANÇA AQUI: grid de 12 colunas para controlar a largura exata da imagem e do texto */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
-            {/* O texto agora ocupa 5 colunas, deixando mais espaço para a foto */}
             <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col justify-center max-w-lg text-center md:text-left mx-auto md:mx-0">
               <span className="text-zinc-500 text-xs font-bold tracking-[0.2em] uppercase mb-4 block">Novo Lançamento</span>
               <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-6 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
               
-              {/* Ajuste do texto solicitado: Duas quebras de linha */}
               <p className="text-zinc-600 text-sm md:text-base mb-8">
                 As últimas peças adicionadas ao catálogo.<br className="hidden md:block" />
                 Estoque limitado para garantir exclusividade.<br className="hidden md:block" />
@@ -90,9 +87,9 @@ export default async function Home() {
               <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-fit mx-auto md:mx-0">Ver Coleção Oversized →</Link>
             </div>
             
-            {/* A imagem agora ocupa 7 colunas, começando exatamente na sua linha vermelha */}
             <div className="order-1 lg:order-2 lg:col-span-7 w-full aspect-[4/3] md:aspect-[16/9] bg-zinc-200 relative overflow-hidden flex items-center justify-center rounded-xl md:rounded-none">
-               <img src="/files/banner-meio.jpg" alt="Campanha Fresh Drops" className="absolute inset-0 w-full h-full object-cover object-center" />
+               {/* AQUI: Mudei para object-left para focar no lado esquerdo da imagem onde o modelo está agora */}
+               <img src="/files/banner-meio.jpg" alt="Campanha Fresh Drops" className="absolute inset-0 w-full h-full object-cover object-left" />
                
                <div className="absolute top-8 right-8 z-10 text-right hidden md:block mix-blend-difference text-white">
                  <span className="block text-sm font-medium uppercase tracking-[0.2em] mb-1">Mesmo Mindset.</span>
