@@ -13,47 +13,36 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* 1. HERO SECTION (CARD BANNER NO MOBILE / FULL WIDTH NO DESKTOP) */}
+      {/* 1. HERO SECTION */}
       <div className="w-full px-3 pt-3 md:px-0 md:pt-0">
         <section className="relative w-full aspect-[4/3] sm:aspect-video md:aspect-[16/9] bg-zinc-900 flex items-center justify-start overflow-hidden rounded-xl md:rounded-none">
-          
-          {/* AQUI ESTÁ A MUDANÇA: object-[90%_center] no mobile para mostrar a logo na camisa dele */}
           <img 
             src="/files/capa-principal.jpg" 
             alt="Capa B.SKW" 
             className="absolute inset-0 w-full h-full object-cover object-[90%_center] md:object-center opacity-75"
           />
-          
-          {/* Gradiente escuro focado apenas no lado esquerdo */}
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/95 via-zinc-900/50 to-transparent md:bg-gradient-to-r md:from-zinc-900/80 md:via-zinc-900/40 md:to-transparent z-0"></div>
           
-          {/* Conteúdo com tamanhos reduzidos e delicados para o mobile */}
           <div className="relative z-10 w-full px-5 md:px-12 lg:px-24">
             <div className="max-w-[170px] sm:max-w-[260px] md:max-w-xl flex flex-col items-start text-left">
-              
               <img 
                 src="/files/BSKW_empilhado_cor-branco-ambar.png" 
                 alt="B.SKW Logo" 
                 className="w-20 sm:w-28 md:w-full md:max-w-[320px] lg:max-w-[400px] object-contain mb-2 md:mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
               />
-              
               <h1 className="text-white text-[11px] sm:text-base md:text-2xl lg:text-3xl font-outfit font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] mb-1.5 md:mb-4 drop-shadow-md">
                 Feito para os reais.
               </h1>
-
               <div className="w-6 md:w-16 h-[1px] md:h-[2px] bg-white mb-2 md:mb-6 drop-shadow-sm"></div>
-
               <p className="text-zinc-200 text-[8px] sm:text-xs md:text-sm lg:text-base mb-3 md:mb-8 font-medium drop-shadow-md leading-snug md:leading-relaxed">
                 Mais do que roupa, é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
               </p>
-
               <Link href="/categoria/promocoes" className="inline-block border md:border-2 border-white text-white px-3 md:px-8 py-1.5 md:py-4 font-bold text-[7px] md:text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
                 Comprar Agora
               </Link>
             </div>
           </div>
           
-          {/* Coordenadas (Escondidas no mobile para manter limpo) */}
           <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 text-right hidden md:block z-10">
              <span className="text-zinc-300 text-[10px] font-bold tracking-widest uppercase block mb-1">Est. 2026</span>
              <span className="text-zinc-400 text-[10px] tracking-widest font-mono">27.5954° S<br/>48.5480° W</span>
@@ -89,9 +78,11 @@ export default async function Home() {
               <p className="text-zinc-600 text-sm md:text-base mb-8">As últimas peças adicionadas ao catálogo. Estoque limitado para garantir exclusividade. Não fique de fora.</p>
               <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-fit mx-auto md:mx-0">Ver Coleção Oversized →</Link>
             </div>
+            
+            {/* AQUI: Foco ajustado para 'object-[80%_center]' para garantir que o modelo agachado na direita aparece perfeito */}
             <div className="order-1 lg:order-2 w-full aspect-[4/3] md:aspect-[16/9] bg-zinc-200 relative overflow-hidden flex items-center justify-center rounded-xl md:rounded-none">
-               <img src="/files/banner-meio.jpg" alt="Campanha" className="absolute inset-0 w-full h-full object-cover" />
-               <span className="relative z-10 text-zinc-500 text-sm font-medium tracking-widest uppercase bg-white/80 px-4 py-2 opacity-0">Campanha</span>
+               <img src="/files/banner-meio.jpg" alt="Campanha Fresh Drops" className="absolute inset-0 w-full h-full object-cover object-[80%_center]" />
+               
                <div className="absolute top-8 right-8 z-10 text-right hidden md:block mix-blend-difference text-white">
                  <span className="block text-sm font-medium uppercase tracking-[0.2em] mb-1">Mesmo Mindset.</span>
                  <span className="block text-sm font-medium uppercase tracking-[0.2em]">Energia Diferente.</span>
