@@ -68,27 +68,27 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 3. BANNER DE CHAMADA (MEIO DO SITE) - FULL BLEED RIGHT */}
-      <section className="w-full bg-zinc-100 flex flex-col lg:flex-row items-stretch">
+      {/* 3. BANNER DE CHAMADA (MEIO DO SITE) - OTIMIZADO PARA MOBILE E DESKTOP */}
+      <section className="w-full bg-zinc-100 flex flex-col lg:flex-row items-stretch overflow-hidden">
         
-        {/* TEXTO: Metade esquerda, com padding para alinhar com o centro do site */}
+        {/* TEXTO: Padding reduzido no mobile, botão w-full no mobile, textos adaptados */}
         <div className="w-full lg:w-[45%] xl:w-[40%] flex justify-end">
-          <div className="w-full max-w-[800px] px-4 md:px-6 py-16 md:py-24 flex flex-col justify-center text-center lg:text-left lg:pr-12 lg:pl-12 xl:pl-24">
-            <span className="text-zinc-500 text-xs font-bold tracking-[0.2em] uppercase mb-4 block">Novo Lançamento</span>
-            <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-6 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
+          <div className="w-full max-w-[800px] px-4 md:px-6 py-12 md:py-24 flex flex-col justify-center text-center lg:text-left lg:pr-12 lg:pl-12 xl:pl-24">
+            <span className="text-zinc-500 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-3 md:mb-4 block">Novo Lançamento</span>
+            <h2 className="text-4xl md:text-6xl font-anton uppercase leading-[0.9] mb-4 md:mb-6 tracking-wide text-zinc-900">Fresh<br/>Drops</h2>
             
-            <p className="text-zinc-600 text-sm md:text-base mb-8">
+            <p className="text-zinc-600 text-xs md:text-base mb-6 md:mb-8">
               As últimas peças adicionadas ao catálogo.<br className="hidden md:block" />
               Estoque limitado para garantir exclusividade.<br className="hidden md:block" />
               Não fique de fora.
             </p>
             
-            <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-fit mx-auto lg:mx-0">Ver Coleção Oversized →</Link>
+            <Link href="/categoria/camiseta-oversized" className="inline-block bg-black text-white border-2 border-black px-6 md:px-8 py-4 md:py-4 font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-transparent hover:text-black transition-colors duration-300 w-full lg:w-fit mx-auto lg:mx-0">Ver Coleção Oversized →</Link>
           </div>
         </div>
         
-        {/* IMAGEM: Metade direita, com absolute inset-0 para colar nas bordas sem espaços cinzentos */}
-        <div className="w-full lg:w-[55%] xl:w-[60%] relative min-h-[400px] md:min-h-[500px] lg:min-h-0">
+        {/* IMAGEM: Quadrada no mobile (aspect-square), preenchimento total flexível no desktop */}
+        <div className="w-full lg:w-[55%] xl:w-[60%] relative aspect-square lg:aspect-auto">
            <img src="/files/banner-meio.jpg" alt="Campanha Fresh Drops" className="absolute inset-0 w-full h-full object-cover object-left" />
            
            <div className="absolute top-8 right-8 md:top-12 md:right-12 z-10 text-right hidden md:block mix-blend-difference text-white">
