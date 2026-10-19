@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { Package, LayoutDashboard, ShoppingCart, Settings, LogOut } from 'lucide-react';
+import { Package, LayoutDashboard, ShoppingCart, Settings, Store } from 'lucide-react';
+import LogoutButton from '@/components/LogoutButton';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col md:flex-row font-outfit">
       
-      {/* Sidebar (Menu Lateral) */}
       <aside className="w-full md:w-64 bg-zinc-900 text-white flex flex-col shrink-0">
         <div className="p-6 border-b border-zinc-800 flex items-center gap-3">
           <div className="w-8 h-8 bg-amber-500 text-black font-anton flex items-center justify-center text-xl pt-1">B</div>
@@ -27,14 +27,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
         </nav>
         
-        <div className="p-4 border-t border-zinc-800">
-          <Link href="/" className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white transition-colors text-xs font-bold uppercase tracking-wider">
-            <LogOut size={16} /> Ver Loja
+        <div className="p-4 border-t border-zinc-800 flex flex-col gap-2">
+          <Link href="/" target="_blank" className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors text-xs font-bold uppercase tracking-wider">
+            <Store size={16} /> Ver Loja Aberta
           </Link>
+          <LogoutButton />
         </div>
       </aside>
 
-      {/* Conteúdo Principal */}
       <main className="flex-1 p-6 md:p-8 lg:p-12 overflow-y-auto">
         {children}
       </main>

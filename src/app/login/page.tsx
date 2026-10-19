@@ -1,115 +1,62 @@
-'use client';
+"use client";
 
-import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+export default function Login() {
+  const [senha, setSenha] = useState('');
+  const [erro, setErro] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setIsLoading(true);
-
-    try {
-      await signIn('credentials', {
-        email,
-        password,
-        redirect: false
-      });
-
-      // If successful, redirect to home
-      window.location.href = '/';
-    } catch (err: any) {
-      setError(err?.type === 'CredentialsSignin' ? 'Credenciais inválidas' : 'Erro ao fazer login');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    setError(null);
-    setIsLoading(true);
-    try {
-      await signIn('google', {
-        callbackUrl: '/'
-      });
-    } catch (err: any) {
-      setError('Erro ao fazer login com Google');
-    } finally {
-      setIsLoading(false);
+    
+    // A SENHA DEFINIDA PARA O MVP É: bskw2026
+    if (senha === 'bskw2026') { 
+      document.cookie = "admin_session=true; path=/; max-age=86400"; // Dura 24 horas
+      router.push('/admin');
+      router.refresh();
+    } else {
+      setErro(true);
     }
   };
 
   return (
-    <main className="min-h-screen bg-concreto flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-6">
-        {/* Logo */}
-        <div className="text-center mb-6">
-          <h1 className="font-display uppercase text-4xl text-amber">
-            B.SKW
-          </h1>
-        </div>
+    <div className="min-h-screen bg-zinc-900 flex flex-col items-center justify-center font-outfit px-4 relative overflow-hidden">
+      {/* Fundo levemente texturizado / Efeito visual */}
+      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-zinc-900 to-zinc-900"></div>
 
-        {error && (
-          <div className="bg-breu/20 border border-breu/20 text-breu px-4 py-3 rounded-md mb-4">
-            {error}
+      <Link href="/" className="mb-10 hover:opacity-80 transition-opacity relative z-10">
+        <img src="/files/BSKW_empilhado_cor-branco-ambar.png" alt="B.SKW" className="w-28 object-contain" />
+      </Link>
+      
+      <div className="bg-white p-8 md:p-12 max-w-sm w-full rounded-none shadow-2xl relative z-10 border-t-4 border-amber-500">
+        <h1 className="text-2xl font-anton uppercase text-center text-zinc-900 mb-1">Acesso Restrito</h1>
+        <p className="text-zinc-500 text-center text-[10px] mb-8 uppercase tracking-widest font-bold">Painel de Controlo</p>
+        
+        <form onSubmit={handleLogin} className="flex flex-col gap-4">
+          <div>
+            <input 
+              type="password" 
+              placeholder="Palavra-passe de Admin" 
+              value={senha}
+              onChange={(e) => { setSenha(e.target.value); setErro(false); }}
+              className={`w-full border-2 p-4 text-sm font-medium focus:outline-none transition-colors ${erro ? 'border-red-500 focus:border-red-600' : 'border-zinc-200 focus:border-black'}`}
+            />
+            {erro && <p className="text-red-600 text-[10px] uppercase font-bold mt-2 tracking-wider">Acesso negado. Tente novamente.</p>}
           </div>
-        )}
-
-        {/* Card do formulário */}
-        <div className="bg-grafite border border-breu/20 rounded-xl p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-breu mb-2">Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="seu@email.com"
-                className="w-full px-4 py-2 bg-breu/20 border border-breu/20 text-breu placeholder-breu/50 focus:outline-none focus:ring-2 focus:ring-amber-400 rounded-md"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-breu mb-2">Senha</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full px-4 py-2 bg-breu/20 border border-breu/20 text-breu placeholder-breu/50 focus:outline-none focus:ring-2 focus:ring-amber-400 rounded-md"
-                required
-              />
-            </div>
-            <div className="flex justify-center">
-              <button
-                onClick={handleGoogleSignIn}
-                disabled={isLoading}
-                className="w-full bg-white text-breu font-sans font-semibold rounded-md px-4 py-2 flex items-center justify-center gap-2 transition-colors hover:bg-breu/20"
-              >
-                {/* You can replace this with an actual Google icon */}
-                <span className="text-sm">Continuar com Google</span>
-              </button>
-            </div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-ambar text-breu font-sans font-semibold rounded-none px-4 py-2 transition-colors hover:bg-amber/80 disabled:opacity-50"
-            >
-              {isLoading ? 'Entrando...' : 'Entrar'}
-            </button>
-          </form>
-        </div>
-
-        {/* Optional: cadastro link */}
-        <div className="text-center text-breu/60 mt-4">
-          Não tem conta? <a href="/cadastro" className="underline">Cadastre-se</a>
+          <button type="submit" className="w-full bg-black text-white p-4 font-bold text-xs uppercase tracking-widest hover:bg-zinc-800 transition-colors mt-2">
+            Entrar no Sistema
+          </button>
+        </form>
+        
+        <div className="mt-8 text-center">
+          <Link href="/" className="text-zinc-400 hover:text-black text-[10px] uppercase font-bold tracking-wider transition-colors">
+            ← Voltar para a Loja
+          </Link>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
