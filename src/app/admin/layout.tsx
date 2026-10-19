@@ -1,63 +1,43 @@
-import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
-import "../globals.css";
+import Link from 'next/link';
+import { Package, LayoutDashboard, ShoppingCart, Settings, LogOut } from 'lucide-react';
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "B.SKW Admin - Painel de Controle",
-  description: "Painel de administração da B.SKW",
-};
-
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${montserrat.variable} h-full antialiased`}>
-      <body className="min-h-[100vh] flex bg-gray-50">
-        {/* Admin Sidebar */}
-        <aside className="w-64 bg-gray-900 text-white flex-shrink-0">
-          <div className="p-6">
-            <h1 className="text-2xl font-bold mb-8">B.SKW Admin</h1>
-            <nav className="space-y-2">
-              <a
-                href="/admin"
-                className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-800"
-              >
-                Dashboard
-              </a>
-              <a
-                href="/admin/produtos"
-                className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-800"
-              >
-                Produtos
-              </a>
-              <a
-                href="/admin/artistas"
-                className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-800"
-              >
-                Artistas
-              </a>
-              <a
-                href="/admin/pedidos"
-                className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-800"
-              >
-                Pedidos
-              </a>
-            </nav>
-          </div>
-        </aside>
+    <div className="min-h-screen bg-zinc-50 flex flex-col md:flex-row font-outfit">
+      
+      {/* Sidebar (Menu Lateral) */}
+      <aside className="w-full md:w-64 bg-zinc-900 text-white flex flex-col shrink-0">
+        <div className="p-6 border-b border-zinc-800 flex items-center gap-3">
+          <div className="w-8 h-8 bg-amber-500 text-black font-anton flex items-center justify-center text-xl pt-1">B</div>
+          <span className="font-bold tracking-widest uppercase text-sm">Admin Panel</span>
+        </div>
+        
+        <nav className="flex-1 p-4 flex flex-col gap-2">
+          <Link href="/admin" className="flex items-center gap-3 px-4 py-3 bg-zinc-800 rounded-lg text-amber-500 hover:bg-zinc-700 transition-colors text-xs font-bold uppercase tracking-wider">
+            <LayoutDashboard size={16} /> Dashboard
+          </Link>
+          <Link href="/admin/produtos" className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors text-xs font-bold uppercase tracking-wider">
+            <Package size={16} /> Produtos
+          </Link>
+          <Link href="/admin/pedidos" className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors text-xs font-bold uppercase tracking-wider">
+            <ShoppingCart size={16} /> Pedidos
+          </Link>
+          <Link href="/admin/configuracoes" className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors text-xs font-bold uppercase tracking-wider">
+            <Settings size={16} /> Configurações
+          </Link>
+        </nav>
+        
+        <div className="p-4 border-t border-zinc-800">
+          <Link href="/" className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white transition-colors text-xs font-bold uppercase tracking-wider">
+            <LogOut size={16} /> Ver Loja
+          </Link>
+        </div>
+      </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 p-6 overflow-y-auto min-h-screen w-full bg-gray-50 text-gray-900">
-          <div className="max-w-7xl mx-auto">{children}</div>
-        </main>
-      </body>
-    </html>
+      {/* Conteúdo Principal */}
+      <main className="flex-1 p-6 md:p-8 lg:p-12 overflow-y-auto">
+        {children}
+      </main>
+    </div>
   );
 }
