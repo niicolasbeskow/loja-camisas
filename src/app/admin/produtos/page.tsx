@@ -1,133 +1,46 @@
-'use client';
-
-import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import { produtos } from '@/data/produtos';
+import { Edit, Trash2, Plus } from 'lucide-react';
 
-export default async function AdminProducts() {
-  const products = await prisma.product.findMany({
-    include: {
-      artista: {
-        select: {
-          nome: true,
-        }
-      }
-    },
-    orderBy: {
-      id: 'desc',
-    }
-  });
-
+export default function ProdutosAdmin() {
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Gestão de Produtos
-        </h1>
-        <Link href="/admin/produtos/novo" className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded-md">
-          Novo Produto
+    <div className="max-w-6xl mx-auto">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-anton uppercase text-zinc-900 tracking-wide">Gestão de Produtos</h1>
+          <p className="text-zinc-500 text-sm mt-1 font-medium">Controle o seu catálogo e estoque de camisas.</p>
+        </div>
+        <Link href="/admin/produtos/novo" className="bg-amber-500 text-black px-6 py-3 font-bold text-xs uppercase tracking-widest hover:bg-amber-400 transition-colors flex items-center gap-2">
+          <Plus size={16} /> Novo Produto
         </Link>
       </div>
 
-      {products.length === 0 ? (
-        <p className="text-center text-gray-500 py-8">
-          Nenhum produto encontrado. <Link href="/admin/produtos/novo" className="text-amber-600 hover:underline">Adicione o primeiro produto</Link>.
-        </p>
-      ) : (
+      <div className="bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200">
+          <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Imagem
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Nome
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Preço
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Tipo
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Artista
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Ações
-                </th>
+              <tr className="bg-zinc-100 border-b border-zinc-200 text-xs uppercase tracking-wider text-zinc-500 font-bold">
+                <th className="p-4">Produto</th>
+                <th className="p-4">Categoria</th>
+                <th className="p-4">Preço</th>
+                <th className="p-4">Ações</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
-              {products.map((product) => (
-                <tr key={product.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center space-x-3">
-                      {product.imagem ? (
-                        <img
-                          src={product.imagem}
-                          alt={product.nome}
-                          className="h-10 w-10 object-cover rounded"
-                        />
-                      ) : (
-                        <div className="h-10 w-10 bg-gray-200 rounded flex items-center justify-center">
-                          <span className="text-xs text-gray-500">Sem imagem</span>
-                        </div>
-                      )}
+            <tbody className="divide-y divide-zinc-200">
+              {produtos.map(p => (
+                <tr key={p.id} className="hover:bg-zinc-50 transition-colors">
+                  <td className="p-4 flex items-center gap-3">
+                    <div className="w-10 h-10 bg-zinc-200 rounded overflow-hidden shrink-0">
+                       <img src={p.imagens[0]} alt={p.nome} className="w-full h-full object-cover" />
                     </div>
+                    <span className="font-bold text-sm text-zinc-900">{p.nome}</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {product.nome}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-amber-600">
-                    R$ {product.preco.toFixed(2).replace('.', ',')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700">
-                    <span className={`px-2 py-0.5 text-xs font-semibold rounded ${
-                      product.tipo === 'Tag'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-purple-100 text-purple-800'
-                    }`}>
-                      {product.tipo === 'Tag' ? 'Tag' : 'Coleção'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {product.artista?.nome || 'Sem artista'}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex space-x-3">
-                      <Link
-                        href={`/admin/produtos/${product.id}/editar`}
-                        className="text-sm text-indigo-600 hover:text-indigo-900"
-                      >
-                        Editar
-                      </Link>
-                      <button
-                        onClick={() => {
-                          if (window.confirm('Tem certeza que deseja excluir este produto?')) {
-                            // Call the DELETE API
-                            fetch(`/api/produtos/${product.id}`, {
-                              method: 'DELETE',
-                            })
-                            .then(async (response) => {
-                              if (response.ok) {
-                                alert('Produto excluído com sucesso!');
-                                // Reload the page to reflect the change
-                                window.location.reload();
-                              } else {
-                                const errorData = await response.json();
-                                alert('Erro ao excluir produto: ' + (errorData.error || 'Erro desconhecido'));
-                              }
-                            })
-                            .catch((error) => {
-                              console.error('Error:', error);
-                              alert('Erro ao excluir produto. Por favor, tente novamente.');
-                            });
-                          }
-                        }}
-                        className="text-sm text-red-600 hover:text-red-900"
-                      >
-                        Excluir
-                      </button>
+                  <td className="p-4 text-sm text-zinc-600 capitalize">{p.categoria.replace('camiseta-', '')}</td>
+                  <td className="p-4 text-sm font-bold text-zinc-900">R$ {p.preco.toFixed(2)}</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <button className="p-2 text-zinc-400 hover:text-black transition-colors" title="Editar"><Edit size={16} /></button>
+                      <button className="p-2 text-zinc-400 hover:text-red-500 transition-colors" title="Excluir"><Trash2 size={16} /></button>
                     </div>
                   </td>
                 </tr>
@@ -135,7 +48,7 @@ export default async function AdminProducts() {
             </tbody>
           </table>
         </div>
-      )}
+      </div>
     </div>
   );
 }
