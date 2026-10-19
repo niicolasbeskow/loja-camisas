@@ -1,8 +1,13 @@
+"use client";
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Package, LayoutDashboard, ShoppingCart, Settings, Store } from 'lucide-react';
 import LogoutButton from '@/components/LogoutButton';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname(); // Descobre em que ecrã estamos agora
+
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col md:flex-row font-outfit">
       
@@ -13,16 +18,51 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
         
         <nav className="flex-1 p-4 flex flex-col gap-2">
-          <Link href="/admin" className="flex items-center gap-3 px-4 py-3 bg-zinc-800 rounded-lg text-amber-500 hover:bg-zinc-700 transition-colors text-xs font-bold uppercase tracking-wider">
+          {/* Botão DASHBOARD (Laranja se a rota for exatamente /admin) */}
+          <Link 
+            href="/admin" 
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors ${
+              pathname === '/admin' 
+                ? 'bg-zinc-800 text-amber-500' 
+                : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+            }`}
+          >
             <LayoutDashboard size={16} /> Dashboard
           </Link>
-          <Link href="/admin/produtos" className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors text-xs font-bold uppercase tracking-wider">
+
+          {/* Botão PRODUTOS (Laranja se a rota começar por /admin/produtos) */}
+          <Link 
+            href="/admin/produtos" 
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors ${
+              pathname?.startsWith('/admin/produtos') 
+                ? 'bg-zinc-800 text-amber-500' 
+                : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+            }`}
+          >
             <Package size={16} /> Produtos
           </Link>
-          <Link href="/admin/pedidos" className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors text-xs font-bold uppercase tracking-wider">
+
+          {/* Botão PEDIDOS */}
+          <Link 
+            href="/admin/pedidos" 
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors ${
+              pathname?.startsWith('/admin/pedidos') 
+                ? 'bg-zinc-800 text-amber-500' 
+                : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+            }`}
+          >
             <ShoppingCart size={16} /> Pedidos
           </Link>
-          <Link href="/admin/configuracoes" className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors text-xs font-bold uppercase tracking-wider">
+
+          {/* Botão CONFIGURAÇÕES */}
+          <Link 
+            href="/admin/configuracoes" 
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors ${
+              pathname?.startsWith('/admin/configuracoes') 
+                ? 'bg-zinc-800 text-amber-500' 
+                : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+            }`}
+          >
             <Settings size={16} /> Configurações
           </Link>
         </nav>
