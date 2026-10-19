@@ -6,8 +6,8 @@ export interface Estoque {
   G: number;
   GG: number;
   XG: number;
-  G1?: number;
-  G2?: number;
+  G1: number;
+  G2: number;
 }
 
 export interface Produto {
@@ -18,18 +18,18 @@ export interface Produto {
   preco: number;
   
   // NOVOS CAMPOS PROFISSIONAIS
-  precoAntigo?: number;
-  precoKit2?: number;
-  precoKit3?: number;
+  precoAntigo: number;
+  precoKit2: number;
+  precoKit3: number;
   tags: string[];
   especificacaoTecnica: string;
   
-  // CAMPOS ANTIGOS DE COMPATIBILIDADE (Para o Vercel não quebrar)
-  precoOriginal?: number; 
-  precoKit?: number; 
-  hex?: string; 
-  tag?: string; 
-  tamanhos?: string[]; 
+  // CAMPOS ANTIGOS (Mantidos obrigatórios para o site não quebrar)
+  precoOriginal: number; 
+  precoKit: number; 
+  hex: string; 
+  tag: string; 
+  tamanhos: Tamanho[]; 
   
   cor: string;
   promocao: boolean;
@@ -60,7 +60,7 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'XG'],
     promocao: true,
     imagens: ['/files/banner-meio.jpg'], 
-    estoque: { P: 10, M: 15, G: 20, GG: 10, XG: 5 },
+    estoque: { P: 10, M: 15, G: 20, GG: 10, XG: 5, G1: 0, G2: 0 },
     descricao: 'A Camiseta Básica B.SKW Preto é o item essencial que não pode faltar no seu guarda-roupa. Com uma modelagem reta e clássica, ela veste de forma equilibrada no corpo — nem tão justa, nem muito folgada.\n\nProduzida em malha premium 100% algodão, oferece toque macio, zero transparência e alta durabilidade para o uso intenso do dia a dia.\n\nNossas peças passam por um processo de pré-encolhimento (Zero Encolhimento), garantindo que o tamanho se mantenha exato e não perca o caimento após as lavagens.',
     informacoesTecnicas: '- Gola canelada 2x1 com 3cm de altura\n- Reforço ombro a ombro\n- Etiqueta interna estampada (não arranha)\n- Modelagem regular fit',
     lavagem: '- Lavar à máquina com água fria\n- Não usar alvejante\n- Secar à sombra\n- Passar a ferro em temperatura média (não passar sobre a estampa)'
@@ -84,7 +84,7 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'XG'],
     promocao: true,
     imagens: ['/files/banner-meio.jpg'], 
-    estoque: { P: 5, M: 8, G: 12, GG: 15, XG: 8 },
+    estoque: { P: 5, M: 8, G: 12, GG: 15, XG: 8, G1: 0, G2: 0 },
     descricao: 'A Camiseta Oversized B.SKW traz a verdadeira estética do streetwear premium. Com ombros caídos (drop shoulder), mangas mais amplas e comprimento ideal, ela proporciona um visual estruturado e moderno.\n\nFeita com malha heavyweight, tem um caimento pesado que não marca o corpo.',
     informacoesTecnicas: '- Gola canelada grossa de 3cm\n- Ombros deslocados (Drop Shoulder)\n- Malha pesada (Heavyweight) de alta gramatura\n- Modelagem Oversized autêntica',
     lavagem: '- Lavar à máquina com água fria\n- Secar à sombra para manter o peso da malha\n- Não usar secadora\n- Passar pelo avesso'
@@ -108,7 +108,7 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'XG'],
     promocao: false,
     imagens: ['/files/banner-meio.jpg'], 
-    estoque: { P: 10, M: 10, G: 10, GG: 10, XG: 0 },
+    estoque: { P: 10, M: 10, G: 10, GG: 10, XG: 0, G1: 0, G2: 0 },
     descricao: 'A modelagem Boxy é a tendência definitiva. Ela é mais curta no comprimento (ficando na linha do cinto) e mais larga nas laterais, criando uma silhueta quadrada ("box") perfeita para compor com calças cargo ou calças mais parrudas.\n\nEleva qualquer look básico a um visual de moda internacional.',
     informacoesTecnicas: '- Comprimento encurtado (Cropped/Boxy)\n- Largura ampliada\n- Gola de 2.5cm\n- Caimento estruturado',
     lavagem: '- Lavar com cores semelhantes\n- Não usar alvejante\n- Secar em varal\n- Passar a ferro em temperatura média'
@@ -132,7 +132,7 @@ export const produtos: Produto[] = [
     tamanhos: ['P', 'M', 'G', 'GG', 'XG'],
     promocao: true,
     imagens: ['/files/banner-meio.jpg'], 
-    estoque: { P: 20, M: 25, G: 20, GG: 10, XG: 5 },
+    estoque: { P: 20, M: 25, G: 20, GG: 10, XG: 5, G1: 0, G2: 0 },
     descricao: 'Para quem não para. A Camiseta Poliamida B.SKW foi desenvolvida para alta performance. O tecido Ice Tech gela no corpo, evapora o suor instantaneamente e não retém odores.\n\nPerfeita para treinos pesados, corridas ou para os dias de extremo calor na cidade.',
     informacoesTecnicas: '- Tecnologia Ice Tech (toque gelado)\n- Proteção UV50+\n- Anti-odor e secagem ultra rápida\n- Modelagem sport fit (levemente ajustada)',
     lavagem: '- Lavar à mão ou ciclo delicado\n- Não usar amaciante (bloqueia os poros do tecido)\n- Não passar a ferro\n- Secagem ultrarrápida à sombra'
