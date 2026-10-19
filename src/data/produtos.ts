@@ -1,23 +1,37 @@
+export type Tamanho = 'P' | 'M' | 'G' | 'GG' | 'XG' | 'G1' | 'G2';
+
 export interface Estoque {
   P: number;
   M: number;
   G: number;
   GG: number;
   XG: number;
+  G1?: number;
+  G2?: number;
 }
 
 export interface Produto {
   id: string;
-  codigo: string; // SKU para não ter de reescrever o produto todo
+  codigo: string;
   nome: string;
   categoria: string;
   preco: number;
+  
+  // NOVOS CAMPOS PROFISSIONAIS
   precoAntigo?: number;
-  precoKit2?: number; // Valor unitário se levar 2
-  precoKit3?: number; // Valor unitário se levar 3
-  cor: string;
-  especificacaoTecnica: string; // Ex: 200 G/M² FIO 26.1 • 100% ALGODÃO
+  precoKit2?: number;
+  precoKit3?: number;
   tags: string[];
+  especificacaoTecnica: string;
+  
+  // CAMPOS ANTIGOS DE COMPATIBILIDADE (Para o Vercel não quebrar)
+  precoOriginal?: number; 
+  precoKit?: number; 
+  hex?: string; 
+  tag?: string; 
+  tamanhos?: string[]; 
+  
+  cor: string;
   promocao: boolean;
   imagens: string[];
   estoque: Estoque;
@@ -34,11 +48,16 @@ export const produtos: Produto[] = [
     categoria: 'camiseta-basica',
     preco: 87.90,
     precoAntigo: 129.90,
+    precoOriginal: 129.90,
     precoKit2: 75.90,
     precoKit3: 63.90,
+    precoKit: 75.90,
     cor: 'Preto',
+    hex: '#000000',
     especificacaoTecnica: '200 G/M² FIO 26.1 • 100% ALGODÃO',
     tags: ['20% OFF'],
+    tag: '20% OFF',
+    tamanhos: ['P', 'M', 'G', 'GG', 'XG'],
     promocao: true,
     imagens: ['/files/banner-meio.jpg'], 
     estoque: { P: 10, M: 15, G: 20, GG: 10, XG: 5 },
@@ -53,11 +72,16 @@ export const produtos: Produto[] = [
     categoria: 'camiseta-oversized',
     preco: 111.90,
     precoAntigo: 169.90,
+    precoOriginal: 169.90,
     precoKit2: 95.90,
     precoKit3: 85.90,
+    precoKit: 95.90,
     cor: 'Preto',
+    hex: '#000000',
     especificacaoTecnica: '240 G/M² FIO 20.1 • 100% ALGODÃO HEAVYWEIGHT',
     tags: ['20% OFF'],
+    tag: '20% OFF',
+    tamanhos: ['P', 'M', 'G', 'GG', 'XG'],
     promocao: true,
     imagens: ['/files/banner-meio.jpg'], 
     estoque: { P: 5, M: 8, G: 12, GG: 15, XG: 8 },
@@ -72,11 +96,16 @@ export const produtos: Produto[] = [
     categoria: 'camiseta-boxy',
     preco: 105.90,
     precoAntigo: 0,
+    precoOriginal: 0,
     precoKit2: 95.90,
     precoKit3: 85.90,
+    precoKit: 95.90,
     cor: 'Areia',
+    hex: '#E3DAC9',
     especificacaoTecnica: '220 G/M² FIO 24.1 • 100% ALGODÃO',
     tags: ['NOVO'],
+    tag: 'NOVO',
+    tamanhos: ['P', 'M', 'G', 'GG', 'XG'],
     promocao: false,
     imagens: ['/files/banner-meio.jpg'], 
     estoque: { P: 10, M: 10, G: 10, GG: 10, XG: 0 },
@@ -91,11 +120,16 @@ export const produtos: Produto[] = [
     categoria: 'camiseta-poliamida',
     preco: 79.90,
     precoAntigo: 99.90,
+    precoOriginal: 99.90,
     precoKit2: 69.90,
     precoKit3: 59.90,
+    precoKit: 69.90,
     cor: 'Branco',
+    hex: '#FFFFFF',
     especificacaoTecnica: '90% POLIAMIDA • 10% ELASTANO • ICE TECH',
     tags: ['TREINO'],
+    tag: 'TREINO',
+    tamanhos: ['P', 'M', 'G', 'GG', 'XG'],
     promocao: true,
     imagens: ['/files/banner-meio.jpg'], 
     estoque: { P: 20, M: 25, G: 20, GG: 10, XG: 5 },
@@ -104,8 +138,6 @@ export const produtos: Produto[] = [
     lavagem: '- Lavar à mão ou ciclo delicado\n- Não usar amaciante (bloqueia os poros do tecido)\n- Não passar a ferro\n- Secagem ultrarrápida à sombra'
   }
 ];
-
-export type Tamanho = 'P' | 'M' | 'G' | 'GG' | 'XG';
 
 export const getProdutoPorId = (id: string) => {
   return produtos.find(p => p.id === id);
