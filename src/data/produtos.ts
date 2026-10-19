@@ -104,3 +104,13 @@ export const produtos: Produto[] = [
     lavagem: '- Lavar à mão ou ciclo delicado\n- Não usar amaciante (bloqueia os poros do tecido)\n- Não passar a ferro\n- Secagem ultrarrápida à sombra'
   }
 ];
+
+export type Tamanho = 'P' | 'M' | 'G' | 'GG' | 'XG';
+
+export const getProdutoPorId = (id: string) => {
+  return produtos.find(p => p.id === id);
+};
+
+export const getProdutosPorCategoria = (categoria: string) => {
+  return produtos.filter(p => p.categoria === categoria);
+};
