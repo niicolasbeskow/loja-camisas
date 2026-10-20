@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { produtos, Tamanho } from '@/data/produtos';
 import { ShoppingCart, Truck, ShieldCheck, Star } from 'lucide-react';
 import QuickBuyCard from '@/components/QuickBuyCard';
@@ -20,21 +20,21 @@ const coresHex: Record<string, string> = {
   'Verde Militar': 'bg-[#4b5320]'
 };
 
-export default function ProdutoDetalhes({ params }: { params: { id: string } }) {
+export default function ProdutoDetalhes() {
   const router = useRouter();
-  const paramId = decodeURIComponent(params.id).toUpperCase();
+  const params = useParams();
+  const rawId = typeof params?.id === 'string' ? params.id : '';
+  const paramId = decodeURIComponent(rawId).toUpperCase();
   
-  // Encontra o produto exato pela URL inteligente (agora suporta o Código SKU corrido)
   const produto = produtos.find(p => 
-    p.codigo.replace(/-/g, '') === paramId ||
-    p.id === params.id || 
-    normalizar(p.nome).includes(normalizar(decodeURIComponent(params.id)))
+    p.codigo.replace(/-/g, '').toUpperCase() === paramId ||
+    p.id === rawId || 
+    normalizar(p.nome).includes(normalizar(decodeURIComponent(rawId)))
   ) || produtos[0];
 
   const [tamanhoAtivo, setTamanhoAtivo] = useState<Tamanho | ''>('');
   const [kitSelecionado, setKitSelecionado] = useState<1 | 2 | 3>(1);
   const [abaAtiva, setAbaAtiva] = useState<'descricao' | 'tecnica' | 'lavagem'>('descricao');
-  const [corAtiva, setCorAtiva] = useState(produto.cor);
 
   const getPrecoAtual = () => {
     if (kitSelecionado === 3 && produto.precoKit3) return produto.precoKit3;
@@ -46,33 +46,26 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
   const precoTotal = precoAtual * kitSelecionado;
   const parcela = (precoTotal / 3).toFixed(2).replace('.', ',');
 
+  // Busca apenas as variações de cor que realmente existem cadastradas para esta categoria
+  const variacoesDaMesmaCategoria = produtos.filter(p => p.categoria === produto.categoria);
   const sugestoes = produtos.filter(p => p.id !== produto.id).slice(0, 4);
   const formataTexto = (txt: string) => txt.replace(/-/g, '•');
-
-  // O Segredo: Navegação inteligente entre cores (SKUs diferentes)
-  const handleCorClick = (corClicada: string) => {
-    const produtoMesmaCategoria = produtos.find(p => p.categoria === produto.categoria && p.cor === corClicada);
-    if (produtoMesmaCategoria) {
-      // Se a cor existe no sistema, navega para a URL do novo SKU
-      router.push(`/produto/${produtoMesmaCategoria.codigo.replace(/-/g, '')}`);
-    } else {
-      // Se for apenas visual por enquanto, apenas muda o estado
-      setCorAtiva(corClicada);
-    }
-  };
 
   return (
     <main className="min-h-screen bg-white font-outfit pb-24">
       
       <div className="bg-white border-b border-zinc-100">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-4 flex gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-zinc-400">
-          <Link href="/" className="hover:text-black transition-colors">Home</Link>
-          <span>/</span>
-          <Link href={`/categoria/${produto.categoria}`} className="hover:text-black transition-colors">
-            {produto.categoria.replace('camiseta-', '')}
-          </Link>
-          <span>/</span>
-          <span className="text-black">{produto.nome}</span>
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-4 flex justify-between items-center text-[10px] md:text-xs font-bold uppercase tracking-widest text-zinc-400">
+          <div className="flex gap-2">
+            <Link href="/" className="hover:text-black transition-colors">Home</Link>
+            <span>/</span>
+            <Link href={`/categoria/${produto.categoria}`} className="hover:text-black transition-colors">
+              {produto.categoria.replace('camiseta-', '')}
+            </Link>
+            <span>/</span>
+            <span className="text-black">{produto.nome}</span>
+          </div>
+          <span className="font-mono text-zinc-400 hidden sm:inline">SKU: {produto.codigo.replace(/-/g, '')}</span>
         </div>
       </div>
 
@@ -98,6 +91,9 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
           </div>
 
           <div className="flex flex-col">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-400 mb-1">
+              CÓD: {produto.codigo.replace(/-/g, '')}
+            </span>
             <h1 className="text-3xl md:text-4xl font-anton uppercase text-zinc-900 tracking-wide mb-3">
               {produto.nome}
             </h1>
@@ -177,15 +173,15 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
 
             <div className="mb-8">
               <span className="text-xs font-bold uppercase tracking-widest text-zinc-900 mb-3 block">
-                Cor: <span className="font-medium capitalize text-zinc-600">{corAtiva}</span>
+                Cor: <span className="font-medium capitalize text-zinc-600">{produto.cor}</span>
               </span>
               <div className="flex gap-3">
-                {Array.from(new Set([produto.cor, 'Branco', 'Areia'])).map(cor => (
+                {variacoesDaMesmaCategoria.map(variacao => (
                   <button
-                    key={cor}
-                    onClick={() => handleCorClick(cor)}
-                    className={`w-10 h-10 rounded-full border-2 transition-all ${corAtiva === cor ? 'border-black scale-110' : 'border-zinc-200 hover:border-zinc-300'} ${coresHex[cor] || 'bg-zinc-200'}`}
-                    title={cor}
+                    key={variacao.codigo}
+                    onClick={() => router.push(`/produto/${variacao.codigo.replace(/-/g, '')}`)}
+                    className={`w-10 h-10 rounded-full border-2 transition-all ${produto.codigo === variacao.codigo ? 'border-black scale-110' : 'border-zinc-200 hover:border-zinc-300'} ${coresHex[variacao.cor] || 'bg-zinc-200'}`}
+                    title={`${variacao.cor} (${variacao.codigo.replace(/-/g, '')})`}
                   />
                 ))}
               </div>
@@ -239,7 +235,6 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
         </div>
 
         <div className="mt-20 pt-12 border-t border-zinc-200 max-w-4xl">
-          
           <div className="flex gap-8 md:gap-12 border-b border-zinc-200 mb-8 overflow-x-auto [&::-webkit-scrollbar]:hidden">
             <button 
               onClick={() => setAbaAtiva('descricao')}
