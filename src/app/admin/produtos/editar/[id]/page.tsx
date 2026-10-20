@@ -8,9 +8,14 @@ import { produtos as produtosData } from '@/data/produtos';
 
 export default function EditarProduto({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const produto = produtosData.find(p => p.id === params.id);
+  
+  // Converte a URL recebida (ex: bskwbasprt01) para maiúsculas
+  const paramId = params.id.toUpperCase();
+  
+  // Procura o produto cujo código (removendo os traços) seja igual à URL
+  const produto = produtosData.find(p => p.codigo.replace(/-/g, '') === paramId || p.id === paramId);
 
-  if (!produto) return <div className="p-12 text-center font-bold">Produto não encontrado.</div>;
+  if (!produto) return <div className="p-12 text-center text-red-500 font-bold uppercase tracking-widest mt-20">Produto não encontrado no catálogo.</div>;
 
   const [imagens, setImagens] = useState<string[]>(produto.imagens || []);
   const [tags, setTags] = useState<string[]>(produto.tags || []);

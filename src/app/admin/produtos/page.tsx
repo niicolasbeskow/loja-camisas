@@ -47,6 +47,9 @@ export default function ProdutosAdmin() {
               {produtosLista.map(p => {
                 const estoqueTotal = calcularEstoqueTotal(p.estoque);
                 const statusEstoque = estoqueTotal === 0 ? 'text-red-500' : estoqueTotal < 10 ? 'text-amber-500' : 'text-green-600';
+                
+                // Remove os traços para criar a URL limpa de E-commerce
+                const codigoUrl = p.codigo.replace(/-/g, '');
 
                 return (
                   <tr key={p.id} className="hover:bg-zinc-50 transition-colors">
@@ -73,7 +76,7 @@ export default function ProdutosAdmin() {
                     <td className="p-4 text-xs font-bold text-zinc-900">R$ {p.preco.toFixed(2).replace('.', ',')}</td>
                     <td className="p-4 pr-6 md:pr-8">
                       <div className="flex gap-2 justify-end">
-                        <Link href={`/admin/produtos/editar/${p.id}`} className="p-2 text-zinc-400 hover:text-black hover:bg-zinc-100 rounded transition-colors" title="Editar SKU">
+                        <Link href={`/admin/produtos/editar/${codigoUrl}`} className="p-2 text-zinc-400 hover:text-black hover:bg-zinc-100 rounded transition-colors" title="Editar SKU">
                           <Edit size={16} />
                         </Link>
                         <button onClick={() => handleExcluir(p.id, p.nome)} className="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors" title="Excluir SKU">

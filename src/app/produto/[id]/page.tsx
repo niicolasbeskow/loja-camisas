@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { produtos, Tamanho } from '@/data/produtos';
 import { ShoppingCart, Truck, ShieldCheck, Star } from 'lucide-react';
 import QuickBuyCard from '@/components/QuickBuyCard';
@@ -20,11 +21,14 @@ const coresHex: Record<string, string> = {
 };
 
 export default function ProdutoDetalhes({ params }: { params: { id: string } }) {
-  const paramId = decodeURIComponent(params.id);
+  const router = useRouter();
+  const paramId = decodeURIComponent(params.id).toUpperCase();
   
-  // Encontra o produto exato pela URL inteligente
+  // Encontra o produto exato pela URL inteligente (agora suporta o Código SKU corrido)
   const produto = produtos.find(p => 
-    p.id === paramId || normalizar(p.nome).includes(normalizar(paramId))
+    p.codigo.replace(/-/g, '') === paramId ||
+    p.id === params.id || 
+    normalizar(p.nome).includes(normalizar(decodeURIComponent(params.id)))
   ) || produtos[0];
 
   const [tamanhoAtivo, setTamanhoAtivo] = useState<Tamanho | ''>('');
@@ -42,11 +46,20 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
   const precoTotal = precoAtual * kitSelecionado;
   const parcela = (precoTotal / 3).toFixed(2).replace('.', ',');
 
-  // Pega outros produtos para a secção de vendas cruzadas
   const sugestoes = produtos.filter(p => p.id !== produto.id).slice(0, 4);
-
-  // Substitui traços por pontos elegantes para não parecer texto gerado
   const formataTexto = (txt: string) => txt.replace(/-/g, '•');
+
+  // O Segredo: Navegação inteligente entre cores (SKUs diferentes)
+  const handleCorClick = (corClicada: string) => {
+    const produtoMesmaCategoria = produtos.find(p => p.categoria === produto.categoria && p.cor === corClicada);
+    if (produtoMesmaCategoria) {
+      // Se a cor existe no sistema, navega para a URL do novo SKU
+      router.push(`/produto/${produtoMesmaCategoria.codigo.replace(/-/g, '')}`);
+    } else {
+      // Se for apenas visual por enquanto, apenas muda o estado
+      setCorAtiva(corClicada);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-white font-outfit pb-24">
@@ -66,7 +79,6 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           
-          {/* FOTO DO PRODUTO */}
           <div className="relative aspect-[4/5] bg-zinc-100 rounded-xl overflow-hidden flex items-center justify-center">
             {produto.imagens && produto.imagens.length > 0 ? (
                <img src={produto.imagens[0]} alt={produto.nome} className="absolute inset-0 w-full h-full object-cover object-center" />
@@ -85,7 +97,6 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
             )}
           </div>
 
-          {/* DADOS DE COMPRA */}
           <div className="flex flex-col">
             <h1 className="text-3xl md:text-4xl font-anton uppercase text-zinc-900 tracking-wide mb-3">
               {produto.nome}
@@ -131,7 +142,6 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
               </span>
             </div>
 
-            {/* SELEÇÃO DE KITS */}
             <div className="mb-8">
               <span className="text-xs font-bold uppercase tracking-widest text-zinc-900 mb-3 block">Quantidade</span>
               <div className="grid grid-cols-3 gap-2 md:gap-4">
@@ -165,7 +175,6 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
               </div>
             </div>
 
-            {/* SELEÇÃO DE CORES */}
             <div className="mb-8">
               <span className="text-xs font-bold uppercase tracking-widest text-zinc-900 mb-3 block">
                 Cor: <span className="font-medium capitalize text-zinc-600">{corAtiva}</span>
@@ -174,7 +183,7 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
                 {Array.from(new Set([produto.cor, 'Branco', 'Areia'])).map(cor => (
                   <button
                     key={cor}
-                    onClick={() => setCorAtiva(cor)}
+                    onClick={() => handleCorClick(cor)}
                     className={`w-10 h-10 rounded-full border-2 transition-all ${corAtiva === cor ? 'border-black scale-110' : 'border-zinc-200 hover:border-zinc-300'} ${coresHex[cor] || 'bg-zinc-200'}`}
                     title={cor}
                   />
@@ -182,7 +191,6 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
               </div>
             </div>
 
-            {/* SELEÇÃO DE TAMANHOS */}
             <div className="mb-10">
               <div className="flex justify-between items-end mb-3">
                 <span className="text-xs font-bold uppercase tracking-widest text-zinc-900">Tamanho</span>
@@ -230,7 +238,6 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
           </div>
         </div>
 
-        {/* ABAS COM INFORMAÇÕES LIMPAS E PROFISSIONAIS */}
         <div className="mt-20 pt-12 border-t border-zinc-200 max-w-4xl">
           
           <div className="flex gap-8 md:gap-12 border-b border-zinc-200 mb-8 overflow-x-auto [&::-webkit-scrollbar]:hidden">
@@ -268,7 +275,6 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
         </div>
       </div>
 
-      {/* COMPLETA O TEU KIT (SUGESTÕES) */}
       {sugestoes.length > 0 && (
         <section className="bg-zinc-50 border-t border-zinc-200 py-16 md:py-24 mt-12">
           <div className="max-w-[1400px] mx-auto px-4 md:px-6">
@@ -285,7 +291,6 @@ export default function ProdutoDetalhes({ params }: { params: { id: string } }) 
           </div>
         </section>
       )}
-
     </main>
   );
 }
