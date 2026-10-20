@@ -16,12 +16,8 @@ interface Pedido {
 }
 
 export default function PedidosAdmin() {
-  const [pedidos, setPedidos] = useState<Pedido[]>([
-    { id: '1025', cliente: 'Carlos Mendes', data: 'Hoje, 09:15', total: 105.90, itens: 1, status: 'Pendente' },
-    { id: '1024', cliente: 'João Silva', data: 'Ontem, 14:32', total: 214.90, itens: 2, status: 'Separacao' },
-    { id: '1023', cliente: 'Marina Costa', data: 'Ontem, 11:05', total: 87.90, itens: 1, status: 'ProntoEnvio' },
-    { id: '1022', cliente: 'Lucas Fernandes', data: '18/10/2026', total: 325.80, itens: 4, status: 'Enviado', rastreio: 'BR123456789BR' },
-  ]);
+  // BASE DE DADOS REAL ZERADA PARA PRODUÇÃO (GO-LIVE)
+  const [pedidos, setPedidos] = useState<Pedido[]>([]);
 
   // Controlo para a caixa de input do código de rastreio
   const [inputRastreioAberto, setInputRastreioAberto] = useState<string | null>(null);
@@ -131,7 +127,8 @@ export default function PedidosAdmin() {
           ))}
           
           {pedidosColuna.length === 0 && (
-            <div className="h-full flex items-center justify-center pb-12">
+            <div className="h-full flex flex-col gap-2 items-center justify-center pb-12 opacity-50">
+              <Package size={24} className="text-zinc-300" />
               <span className="text-zinc-400 text-[9px] uppercase font-bold tracking-widest">Nenhum Pedido</span>
             </div>
           )}
@@ -145,7 +142,7 @@ export default function PedidosAdmin() {
       <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-anton uppercase text-zinc-900 tracking-wide">Operação de Pedidos</h1>
-          <p className="text-zinc-500 text-sm mt-1 font-medium">Fluxo Kanban de 4 passos. O envio exige código de rastreio.</p>
+          <p className="text-zinc-500 text-sm mt-1 font-medium">Aguardando novos pedidos entrarem no sistema.</p>
         </div>
         <div className="relative w-full md:w-72">
           <input 
