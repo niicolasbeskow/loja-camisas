@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from 'react';
-import { Search, Clock, Package, Truck, Eye, ArrowRight } from 'lucide-react';
+import { Search, Clock, Package, Truck, Eye, ArrowRight, CheckCircle, Barcode, Check } from 'lucide-react';
 
-type StatusPedido = 'Pendente' | 'Preparação' | 'Enviado';
+type StatusPedido = 'Pendente' | 'Separacao' | 'ProntoEnvio' | 'Enviado';
 
 interface Pedido {
   id: string;
@@ -12,20 +12,30 @@ interface Pedido {
   total: number;
   itens: number;
   status: StatusPedido;
+  rastreio?: string;
 }
 
 export default function PedidosAdmin() {
-  // Dados simulados para testar o fluxo operacional
   const [pedidos, setPedidos] = useState<Pedido[]>([
-    { id: '1024', cliente: 'João Silva', data: 'Hoje, 14:32', total: 214.90, itens: 2, status: 'Pendente' },
-    { id: '1023', cliente: 'Marina Costa', data: 'Hoje, 11:05', total: 87.90, itens: 1, status: 'Pendente' },
-    { id: '1022', cliente: 'Lucas Fernandes', data: 'Ontem, 16:40', total: 325.80, itens: 4, status: 'Preparação' },
-    { id: '1021', cliente: 'Amanda Reis', data: '17/10/2026', total: 111.90, itens: 1, status: 'Enviado' },
+    { id: '1025', cliente: 'Carlos Mendes', data: 'Hoje, 09:15', total: 105.90, itens: 1, status: 'Pendente' },
+    { id: '1024', cliente: 'João Silva', data: 'Ontem, 14:32', total: 214.90, itens: 2, status: 'Separacao' },
+    { id: '1023', cliente: 'Marina Costa', data: 'Ontem, 11:05', total: 87.90, itens: 1, status: 'ProntoEnvio' },
+    { id: '1022', cliente: 'Lucas Fernandes', data: '18/10/2026', total: 325.80, itens: 4, status: 'Enviado', rastreio: 'BR123456789BR' },
   ]);
 
-  // Função para avançar o pedido na linha de montagem
+  // Controlo para a caixa de input do código de rastreio
+  const [inputRastreioAberto, setInputRastreioAberto] = useState<string | null>(null);
+  const [codigoRastreio, setCodigoRastreio] = useState('');
+
   const moverPedido = (id: string, novoStatus: StatusPedido) => {
     setPedidos(prev => prev.map(p => p.id === id ? { ...p, status: novoStatus } : p));
+  };
+
+  const confirmarRastreio = (id: string) => {
+    if (!codigoRastreio.trim()) return;
+    setPedidos(prev => prev.map(p => p.id === id ? { ...p, status: 'Enviado', rastreio: codigoRastreio.trim().toUpperCase() } : p));
+    setInputRastreioAberto(null);
+    setCodigoRastreio('');
   };
 
   const renderColuna = (titulo: string, status: StatusPedido, icone: React.ReactNode, corBg: string, corBorda: string) => {
@@ -36,63 +46,93 @@ export default function PedidosAdmin() {
         <div className={`p-4 border-b border-zinc-200 flex items-center justify-between ${corBg}`}>
           <div className="flex items-center gap-2">
             {icone}
-            <h3 className="font-bold text-xs uppercase tracking-widest text-zinc-900">{titulo}</h3>
+            <h3 className="font-bold text-[10px] uppercase tracking-widest text-zinc-900">{titulo}</h3>
           </div>
-          <span className="bg-white/60 text-zinc-900 font-bold text-[10px] px-2 py-1 rounded">
+          <span className="bg-white text-zinc-900 font-bold text-[10px] px-2 py-1 rounded shadow-sm">
             {pedidosColuna.length}
           </span>
         </div>
         
-        <div className="p-4 flex-1 overflow-y-auto space-y-4 [&::-webkit-scrollbar]:hidden">
+        <div className="p-3 flex-1 overflow-y-auto space-y-3 [&::-webkit-scrollbar]:hidden">
           {pedidosColuna.map(pedido => (
             <div key={pedido.id} className={`bg-white p-4 rounded-lg border-l-4 shadow-sm ${corBorda} border-y border-r border-zinc-200 transition-all hover:shadow-md`}>
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">
-                    Pedido #{pedido.id} • {pedido.data}
+                  <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">
+                    #{pedido.id} • {pedido.data}
                   </span>
-                  <h4 className="font-bold text-sm text-zinc-900 leading-none">{pedido.cliente}</h4>
+                  <h4 className="font-bold text-xs text-zinc-900 leading-none">{pedido.cliente}</h4>
                 </div>
                 <button className="text-zinc-400 hover:text-amber-500 transition-colors" title="Ver Detalhes">
-                  <Eye size={18} />
+                  <Eye size={16} />
                 </button>
               </div>
               
-              <div className="flex justify-between items-end mt-4 pt-4 border-t border-zinc-100">
-                <div>
-                  <p className="text-[10px] text-zinc-500 font-medium uppercase tracking-wider mb-0.5">{pedido.itens} {pedido.itens > 1 ? 'itens' : 'item'}</p>
-                  <p className="font-bold text-zinc-900 text-sm">R$ {pedido.total.toFixed(2).replace('.', ',')}</p>
+              <div className="flex flex-col gap-3 mt-4 pt-3 border-t border-zinc-100">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <p className="text-[9px] text-zinc-500 font-medium uppercase tracking-wider mb-0.5">{pedido.itens} {pedido.itens > 1 ? 'itens' : 'item'}</p>
+                    <p className="font-bold text-zinc-900 text-xs">R$ {pedido.total.toFixed(2).replace('.', ',')}</p>
+                  </div>
+                  
+                  {/* BOTÕES DINÂMICOS DE AÇÃO */}
+                  {status === 'Pendente' && (
+                    <button onClick={() => moverPedido(pedido.id, 'Separacao')} className="flex items-center gap-1.5 text-[8px] font-bold uppercase tracking-widest bg-zinc-900 text-white px-3 py-2 rounded hover:bg-amber-500 hover:text-black transition-colors">
+                      Separar <ArrowRight size={10} />
+                    </button>
+                  )}
+                  
+                  {status === 'Separacao' && (
+                    <button onClick={() => moverPedido(pedido.id, 'ProntoEnvio')} className="flex items-center gap-1.5 text-[8px] font-bold uppercase tracking-widest bg-zinc-900 text-white px-3 py-2 rounded hover:bg-amber-500 hover:text-black transition-colors">
+                      Embalar <ArrowRight size={10} />
+                    </button>
+                  )}
+
+                  {status === 'ProntoEnvio' && inputRastreioAberto !== pedido.id && (
+                    <button onClick={() => setInputRastreioAberto(pedido.id)} className="flex items-center gap-1.5 text-[8px] font-bold uppercase tracking-widest bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition-colors">
+                      <Barcode size={10} /> Inserir Rastreio
+                    </button>
+                  )}
+                  
+                  {status === 'Enviado' && (
+                    <span className="text-[9px] font-bold text-green-600 uppercase tracking-widest flex items-center gap-1">
+                      <CheckCircle size={12} /> Despachado
+                    </span>
+                  )}
                 </div>
-                
-                {/* Botões de Ação Dinâmicos */}
-                {status === 'Pendente' && (
-                  <button 
-                    onClick={() => moverPedido(pedido.id, 'Preparação')} 
-                    className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest bg-zinc-900 text-white px-4 py-2 rounded hover:bg-amber-500 hover:text-black transition-colors"
-                  >
-                    Separar <ArrowRight size={12} />
-                  </button>
+
+                {/* CAIXA DE INPUT DE RASTREIO (Aparece no passo 3) */}
+                {status === 'ProntoEnvio' && inputRastreioAberto === pedido.id && (
+                  <div className="flex gap-2 mt-2 pt-2 border-t border-dashed border-zinc-200 animate-in fade-in slide-in-from-top-2">
+                    <input 
+                      type="text" 
+                      placeholder="Cod. Rastreio..." 
+                      autoFocus
+                      value={codigoRastreio}
+                      onChange={(e) => setCodigoRastreio(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && confirmarRastreio(pedido.id)}
+                      className="w-full border border-zinc-200 p-2 text-[10px] font-bold uppercase focus:border-blue-500 outline-none rounded"
+                    />
+                    <button onClick={() => confirmarRastreio(pedido.id)} className="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition-colors">
+                      <Check size={12} />
+                    </button>
+                  </div>
                 )}
-                {status === 'Preparação' && (
-                  <button 
-                    onClick={() => moverPedido(pedido.id, 'Enviado')} 
-                    className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest bg-zinc-900 text-white px-4 py-2 rounded hover:bg-green-500 hover:text-white transition-colors"
-                  >
-                    Despachar <ArrowRight size={12} />
-                  </button>
-                )}
-                {status === 'Enviado' && (
-                  <span className="text-[10px] font-bold text-green-600 uppercase tracking-widest flex items-center gap-1">
-                    Concluído
-                  </span>
+
+                {/* EXIBIR O CÓDIGO DE RASTREIO NO FINAL */}
+                {status === 'Enviado' && pedido.rastreio && (
+                  <div className="bg-zinc-100 p-2 rounded flex items-center justify-between mt-1">
+                    <span className="text-[9px] font-medium text-zinc-500 uppercase tracking-wider">Rastreio:</span>
+                    <span className="text-[10px] font-bold text-zinc-900 tracking-widest">{pedido.rastreio}</span>
+                  </div>
                 )}
               </div>
             </div>
           ))}
           
           {pedidosColuna.length === 0 && (
-            <div className="h-full flex items-center justify-center">
-              <span className="text-zinc-400 text-[10px] uppercase font-bold tracking-widest">Coluna Vazia</span>
+            <div className="h-full flex items-center justify-center pb-12">
+              <span className="text-zinc-400 text-[9px] uppercase font-bold tracking-widest">Nenhum Pedido</span>
             </div>
           )}
         </div>
@@ -101,11 +141,11 @@ export default function PedidosAdmin() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto pb-12 font-outfit">
+    <div className="max-w-[1600px] mx-auto pb-12 font-outfit">
       <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-anton uppercase text-zinc-900 tracking-wide">Operação de Pedidos</h1>
-          <p className="text-zinc-500 text-sm mt-1 font-medium">Fluxo Kanban de aprovação, embalagem e expedição.</p>
+          <p className="text-zinc-500 text-sm mt-1 font-medium">Fluxo Kanban de 4 passos. O envio exige código de rastreio.</p>
         </div>
         <div className="relative w-full md:w-72">
           <input 
@@ -117,28 +157,39 @@ export default function PedidosAdmin() {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Coluna 1: Pagamento Aprovado */}
+      {/* GRELHA DE 4 COLUNAS */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
+        
+        {/* Passo 1 */}
         {renderColuna(
-          'Pagos (Pendentes)', 
+          '1. Pagos', 
           'Pendente', 
           <Clock size={16} className="text-red-500" />, 
           'bg-red-50 border-b-red-100', 
           'border-l-red-500'
         )}
         
-        {/* Coluna 2: Mesa de Embalagem */}
+        {/* Passo 2 */}
         {renderColuna(
-          'Em Separação', 
-          'Preparação', 
+          '2. Em Separação', 
+          'Separacao', 
           <Package size={16} className="text-amber-500" />, 
           'bg-amber-50 border-b-amber-100', 
           'border-l-amber-500'
         )}
-        
-        {/* Coluna 3: Correios / Transportadora */}
+
+        {/* Passo 3 (Com input de Rastreio) */}
         {renderColuna(
-          'Enviados', 
+          '3. Aguardando Envio', 
+          'ProntoEnvio', 
+          <Barcode size={16} className="text-blue-500" />, 
+          'bg-blue-50 border-b-blue-100', 
+          'border-l-blue-500'
+        )}
+        
+        {/* Passo 4 */}
+        {renderColuna(
+          '4. Enviados', 
           'Enviado', 
           <Truck size={16} className="text-green-500" />, 
           'bg-green-50 border-b-green-100', 
