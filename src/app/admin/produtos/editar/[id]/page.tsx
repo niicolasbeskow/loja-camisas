@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Save, UploadCloud, X, Plus, Tag } from 'lucide-react';
+import { ArrowLeft, Save, UploadCloud, X, Tag } from 'lucide-react';
 import { produtos as produtosData } from '@/data/produtos';
 
 export default function EditarProduto({ params }: { params: { id: string } }) {
@@ -20,26 +20,12 @@ export default function EditarProduto({ params }: { params: { id: string } }) {
   const [imagens, setImagens] = useState<string[]>(produto.imagens || []);
   const [tags, setTags] = useState<string[]>(produto.tags || []);
   const [tagInput, setTagInput] = useState('');
-  const [coresSelecionadas, setCoresSelecionadas] = useState<string[]>([produto.cor]);
 
   const categorias = [
     "Collab (Em Breve)", "Kits", "Camiseta Básica", "Camiseta Oversized", 
     "Camiseta Suedine", "Camiseta Boxy", "Camiseta Poliamida", 
     "Manga Longa", "Feminino", "Moletom", "Regata Oversized", "Shorts"
   ];
-
-  const coresDisponiveis = [
-    "Preto", "Branco", "Off-White", "Marrom", "Areia", "Cinza", "Chumbo", 
-    "Azul Marinho", "Verde Militar", "Verde Musgo", "Bordô", "Rosa Pastel", "Azul Bebê"
-  ];
-  const tamanhos = ["P", "M", "G", "GG", "XG", "G1", "G2"];
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const novasImagens = Array.from(e.target.files).map(file => URL.createObjectURL(file));
-      setImagens(prev => [...prev, ...novasImagens]);
-    }
-  };
 
   const handleSave = () => {
     alert(`As alterações do SKU ${produto.codigo} foram salvas com sucesso!`);
