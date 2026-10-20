@@ -6,24 +6,16 @@ import { produtos as produtosData } from '@/data/produtos';
 import { Edit, Trash2, Plus, Box } from 'lucide-react';
 
 export default function ProdutosAdmin() {
-  // Passamos os dados para um 'State' para podermos manipular (excluir) na hora
   const [produtosLista, setProdutosLista] = useState(produtosData);
 
-  // Função para calcular o total de peças de todos os tamanhos daquele SKU
   const calcularEstoqueTotal = (estoque: any) => {
     return Object.values(estoque).reduce((total: any, qtd: any) => total + (qtd || 0), 0) as number;
   };
 
-  // Função para excluir um produto com confirmação de segurança
   const handleExcluir = (id: string, nome: string) => {
-    if (window.confirm(`🚨 ATENÇÃO: Tem a certeza que deseja excluir o SKU "${nome}"?\n\nEsta ação removerá o produto da sua loja.`)) {
+    if (window.confirm(`🚨 ATENÇÃO: Tem a certeza que deseja excluir o SKU "${nome}"?`)) {
       setProdutosLista(prev => prev.filter(p => p.id !== id));
     }
-  };
-
-  // Função para editar
-  const handleEditar = (codigo: string) => {
-    alert(`Abertura do painel de edição para o SKU: ${codigo}\n\n(Em breve: A tela de edição usará a mesma estrutura do nosso formulário de Novo Produto!)`);
   };
 
   return (
@@ -58,85 +50,42 @@ export default function ProdutosAdmin() {
 
                 return (
                   <tr key={p.id} className="hover:bg-zinc-50 transition-colors">
-                    
-                    {/* COLUNA: FOTO, NOME E SKU */}
                     <td className="p-4 pl-6 md:pl-8 flex items-center gap-4">
                       <div className="w-12 h-16 bg-zinc-100 rounded overflow-hidden shrink-0 border border-zinc-200">
                         {p.imagens && p.imagens.length > 0 ? (
                           <img src={p.imagens[0]} alt={p.nome} className="w-full h-full object-cover" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-zinc-300">
-                            <Box size={16} />
-                          </div>
+                          <div className="w-full h-full flex items-center justify-center text-zinc-300"><Box size={16} /></div>
                         )}
                       </div>
                       <div>
                         <span className="font-bold text-xs md:text-sm text-zinc-900 block mb-1">{p.nome}</span>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono bg-zinc-100 px-2 py-1 rounded border border-zinc-200 shadow-sm">
-                          {p.codigo}
-                        </span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 font-mono bg-zinc-100 px-2 py-1 rounded border border-zinc-200 shadow-sm">{p.codigo}</span>
                       </div>
                     </td>
-
-                    {/* COLUNA: CATEGORIA */}
-                    <td className="p-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">
-                      {p.categoria.replace('camiseta-', '')}
-                    </td>
-
-                    {/* COLUNA: COR */}
-                    <td className="p-4">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-700 bg-zinc-100 border border-zinc-200 px-2 py-1 rounded shadow-sm">
-                        {p.cor}
-                      </span>
-                    </td>
-
-                    {/* COLUNA: ESTOQUE */}
+                    <td className="p-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">{p.categoria.replace('camiseta-', '')}</td>
+                    <td className="p-4"><span className="text-[10px] font-bold uppercase tracking-widest text-zinc-700 bg-zinc-100 border border-zinc-200 px-2 py-1 rounded shadow-sm">{p.cor}</span></td>
                     <td className="p-4">
                       <div className="flex flex-col">
-                        <span className={`text-sm font-bold ${statusEstoque}`}>
-                          {estoqueTotal} un
-                        </span>
-                        <span className="text-[9px] text-zinc-400 uppercase tracking-widest mt-0.5">
-                          em {Object.keys(p.estoque).length} tamanhos
-                        </span>
+                        <span className={`text-sm font-bold ${statusEstoque}`}>{estoqueTotal} un</span>
                       </div>
                     </td>
-
-                    {/* COLUNA: PREÇO */}
-                    <td className="p-4 text-xs font-bold text-zinc-900">
-                      R$ {p.preco.toFixed(2).replace('.', ',')}
-                    </td>
-
-                    {/* COLUNA: AÇÕES */}
+                    <td className="p-4 text-xs font-bold text-zinc-900">R$ {p.preco.toFixed(2).replace('.', ',')}</td>
                     <td className="p-4 pr-6 md:pr-8">
                       <div className="flex gap-2 justify-end">
-                        <button 
-                          onClick={() => handleEditar(p.codigo)}
-                          className="p-2 text-zinc-400 hover:text-black hover:bg-zinc-100 rounded transition-colors" 
-                          title="Editar SKU"
-                        >
+                        <Link href={`/admin/produtos/editar/${p.id}`} className="p-2 text-zinc-400 hover:text-black hover:bg-zinc-100 rounded transition-colors" title="Editar SKU">
                           <Edit size={16} />
-                        </button>
-                        <button 
-                          onClick={() => handleExcluir(p.id, p.nome)}
-                          className="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors" 
-                          title="Excluir SKU"
-                        >
+                        </Link>
+                        <button onClick={() => handleExcluir(p.id, p.nome)} className="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors" title="Excluir SKU">
                           <Trash2 size={16} />
                         </button>
                       </div>
                     </td>
-
                   </tr>
                 );
               })}
             </tbody>
           </table>
-          {produtosLista.length === 0 && (
-            <div className="p-12 text-center text-zinc-400 font-bold text-xs uppercase tracking-widest">
-              Nenhum produto cadastrado.
-            </div>
-          )}
         </div>
       </div>
     </div>
