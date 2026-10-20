@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Save, UploadCloud, X, Tag } from 'lucide-react';
+import { ArrowLeft, Save, Tag } from 'lucide-react';
 import { produtos as produtosData } from '@/data/produtos';
 
 export default function EditarProduto({ params }: { params: { id: string } }) {
@@ -17,9 +17,7 @@ export default function EditarProduto({ params }: { params: { id: string } }) {
 
   if (!produto) return <div className="p-12 text-center text-red-500 font-bold uppercase tracking-widest mt-20">Produto não encontrado no catálogo.</div>;
 
-  const [imagens, setImagens] = useState<string[]>(produto.imagens || []);
-  const [tags, setTags] = useState<string[]>(produto.tags || []);
-  const [tagInput, setTagInput] = useState('');
+  const [tags] = useState<string[]>(produto.tags || []);
 
   const categorias = [
     "Collab (Em Breve)", "Kits", "Camiseta Básica", "Camiseta Oversized", 
