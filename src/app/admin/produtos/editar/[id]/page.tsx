@@ -1,26 +1,67 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, Save, UploadCloud, X, Plus, Tag } from 'lucide-react';
-import { produtos as produtosData, Tamanho } from '@/data/produtos';
+import { carregarProdutosStorage, atualizarProdutoStorage, Produto, Tamanho, Estoque } from '@/data/produtos';
 
 export default function EditarProduto() {
   const router = useRouter();
   const params = useParams();
   const rawId = typeof params?.id === 'string' ? params.id : '';
-  const paramId = decodeURIComponent(rawId).toUpperCase();
+  const paramId = decodeURIComponent(rawId).replace(/-/g, '').toUpperCase();
 
-  // Encontra o produto pelo código corrido (ex: BSKWBASPRT01) ou pelo ID
-  const produto = produtosData.find(p => 
-    p.codigo.replace(/-/g, '').toUpperCase() === paramId || p.id === rawId
-  );
+  const [produto, setProduto] = useState<Produto | null>(null);
+  const [carregando, setCarregando] = useState(true);
 
-  const [imagens, setImagens] = useState<string[]>(produto?.imagens || []);
-  const [tags, setTags] = useState<string[]>(produto?.tags || []);
+  // Estados controlados para salvar de verdade
+  const [nome, setNome] = useState('');
+  const [codigo, setCodigo] = useState('');
+  const [categoria, setCategoria] = useState('');
+  const [preco, setPreco] = useState(0);
+  const [precoAntigo, setPrecoAntigo] = useState(0);
+  const [precoKit2, setPrecoKit2] = useState(0);
+  const [precoKit3, setPrecoKit3] = useState(0);
+  const [especificacaoTecnica, setEspecificacaoTecnica] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [informacoesTecnicas, setInformacoesTecnicas] = useState('');
+  const [lavagem, setLavagem] = useState('');
+  const [corSelecionada, setCorSelecionada] = useState('Preto');
+  const [estoque, setEstoque] = useState<Estoque>({ P: 0, M: 0, G: 0, GG: 0, XG: 0, G1: 0, G2: 0 });
+  const [imagens, setImagens] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
-  const [corSelecionada, setCorSelecionada] = useState<string>(produto?.cor || 'Preto');
+
+  useEffect(() => {
+    const lista = carregarProdutosStorage();
+    const encontrado = lista.find(p => 
+      p.codigo.replace(/-/g, '').toUpperCase() === paramId || p.id === rawId
+    );
+    if (encontrado) {
+      setProduto(encontrado);
+      setNome(encontrado.nome);
+      setCodigo(encontrado.codigo);
+      setCategoria(encontrado.categoria);
+      setPreco(encontrado.preco);
+      setPrecoAntigo(encontrado.precoAntigo || 0);
+      setPrecoKit2(encontrado.precoKit2 || 0);
+      setPrecoKit3(encontrado.precoKit3 || 0);
+      setEspecificacaoTecnica(encontrado.especificacaoTecnica || '');
+      setDescricao(encontrado.descricao || '');
+      setInformacoesTecnicas(encontrado.informacoesTecnicas || '');
+      setLavagem(encontrado.lavagem || '');
+      setCorSelecionada(encontrado.cor || 'Preto');
+      setEstoque({ ...encontrado.estoque });
+      setImagens(encontrado.imagens || []);
+      setTags(encontrado.tags || []);
+    }
+    setCarregando(false);
+  }, [paramId, rawId]);
+
+  if (carregando) {
+    return <div className="p-12 text-center font-bold uppercase tracking-widest text-xs text-zinc-400">Carregando dados do SKU...</div>;
+  }
 
   if (!produto) {
     return (
@@ -77,8 +118,32 @@ export default function EditarProduto() {
     setTags(tags.filter(t => t !== tagToRemove));
   };
 
+  const handleEstoqueChange = (tam: Tamanho, valor: string) => {
+    const qtd = parseInt(valor, 10);
+    setEstoque(prev => ({ ...prev, [tam]: isNaN(qtd) ? 0 : qtd }));
+  };
+
   const handleSave = () => {
-    alert(`As alterações do SKU ${produto.codigo} foram guardadas com sucesso!`);
+    const produtoAtualizado: Produto = {
+      ...produto,
+      nome,
+      codigo: codigo.toUpperCase(),
+      categoria,
+      preco: Number(preco) || 0,
+      precoAntigo: Number(precoAntigo) || 0,
+      precoKit2: Number(precoKit2) || 0,
+      precoKit3: Number(precoKit3) || 0,
+      especificacaoTecnica,
+      descricao,
+      informacoesTecnicas,
+      lavagem,
+      cor: corSelecionada,
+      estoque,
+      imagens,
+      tags
+    };
+
+    atualizarProdutoStorage(produtoAtualizado);
     router.push('/admin/produtos');
   };
 
@@ -91,87 +156,81 @@ export default function EditarProduto() {
           </Link>
           <h1 className="text-3xl font-anton uppercase text-zinc-900 tracking-wide">Editar Produto (SKU)</h1>
           <p className="text-zinc-500 text-sm mt-1 font-medium">
-            Código URL: <strong className="text-black font-mono">{produto.codigo.replace(/-/g, '')}</strong> • SKU Interno: <strong className="text-black font-mono">{produto.codigo}</strong>
+            Código URL: <strong className="text-black font-mono">{codigo.replace(/-/g, '')}</strong> • SKU Interno: <strong className="text-black font-mono">{codigo}</strong>
           </p>
         </div>
-        <button type="button" onClick={handleSave} className="hidden md:flex bg-amber-500 text-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-amber-400 transition-colors items-center gap-2">
+        <button type="button" onClick={handleSave} className="hidden md:flex bg-amber-500 text-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-amber-400 transition-colors items-center gap-2 cursor-pointer">
           <Save size={16} /> Salvar Alterações
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-        
-        {/* COLUNA ESQUERDA: INFORMAÇÕES COMPLETAS */}
         <div className="lg:col-span-2 space-y-6 md:space-y-8">
           
-          {/* BLOCO 1: Identificação */}
           <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-6 md:p-8 space-y-6">
             <h2 className="text-lg font-bold text-zinc-900 uppercase tracking-wider border-b border-zinc-100 pb-4">Identificação</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2 md:col-span-2">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-700">Nome da Peça</label>
-                <input type="text" defaultValue={produto.nome} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors" />
+                <input type="text" value={nome} onChange={e => setNome(e.target.value)} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors" />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-700">Código (SKU)</label>
-                <input type="text" defaultValue={produto.codigo} className="w-full border-2 border-zinc-200 p-3 font-mono font-bold text-sm focus:border-amber-500 outline-none transition-colors uppercase" />
+                <input type="text" value={codigo} onChange={e => setCodigo(e.target.value)} className="w-full border-2 border-zinc-200 p-3 font-mono font-bold text-sm focus:border-amber-500 outline-none transition-colors uppercase" />
               </div>
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-700">Categoria / Coleção</label>
-              <select defaultValue={produto.categoria} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors bg-white">
+              <select value={categoria} onChange={e => setCategoria(e.target.value)} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors bg-white">
                 {categorias.map(cat => <option key={cat.value} value={cat.value}>{cat.label}</option>)}
               </select>
             </div>
           </div>
 
-          {/* BLOCO 2: Precificação e Kits */}
           <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-6 md:p-8 space-y-6">
             <h2 className="text-lg font-bold text-zinc-900 uppercase tracking-wider border-b border-zinc-100 pb-4">Precificação e Kits</h2>
             <div className="grid grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-700">Preço Principal (1 un)</label>
-                <input type="number" step="0.01" defaultValue={produto.preco} className="w-full border-2 border-zinc-200 p-3 font-bold text-sm focus:border-black outline-none transition-colors" />
+                <input type="number" step="0.01" value={preco} onChange={e => setPreco( parseFloat(e.target.value) || 0 )} className="w-full border-2 border-zinc-200 p-3 font-bold text-sm focus:border-black outline-none transition-colors" />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Preço Riscado (Antigo)</label>
-                <input type="number" step="0.01" defaultValue={produto.precoAntigo} className="w-full border-2 border-zinc-100 p-3 font-medium text-sm focus:border-zinc-300 outline-none transition-colors text-zinc-500" />
+                <input type="number" step="0.01" value={precoAntigo} onChange={e => setPrecoAntigo( parseFloat(e.target.value) || 0 )} className="w-full border-2 border-zinc-100 p-3 font-medium text-sm focus:border-zinc-300 outline-none transition-colors text-zinc-500" />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-amber-600">Preço unit. (Kit c/ 2)</label>
-                <input type="number" step="0.01" defaultValue={produto.precoKit2} className="w-full border-2 border-amber-100 bg-amber-50/30 p-3 font-bold text-sm focus:border-amber-400 outline-none transition-colors" />
+                <input type="number" step="0.01" value={precoKit2} onChange={e => setPrecoKit2( parseFloat(e.target.value) || 0 )} className="w-full border-2 border-amber-100 bg-amber-50/30 p-3 font-bold text-sm focus:border-amber-400 outline-none transition-colors" />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-amber-600">Preço unit. (Kit c/ 3)</label>
-                <input type="number" step="0.01" defaultValue={produto.precoKit3} className="w-full border-2 border-amber-100 bg-amber-50/30 p-3 font-bold text-sm focus:border-amber-400 outline-none transition-colors" />
+                <input type="number" step="0.01" value={precoKit3} onChange={e => setPrecoKit3( parseFloat(e.target.value) || 0 )} className="w-full border-2 border-amber-100 bg-amber-50/30 p-3 font-bold text-sm focus:border-amber-400 outline-none transition-colors" />
               </div>
             </div>
           </div>
 
-          {/* BLOCO 3: Textos Descritivos */}
           <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-6 md:p-8 space-y-6">
             <h2 className="text-lg font-bold text-zinc-900 uppercase tracking-wider border-b border-zinc-100 pb-4">Detalhamento da Peça</h2>
             <div className="space-y-2">
               <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-700">Especificação Técnica (Malha / Fio)</label>
-              <input type="text" defaultValue={produto.especificacaoTecnica} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors uppercase" />
+              <input type="text" value={especificacaoTecnica} onChange={e => setEspecificacaoTecnica(e.target.value)} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors uppercase" />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-700">Descrição Geral</label>
-              <textarea rows={4} defaultValue={produto.descricao} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors resize-none"></textarea>
+              <textarea rows={4} value={descricao} onChange={e => setDescricao(e.target.value)} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors resize-none"></textarea>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-700">Informações Técnicas</label>
-                <textarea rows={4} defaultValue={produto.informacoesTecnicas} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors resize-none"></textarea>
+                <textarea rows={4} value={informacoesTecnicas} onChange={e => setInformacoesTecnicas(e.target.value)} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors resize-none"></textarea>
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-700">Instruções de Lavagem</label>
-                <textarea rows={4} defaultValue={produto.lavagem} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors resize-none"></textarea>
+                <textarea rows={4} value={lavagem} onChange={e => setLavagem(e.target.value)} className="w-full border-2 border-zinc-200 p-3 font-medium text-sm focus:border-black outline-none transition-colors resize-none"></textarea>
               </div>
             </div>
           </div>
 
-          {/* BLOCO 4: Variações e Estoque */}
           <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-6 md:p-8 space-y-6">
             <h2 className="text-lg font-bold text-zinc-900 uppercase tracking-wider border-b border-zinc-100 pb-4">Cor e Estoque deste SKU</h2>
             <div className="space-y-4">
@@ -202,7 +261,8 @@ export default function EditarProduto() {
                     <div className="w-full bg-zinc-100 py-1.5 text-xs font-bold uppercase">{tamanho}</div>
                     <input 
                       type="number" 
-                      defaultValue={produto.estoque[tamanho] || 0} 
+                      value={estoque[tamanho] ?? 0} 
+                      onChange={e => handleEstoqueChange(tamanho, e.target.value)}
                       min="0" 
                       className="w-full border-2 border-zinc-200 p-2 text-center font-medium text-sm focus:border-black outline-none transition-colors" 
                     />
@@ -214,7 +274,6 @@ export default function EditarProduto() {
 
         </div>
 
-        {/* COLUNA DIREITA: IMAGENS E ETIQUETAS */}
         <div className="space-y-6 md:space-y-8">
           <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-6 space-y-6">
             <h2 className="text-lg font-bold text-zinc-900 uppercase tracking-wider border-b border-zinc-100 pb-4">Multimídia</h2>

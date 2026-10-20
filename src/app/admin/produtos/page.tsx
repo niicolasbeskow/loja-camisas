@@ -1,20 +1,25 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { produtos as produtosData } from '@/data/produtos';
+import { carregarProdutosStorage, excluirProdutoStorage, Produto, Estoque } from '@/data/produtos';
 import { Edit, Trash2, Plus, Box } from 'lucide-react';
 
 export default function ProdutosAdmin() {
-  const [produtosLista, setProdutosLista] = useState(produtosData);
+  const [produtosLista, setProdutosLista] = useState<Produto[]>([]);
 
-  const calcularEstoqueTotal = (estoque: any) => {
-    return Object.values(estoque).reduce((total: any, qtd: any) => total + (qtd || 0), 0) as number;
+  useEffect(() => {
+    setProdutosLista(carregarProdutosStorage());
+  }, []);
+
+  const calcularEstoqueTotal = (estoque: Estoque) => {
+    return Object.values(estoque).reduce((total, qtd) => total + (qtd || 0), 0);
   };
 
   const handleExcluir = (id: string, nome: string) => {
-    if (window.confirm(`🚨 ATENÇÃO: Tem a certeza que deseja excluir o SKU "${nome}"?`)) {
-      setProdutosLista(prev => prev.filter(p => p.id !== id));
+    if (window.confirm(`Tem a certeza que deseja excluir o SKU "${nome}"?`)) {
+      const novaLista = excluirProdutoStorage(id);
+      setProdutosLista(novaLista);
     }
   };
 
@@ -47,8 +52,6 @@ export default function ProdutosAdmin() {
               {produtosLista.map(p => {
                 const estoqueTotal = calcularEstoqueTotal(p.estoque);
                 const statusEstoque = estoqueTotal === 0 ? 'text-red-500' : estoqueTotal < 10 ? 'text-amber-500' : 'text-green-600';
-                
-                // Remove os traços para criar a URL limpa de E-commerce
                 const codigoUrl = p.codigo.replace(/-/g, '');
 
                 return (
@@ -71,6 +74,7 @@ export default function ProdutosAdmin() {
                     <td className="p-4">
                       <div className="flex flex-col">
                         <span className={`text-sm font-bold ${statusEstoque}`}>{estoqueTotal} un</span>
+                        <span className="text-[9px] text-zinc-400 uppercase tracking-widest mt-0.5">em {Object.keys(p.estoque).length} tamanhos</span>
                       </div>
                     </td>
                     <td className="p-4 text-xs font-bold text-zinc-900">R$ {p.preco.toFixed(2).replace('.', ',')}</td>

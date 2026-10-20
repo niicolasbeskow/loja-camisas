@@ -16,21 +16,16 @@ export interface Produto {
   nome: string;
   categoria: string;
   preco: number;
-  
-  // NOVOS CAMPOS PROFISSIONAIS
   precoAntigo: number;
   precoKit2: number;
   precoKit3: number;
   tags: string[];
   especificacaoTecnica: string;
-  
-  // CAMPOS ANTIGOS (Mantidos obrigatórios para o site não quebrar)
   precoOriginal: number; 
   precoKit: number; 
   hex: string; 
   tag: string; 
   tamanhos: Tamanho[]; 
-  
   cor: string;
   promocao: boolean;
   imagens: string[];
@@ -40,7 +35,7 @@ export interface Produto {
   lavagem: string;
 }
 
-export const produtos: Produto[] = [
+export const produtosIniciais: Produto[] = [
   {
     id: '1',
     codigo: 'BSKW-BAS-PRT-01',
@@ -61,9 +56,9 @@ export const produtos: Produto[] = [
     promocao: true,
     imagens: ['/files/banner-meio.jpg'], 
     estoque: { P: 10, M: 15, G: 20, GG: 10, XG: 5, G1: 0, G2: 0 },
-    descricao: 'A Camiseta Básica B.SKW Preto é o item essencial que não pode faltar no seu guarda-roupa. Com uma modelagem reta e clássica, ela veste de forma equilibrada no corpo — nem tão justa, nem muito folgada.\n\nProduzida em malha premium 100% algodão, oferece toque macio, zero transparência e alta durabilidade para o uso intenso do dia a dia.\n\nNossas peças passam por um processo de pré-encolhimento (Zero Encolhimento), garantindo que o tamanho se mantenha exato e não perca o caimento após as lavagens.',
-    informacoesTecnicas: '- Gola canelada 2x1 com 3cm de altura\n- Reforço ombro a ombro\n- Etiqueta interna estampada (não arranha)\n- Modelagem regular fit',
-    lavagem: '- Lavar à máquina com água fria\n- Não usar alvejante\n- Secar à sombra\n- Passar a ferro em temperatura média (não passar sobre a estampa)'
+    descricao: 'A Camiseta Básica B.SKW Preto é o item essencial que não pode faltar no seu guarda-roupa. Com uma modelagem reta e clássica, ela veste de forma equilibrada no corpo, nem tão justa, nem muito folgada.\n\nProduzida em malha premium 100% algodão, oferece toque macio, zero transparência e alta durabilidade para o uso intenso do dia a dia.\n\nNossas peças passam por um processo de pré-encolhimento (Zero Encolhimento), garantindo que o tamanho se mantenha exato e não perca o caimento após as lavagens.',
+    informacoesTecnicas: '• Gola canelada 2x1 com 3cm de altura\n• Reforço ombro a ombro\n• Etiqueta interna estampada (não arranha)\n• Modelagem regular fit',
+    lavagem: '• Lavar à máquina com água fria\n• Não usar alvejante\n• Secar à sombra\n• Passar a ferro em temperatura média (não passar sobre a estampa)'
   },
   {
     id: '2',
@@ -86,8 +81,8 @@ export const produtos: Produto[] = [
     imagens: ['/files/banner-meio.jpg'], 
     estoque: { P: 5, M: 8, G: 12, GG: 15, XG: 8, G1: 0, G2: 0 },
     descricao: 'A Camiseta Oversized B.SKW traz a verdadeira estética do streetwear premium. Com ombros caídos (drop shoulder), mangas mais amplas e comprimento ideal, ela proporciona um visual estruturado e moderno.\n\nFeita com malha heavyweight, tem um caimento pesado que não marca o corpo.',
-    informacoesTecnicas: '- Gola canelada grossa de 3cm\n- Ombros deslocados (Drop Shoulder)\n- Malha pesada (Heavyweight) de alta gramatura\n- Modelagem Oversized autêntica',
-    lavagem: '- Lavar à máquina com água fria\n- Secar à sombra para manter o peso da malha\n- Não usar secadora\n- Passar pelo avesso'
+    informacoesTecnicas: '• Gola canelada grossa de 3cm\n• Ombros deslocados (Drop Shoulder)\n• Malha pesada (Heavyweight) de alta gramatura\n• Modelagem Oversized autêntica',
+    lavagem: '• Lavar à máquina com água fria\n• Secar à sombra para manter o peso da malha\n• Não usar secadora\n• Passar pelo avesso'
   },
   {
     id: '3',
@@ -109,9 +104,9 @@ export const produtos: Produto[] = [
     promocao: false,
     imagens: ['/files/banner-meio.jpg'], 
     estoque: { P: 10, M: 10, G: 10, GG: 10, XG: 0, G1: 0, G2: 0 },
-    descricao: 'A modelagem Boxy é a tendência definitiva. Ela é mais curta no comprimento (ficando na linha do cinto) e mais larga nas laterais, criando uma silhueta quadrada ("box") perfeita para compor com calças cargo ou calças mais parrudas.\n\nEleva qualquer look básico a um visual de moda internacional.',
-    informacoesTecnicas: '- Comprimento encurtado (Cropped/Boxy)\n- Largura ampliada\n- Gola de 2.5cm\n- Caimento estruturado',
-    lavagem: '- Lavar com cores semelhantes\n- Não usar alvejante\n- Secar em varal\n- Passar a ferro em temperatura média'
+    descricao: 'A modelagem Boxy é a tendência definitiva. Ela é mais curta no comprimento (ficando na linha do cinto) e mais larga nas laterais, criando uma silhueta quadrada perfeita para compor com calças cargo ou calças mais largas.\n\nEleva qualquer look básico a um visual de moda internacional.',
+    informacoesTecnicas: '• Comprimento encurtado (Boxy)\n• Largura ampliada\n• Gola de 2.5cm\n• Caimento estruturado',
+    lavagem: '• Lavar com cores semelhantes\n• Não usar alvejante\n• Secar em varal\n• Passar a ferro em temperatura média'
   },
   {
     id: '4',
@@ -134,15 +129,70 @@ export const produtos: Produto[] = [
     imagens: ['/files/banner-meio.jpg'], 
     estoque: { P: 20, M: 25, G: 20, GG: 10, XG: 5, G1: 0, G2: 0 },
     descricao: 'Para quem não para. A Camiseta Poliamida B.SKW foi desenvolvida para alta performance. O tecido Ice Tech gela no corpo, evapora o suor instantaneamente e não retém odores.\n\nPerfeita para treinos pesados, corridas ou para os dias de extremo calor na cidade.',
-    informacoesTecnicas: '- Tecnologia Ice Tech (toque gelado)\n- Proteção UV50+\n- Anti-odor e secagem ultra rápida\n- Modelagem sport fit (levemente ajustada)',
-    lavagem: '- Lavar à mão ou ciclo delicado\n- Não usar amaciante (bloqueia os poros do tecido)\n- Não passar a ferro\n- Secagem ultrarrápida à sombra'
+    informacoesTecnicas: '• Tecnologia Ice Tech (toque gelado)\n• Proteção UV50+\n• Anti-odor e secagem ultra rápida\n• Modelagem sport fit (levemente ajustada)',
+    lavagem: '• Lavar à mão ou ciclo delicado\n• Não usar amaciante (bloqueia os poros do tecido)\n• Não passar a ferro\n• Secagem ultrarrápida à sombra'
   }
 ];
 
+export let produtos: Produto[] = [...produtosIniciais];
+
+const STORAGE_KEY = 'bskw_catalogo_v1';
+
+export const carregarProdutosStorage = (): Produto[] => {
+  if (typeof window === 'undefined') return produtos;
+  const salvo = localStorage.getItem(STORAGE_KEY);
+  if (salvo) {
+    try {
+      produtos = JSON.parse(salvo);
+      return produtos;
+    } catch (e) {
+      console.error(e);
+    }
+  } else {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(produtosIniciais));
+  }
+  return produtos;
+};
+
+export const atualizarProdutoStorage = (produtoEditado: Produto) => {
+  const lista = carregarProdutosStorage();
+  const idx = lista.findIndex(p => p.id === produtoEditado.id || p.codigo.replace(/-/g, '').toUpperCase() === produtoEditado.codigo.replace(/-/g, '').toUpperCase());
+  
+  const produtoSincronizado: Produto = {
+    ...produtoEditado,
+    precoOriginal: produtoEditado.precoAntigo,
+    precoKit: produtoEditado.precoKit2,
+    tag: produtoEditado.tags[0] || '',
+    promocao: produtoEditado.precoAntigo > produtoEditado.preco
+  };
+
+  if (idx >= 0) {
+    lista[idx] = produtoSincronizado;
+  } else {
+    lista.push(produtoSincronizado);
+  }
+  produtos = [...lista];
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(produtos));
+  }
+};
+
+export const excluirProdutoStorage = (id: string) => {
+  const lista = carregarProdutosStorage().filter(p => p.id !== id);
+  produtos = [...lista];
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(produtos));
+  }
+  return produtos;
+};
+
 export const getProdutoPorId = (id: string) => {
-  return produtos.find(p => p.id === id);
+  const lista = carregarProdutosStorage();
+  const limpo = id.replace(/-/g, '').toUpperCase();
+  return lista.find(p => p.id === id || p.codigo.replace(/-/g, '').toUpperCase() === limpo);
 };
 
 export const getProdutosPorCategoria = (categoria: string) => {
-  return produtos.filter(p => p.categoria === categoria);
+  const lista = carregarProdutosStorage();
+  return lista.filter(p => p.categoria === categoria);
 };

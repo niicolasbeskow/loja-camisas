@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
-import { produtos, Tamanho } from '@/data/produtos';
+import { carregarProdutosStorage, produtosIniciais, Produto, Tamanho } from '@/data/produtos';
 import { ShoppingCart, Truck, ShieldCheck, Star } from 'lucide-react';
 import QuickBuyCard from '@/components/QuickBuyCard';
 
@@ -16,21 +16,32 @@ const coresHex: Record<string, string> = {
   'Off-White': 'bg-[#f5f5f0]',
   'Marrom': 'bg-[#4a3728]',
   'Cinza': 'bg-zinc-400',
+  'Chumbo': 'bg-zinc-700',
   'Azul Marinho': 'bg-blue-900',
-  'Verde Militar': 'bg-[#4b5320]'
+  'Verde Militar': 'bg-[#4b5320]',
+  'Verde Musgo': 'bg-[#3b4426]',
+  'Bordô': 'bg-[#5c1624]',
+  'Rosa Pastel': 'bg-[#f4c2c2]',
+  'Azul Bebê': 'bg-[#89cff0]'
 };
 
 export default function ProdutoDetalhes() {
   const router = useRouter();
   const params = useParams();
   const rawId = typeof params?.id === 'string' ? params.id : '';
-  const paramId = decodeURIComponent(rawId).toUpperCase();
-  
-  const produto = produtos.find(p => 
+  const paramId = decodeURIComponent(rawId).replace(/-/g, '').toUpperCase();
+
+  const [catalogo, setCatalogo] = useState<Produto[]>(produtosIniciais);
+
+  useEffect(() => {
+    setCatalogo(carregarProdutosStorage());
+  }, []);
+
+  const produto = catalogo.find(p => 
     p.codigo.replace(/-/g, '').toUpperCase() === paramId ||
     p.id === rawId || 
     normalizar(p.nome).includes(normalizar(decodeURIComponent(rawId)))
-  ) || produtos[0];
+  ) || catalogo[0];
 
   const [tamanhoAtivo, setTamanhoAtivo] = useState<Tamanho | ''>('');
   const [kitSelecionado, setKitSelecionado] = useState<1 | 2 | 3>(1);
@@ -46,14 +57,12 @@ export default function ProdutoDetalhes() {
   const precoTotal = precoAtual * kitSelecionado;
   const parcela = (precoTotal / 3).toFixed(2).replace('.', ',');
 
-  // Busca apenas as variações de cor que realmente existem cadastradas para esta categoria
-  const variacoesDaMesmaCategoria = produtos.filter(p => p.categoria === produto.categoria);
-  const sugestoes = produtos.filter(p => p.id !== produto.id).slice(0, 4);
+  const variacoesDaMesmaCategoria = catalogo.filter(p => p.categoria === produto.categoria);
+  const sugestoes = catalogo.filter(p => p.id !== produto.id).slice(0, 4);
   const formataTexto = (txt: string) => txt.replace(/-/g, '•');
 
   return (
     <main className="min-h-screen bg-white font-outfit pb-24">
-      
       <div className="bg-white border-b border-zinc-100">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-4 flex justify-between items-center text-[10px] md:text-xs font-bold uppercase tracking-widest text-zinc-400">
           <div className="flex gap-2">
@@ -149,7 +158,7 @@ export default function ProdutoDetalhes() {
                   <span className={`text-[10px] mt-1 ${kitSelecionado === 1 ? 'text-zinc-300' : 'text-zinc-400'}`}>R$ {produto.preco.toFixed(2).replace('.', ',')}/un</span>
                 </button>
 
-                {produto.precoKit2 && (
+                {produto.precoKit2 > 0 && (
                   <button 
                     onClick={() => setKitSelecionado(2)}
                     className={`border-2 py-3 md:py-4 flex flex-col items-center justify-center transition-colors rounded ${kitSelecionado === 2 ? 'border-black bg-black text-white' : 'border-zinc-200 text-zinc-600 hover:border-zinc-300'}`}
@@ -159,7 +168,7 @@ export default function ProdutoDetalhes() {
                   </button>
                 )}
 
-                {produto.precoKit3 && (
+                {produto.precoKit3 > 0 && (
                   <button 
                     onClick={() => setKitSelecionado(3)}
                     className={`border-2 py-3 md:py-4 flex flex-col items-center justify-center transition-colors rounded ${kitSelecionado === 3 ? 'border-black bg-black text-white' : 'border-zinc-200 text-zinc-600 hover:border-zinc-300'}`}
