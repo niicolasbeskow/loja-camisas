@@ -1,28 +1,23 @@
 "use client";
 
-import Link from 'next/link';
 import { produtos } from '@/data/produtos';
 import { 
   DollarSign, TrendingUp, ShoppingBag, 
-  AlertCircle, Download, FileSpreadsheet, Database,
+  AlertCircle, FileSpreadsheet, Database,
   Package, BarChart3, CreditCard, Activity 
 } from 'lucide-react';
 
-export default function AdminDashboard() {
-  // ==========================================
-  // DADOS REAIS DA OPERAÇÃO (FASE ZERO)
-  // ==========================================
-  
-  const metricas = {
-    faturacao: 0,
-    pedidos: 0,
-    ticketMedio: 0,
-    taxaConversao: 0,
-    visitantes: 0,
-    carrinhos: 0,
-    checkouts: 0
-  };
+// Contrato de dados rigoroso para o TypeScript aprovar a build
+interface AlertaEstoque {
+  nome: string;
+  tamanho: string;
+  qtd: number;
+  status: string;
+  cor: string;
+}
 
+export default function AdminDashboard() {
+  
   const vendasSemana = [
     { dia: 'Seg', valor: 0, altura: 'h-[0%]' },
     { dia: 'Ter', valor: 0, altura: 'h-[0%]' },
@@ -33,21 +28,18 @@ export default function AdminDashboard() {
     { dia: 'Dom', valor: 0, altura: 'h-[0%]' },
   ];
 
-  // Algoritmo Real que varre o seu DB e encontra falhas de estoque
-  const alertasEstoque = [];
+  // Algoritmo Real tipado
+  const alertasEstoque: AlertaEstoque[] = [];
   produtos.forEach(p => {
     Object.entries(p.estoque).forEach(([tamanho, qtd]) => {
-      if (qtd === 0) {
-        alertasEstoque.push({ nome: p.nome, tamanho, qtd, status: 'Esgotado', cor: 'bg-red-100 text-red-600' });
-      } else if (qtd <= 2) {
-        alertasEstoque.push({ nome: p.nome, tamanho, qtd, status: 'Crítico', cor: 'bg-orange-100 text-orange-600' });
+      const quantidade = qtd as number;
+      if (quantidade === 0) {
+        alertasEstoque.push({ nome: p.nome, tamanho, qtd: quantidade, status: 'Esgotado', cor: 'bg-red-100 text-red-600' });
+      } else if (quantidade <= 2) {
+        alertasEstoque.push({ nome: p.nome, tamanho, qtd: quantidade, status: 'Crítico', cor: 'bg-orange-100 text-orange-600' });
       }
     });
   });
-
-  // ==========================================
-  // FUNÇÕES DE EXPORTAÇÃO DE DADOS (BI)
-  // ==========================================
 
   const exportarCSV = () => {
     const headers = "ID,SKU,Nome,Categoria,Preco,Cor,Estoque_P,Estoque_M,Estoque_G,Estoque_GG,Estoque_XG\n";
