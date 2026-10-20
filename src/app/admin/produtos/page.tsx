@@ -1,13 +1,29 @@
 "use client";
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { produtos } from '@/data/produtos';
+import { produtos as produtosData } from '@/data/produtos';
 import { Edit, Trash2, Plus, Box } from 'lucide-react';
 
 export default function ProdutosAdmin() {
+  // Passamos os dados para um 'State' para podermos manipular (excluir) na hora
+  const [produtosLista, setProdutosLista] = useState(produtosData);
+
   // Função para calcular o total de peças de todos os tamanhos daquele SKU
   const calcularEstoqueTotal = (estoque: any) => {
     return Object.values(estoque).reduce((total: any, qtd: any) => total + (qtd || 0), 0) as number;
+  };
+
+  // Função para excluir um produto com confirmação de segurança
+  const handleExcluir = (id: string, nome: string) => {
+    if (window.confirm(`🚨 ATENÇÃO: Tem a certeza que deseja excluir o SKU "${nome}"?\n\nEsta ação removerá o produto da sua loja.`)) {
+      setProdutosLista(prev => prev.filter(p => p.id !== id));
+    }
+  };
+
+  // Função para editar
+  const handleEditar = (codigo: string) => {
+    alert(`Abertura do painel de edição para o SKU: ${codigo}\n\n(Em breve: A tela de edição usará a mesma estrutura do nosso formulário de Novo Produto!)`);
   };
 
   return (
@@ -36,7 +52,7 @@ export default function ProdutosAdmin() {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
-              {produtos.map(p => {
+              {produtosLista.map(p => {
                 const estoqueTotal = calcularEstoqueTotal(p.estoque);
                 const statusEstoque = estoqueTotal === 0 ? 'text-red-500' : estoqueTotal < 10 ? 'text-amber-500' : 'text-green-600';
 
@@ -94,10 +110,18 @@ export default function ProdutosAdmin() {
                     {/* COLUNA: AÇÕES */}
                     <td className="p-4 pr-6 md:pr-8">
                       <div className="flex gap-2 justify-end">
-                        <button className="p-2 text-zinc-400 hover:text-black hover:bg-zinc-100 rounded transition-colors" title="Editar SKU">
+                        <button 
+                          onClick={() => handleEditar(p.codigo)}
+                          className="p-2 text-zinc-400 hover:text-black hover:bg-zinc-100 rounded transition-colors" 
+                          title="Editar SKU"
+                        >
                           <Edit size={16} />
                         </button>
-                        <button className="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors" title="Excluir SKU">
+                        <button 
+                          onClick={() => handleExcluir(p.id, p.nome)}
+                          className="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors" 
+                          title="Excluir SKU"
+                        >
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -108,6 +132,11 @@ export default function ProdutosAdmin() {
               })}
             </tbody>
           </table>
+          {produtosLista.length === 0 && (
+            <div className="p-12 text-center text-zinc-400 font-bold text-xs uppercase tracking-widest">
+              Nenhum produto cadastrado.
+            </div>
+          )}
         </div>
       </div>
     </div>
