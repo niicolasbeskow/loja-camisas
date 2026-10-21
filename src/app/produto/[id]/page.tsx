@@ -74,7 +74,6 @@ export default function ProdutoDetalhes() {
     }
   }, [catalogo, produto.id]);
 
-  // Cálculos de Preço e Economia
   const precoUnitarioAtual = kitSelecionado === 3 && produto.precoKit3 ? produto.precoKit3 : kitSelecionado === 2 && produto.precoKit2 ? produto.precoKit2 : produto.preco;
   const precoTotal = precoUnitarioAtual * kitSelecionado;
   const precoBaseComparacao = (produto.precoAntigo > produto.preco ? produto.precoAntigo : produto.preco) * kitSelecionado;
@@ -83,7 +82,7 @@ export default function ProdutoDetalhes() {
 
   const variacoesDaMesmaCategoria = catalogo.filter(p => p.categoria === produto.categoria);
   const specsPills = produto.especificacaoTecnica ? produto.especificacaoTecnica.split('•').map(s => s.trim()) : [];
-  const formataTexto = (txt: string) => txt.replace(/-/g, '•');
+  const formataTexto = (txt: string) => txt ? txt.replace(/-/g, '•') : '';
   const mediaAvaliacoes = avaliacoes.length > 0 ? (avaliacoes.reduce((acc, curr) => acc + curr.nota, 0) / avaliacoes.length).toFixed(1) : '0.0';
 
   const handleComprar = () => {
@@ -94,6 +93,26 @@ export default function ProdutoDetalhes() {
       return;
     }
     setAdicionadoFeedback(true);
+    
+    // INTEGRAÇÃO COM A GAVETA DO HEADER (CARRINHO)
+    try {
+      const carrinhoAtual = JSON.parse(localStorage.getItem('bskw_carrinho') || '[]');
+      carrinhoAtual.push({
+        sku: produto.codigo,
+        nome: produto.nome,
+        preco: precoUnitarioAtual, // Salva com o desconto de kit aplicado se houver
+        tamanho: tamanhoAtivo,
+        cor: produto.cor,
+        quantidade: kitSelecionado, // Passa a quantidade do kit
+        imagem: produto.imagens && produto.imagens.length > 0 ? produto.imagens[0] : '',
+        adicionadoEm: new Date().toISOString()
+      });
+      localStorage.setItem('bskw_carrinho', JSON.stringify(carrinhoAtual));
+      
+      // Gatilho mágico que avisa o Header para abrir a gaveta
+      window.dispatchEvent(new Event('storage'));
+    } catch (err) {}
+
     setTimeout(() => setAdicionadoFeedback(false), 2000);
   };
 
@@ -124,7 +143,6 @@ export default function ProdutoDetalhes() {
   return (
     <main className="min-h-screen bg-[#FAFAFA] font-outfit pb-36 md:pb-24 text-zinc-900">
       
-      {/* MODAL DE AVALIAÇÃO */}
       {modalAvaliacaoAberto && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="bg-white w-full max-w-lg rounded-none border border-zinc-900 shadow-2xl relative flex flex-col max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden">
@@ -149,7 +167,6 @@ export default function ProdutoDetalhes() {
               </div>
               <div>
                 <label className="text-[11px] font-bold uppercase tracking-widest text-zinc-700 block mb-2">O seu nome</label>
-                {/* text-base no mobile previne o auto-zoom do Safari no iOS */}
                 <input type="text" required value={novaAvaliacao.nome} onChange={e => setNovaAvaliacao({ ...novaAvaliacao, nome: e.target.value })} className="w-full border-2 border-zinc-200 rounded-none p-3.5 text-base md:text-sm focus:border-black outline-none transition-colors" placeholder="Como quer ser identificado?" />
               </div>
               <div>
@@ -179,7 +196,6 @@ export default function ProdutoDetalhes() {
         </div>
       )}
 
-      {/* BREADCRUMB EDITORIAL */}
       <div className="bg-white border-b border-zinc-200 hidden md:block">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-3.5 flex justify-between items-center text-[11px] font-bold uppercase tracking-widest text-zinc-400">
           <div className="flex gap-2 items-center">
@@ -193,11 +209,9 @@ export default function ProdutoDetalhes() {
         </div>
       </div>
 
-      {/* GRID PRINCIPAL DO PRODUTO */}
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-6 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           
-          {/* COLUNA ESQUERDA: FOTO COM STICKY NO DESKTOP */}
           <div className="lg:col-span-7 lg:sticky lg:top-24">
             <div className="relative aspect-[4/5] bg-zinc-100 rounded-none overflow-hidden flex items-center justify-center border border-zinc-200 w-full">
               {produto.imagens && produto.imagens.length > 0 ? (
@@ -220,10 +234,8 @@ export default function ProdutoDetalhes() {
             </div>
           </div>
 
-          {/* COLUNA DIREITA: CONFIGURAÇÃO E COMPRA */}
           <div className="lg:col-span-5 flex flex-col">
             
-            {/* HEADER DA PEÇA */}
             <div className="flex items-center justify-between mb-2">
               <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-400">
                 SKU: {produto.codigo.replace(/-/g, '')}
@@ -240,7 +252,6 @@ export default function ProdutoDetalhes() {
               {produto.nome}
             </h1>
             
-            {/* SPECS TÉCNICAS ESTILO INDUSTRIAL (PILLS) */}
             {specsPills.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {specsPills.map((spec, idx) => (
@@ -251,7 +262,6 @@ export default function ProdutoDetalhes() {
               </div>
             )}
 
-            {/* BLOCO DE PREÇO DINÂMICO E TRANSPARENTE */}
             <div className="mb-8 p-5 bg-white border border-zinc-200">
               <div className="flex items-baseline justify-between gap-2 mb-1">
                 <div className="flex items-baseline gap-2.5">
@@ -286,7 +296,6 @@ export default function ProdutoDetalhes() {
               </div>
             </div>
 
-            {/* SELETOR DE KITS COM DESTAQUE PARA O MAIS VENDIDO */}
             <div className="mb-8">
               <div className="flex justify-between items-center mb-3">
                 <span className="text-xs font-bold uppercase tracking-widest text-zinc-900">1. Escolha o Combo</span>
@@ -348,7 +357,6 @@ export default function ProdutoDetalhes() {
               </div>
             </div>
 
-            {/* SELETOR DE CORES (ESTILO SWATCH QUADRADO INDUSTRIAL) */}
             <div className="mb-8">
               <span className="text-xs font-bold uppercase tracking-widest text-zinc-900 mb-3 block">
                 2. Cor: <span className="font-mono font-normal text-zinc-600 uppercase">{produto.cor}</span>
@@ -374,7 +382,6 @@ export default function ProdutoDetalhes() {
               </div>
             </div>
 
-            {/* SELETOR DE TAMANHOS COM CORTE DIAGONAL NOS ESGOTADOS */}
             <div
               ref={seletorTamanhoRef}
               className={`mb-8 p-3 -mx-3 transition-colors duration-300 ${
@@ -426,7 +433,6 @@ export default function ProdutoDetalhes() {
               )}
             </div>
 
-            {/* BOTÃO COMPRAR DESKTOP */}
             <button
               type="button"
               onClick={handleComprar}
@@ -447,7 +453,6 @@ export default function ProdutoDetalhes() {
               )}
             </button>
 
-            {/* TRUST BADGES */}
             <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-zinc-200">
               <div className="flex items-center gap-3 text-zinc-700">
                 <ShieldCheck size={18} className="text-black shrink-0" />
@@ -461,7 +466,6 @@ export default function ProdutoDetalhes() {
           </div>
         </div>
 
-        {/* ABAS DE INFORMAÇÕES */}
         <div className="mt-16 md:mt-24 pt-8 md:pt-12 border-t border-zinc-200 max-w-4xl">
           <div className="flex gap-8 md:gap-12 border-b border-zinc-200 mb-6 md:mb-8 overflow-x-auto [&::-webkit-scrollbar]:hidden">
             <button onClick={() => setAbaAtiva('descricao')} className={`pb-4 text-xs font-bold uppercase tracking-widest whitespace-nowrap transition-colors border-b-2 ${abaAtiva === 'descricao' ? 'border-black text-black' : 'border-transparent text-zinc-400 hover:text-zinc-700'}`}>
@@ -481,7 +485,6 @@ export default function ProdutoDetalhes() {
           </div>
         </div>
 
-        {/* AVALIAÇÕES */}
         <div id="avaliacoes" className="mt-16 md:mt-24 pt-12 md:pt-16 border-t border-zinc-200 scroll-mt-20">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
             <div>
@@ -541,7 +544,6 @@ export default function ProdutoDetalhes() {
         </div>
       </div>
       
-      {/* CROSS-SELLING: COMPLETA O TEU KIT */}
       {sugestoesInteligentes.length > 0 && (
         <section className="bg-white border-t border-zinc-200 py-12 md:py-20 mt-8">
           <div className="max-w-[1400px] mx-auto px-4 md:px-6">
@@ -561,7 +563,6 @@ export default function ProdutoDetalhes() {
         </section>
       )}
 
-      {/* STICKY BOTTOM BAR INTELIGENTE (EXCLUSIVO MOBILE) */}
       <div className="fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-zinc-200 z-40 md:hidden shadow-[0_-8px_20px_rgba(0,0,0,0.06)]">
         <div className="flex items-center gap-3">
           <div className="flex flex-col justify-center px-1 min-w-[95px]">

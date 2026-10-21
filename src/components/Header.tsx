@@ -1,237 +1,272 @@
 "use client";
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from 'next/navigation';
-import UserDropdown from "./UserDropdown";
-import { useCart } from "@/contexts/CartContext";
-import { useSession } from "next-auth/react";
-import { produtos } from "@/data/produtos"; 
 
-const CATEGORIAS = [
-  { nome: "Promoções 🔥", slug: "promocoes", class: "text-[#F59E0B] hover:text-amber-400" },
-  { nome: "Collab (em breve)", slug: "collab", class: "text-zinc-300 hover:text-white" },
-  { nome: "Kits", slug: "kits", class: "text-zinc-300 hover:text-white" },
-  { nome: "Camiseta Básica", slug: "camiseta-basica", class: "text-zinc-300 hover:text-white" },
-  { nome: "Camiseta Oversized", slug: "camiseta-oversized", class: "text-zinc-300 hover:text-white" },
-  { nome: "Camiseta Suedine", slug: "camiseta-suedine", class: "text-zinc-300 hover:text-white" },
-  { nome: "Camiseta Boxy", slug: "camiseta-boxy", class: "text-zinc-300 hover:text-white" },
-  { nome: "Camiseta Poliamida", slug: "camiseta-poliamida", class: "text-zinc-300 hover:text-white" },
-  { nome: "Manga Longa", slug: "manga-longa", class: "text-zinc-300 hover:text-white" },
-  { nome: "Feminino", slug: "feminino", class: "text-zinc-300 hover:text-white" },
-  { nome: "Moletom", slug: "moletom", class: "text-zinc-300 hover:text-white" },
-  { nome: "Regata Oversized", slug: "regata-oversized", class: "text-zinc-300 hover:text-white" },
-  { nome: "Shorts", slug: "shorts", class: "text-zinc-300 hover:text-white" },
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { ShoppingBag, Menu, X, Trash2, Plus, Minus, ArrowRight, Truck, Flame, Search, ShieldCheck } from 'lucide-react';
+
+export interface ItemCarrinho {
+  sku: string; nome: string; preco: number; tamanho: string; cor: string; quantidade: number; imagem?: string;
+}
+
+const META_FRETE_GRATIS = 299.0;
+const linksNavegacao = [
+  { nome: 'Drop // Todos', href: '/produtos' },
+  { nome: 'Oversized', href: '/categoria/camiseta-oversized' },
+  { nome: 'Suedine 250g', href: '/categoria/camiseta-suedine' },
+  { nome: 'Kits', href: '/categoria/kits' },
+  { nome: 'Moletons', href: '/categoria/moletom' }
 ];
 
-export default function Header({ session: _propSession }: { session?: any }) {
-  const { data: session } = useSession(); 
-  
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  const { cartItems, cartCount, cartTotal, removeFromCart, isCartOpen, setIsCartOpen } = useCart();
-  const router = useRouter();
+export default function Header() {
+  const [carrinhoAberto, setCarrinhoAberto] = useState(false);
+  const [menuMobileAberto, setMenuMobileAberto] = useState(false);
+  const [buscaAberta, setBuscaAberta] = useState(false);
+  const [termoBusca, setTermoBusca] = useState('');
+  const [itens, setItens] = useState<ItemCarrinho[]>([]);
 
-  const produtosFiltrados = searchQuery.trim() === '' ? [] : produtos.filter(p => 
-    p.nome.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    p.cor.toLowerCase().includes(searchQuery.toLowerCase())
-  ).slice(0, 5);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      setIsSearchOpen(false);
-      router.push(`/categoria/camiseta-basica`); 
-      setSearchQuery('');
-    }
+  const sincronizarCarrinho = () => {
+    if (typeof window === 'undefined') return;
+    try {
+      const bruto: ItemCarrinho[] = JSON.parse(localStorage.getItem('bskw_carrinho') || '[]');
+      const agrupado: ItemCarrinho[] = [];
+      bruto.forEach((item) => {
+        const idx = agrupado.findIndex((i) => i.sku === item.sku && i.tamanho === item.tamanho);
+        if (idx >= 0) agrupado[idx].quantidade += item.quantidade || 1;
+        else agrupado.push({ ...item, quantidade: item.quantidade || 1 });
+      });
+      setItens(agrupado);
+    } catch (e) {}
   };
 
-  const handleCartClick = () => {
-    if (!session) {
-      alert('Você precisa estar logado para abrir a sua armadura.');
-      router.push('/login');
-      return;
-    }
-    setIsCartOpen(true);
+  useEffect(() => {
+    sincronizarCarrinho();
+    const handleStorageUpdate = () => {
+      sincronizarCarrinho();
+      setCarrinhoAberto(true);
+    };
+    window.addEventListener('storage', handleStorageUpdate);
+    return () => window.removeEventListener('storage', handleStorageUpdate);
+  }, []);
+
+  const salvarItensStorage = (novosItens: ItemCarrinho[]) => {
+    setItens(novosItens);
+    if (typeof window !== 'undefined') localStorage.setItem('bskw_carrinho', JSON.stringify(novosItens));
   };
+
+  const alterarQuantidade = (sku: string, tamanho: string, delta: number) => {
+    const atualizados = itens.map((item) => {
+      if (item.sku === sku && item.tamanho === tamanho) return { ...item, quantidade: item.quantidade + delta };
+      return item;
+    }).filter((item) => item.quantidade > 0);
+    salvarItensStorage(atualizados);
+  };
+
+  const removerItem = (sku: string, tamanho: string) => {
+    salvarItensStorage(itens.filter((item) => !(item.sku === sku && item.tamanho === tamanho)));
+  };
+
+  const totalPecas = itens.reduce((acc, item) => acc + item.quantidade, 0);
+  const subtotalBruto = itens.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
+  const percentualDescontoKit = totalPecas >= 3 ? 0.155 : totalPecas === 2 ? 0.11 : 0;
+  const descontoKitValor = subtotalBruto * percentualDescontoKit;
+  const subtotalFinal = subtotalBruto - descontoKitValor;
+  const faltaParaFrete = Math.max(0, META_FRETE_GRATIS - subtotalFinal);
+  const progressoFrete = Math.min(100, (subtotalFinal / META_FRETE_GRATIS) * 100);
 
   return (
     <>
-      <nav className="sticky top-0 z-50 w-full bg-[#000000] py-4 shadow-md border-b border-zinc-900">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 w-full relative">
-          
-          {/* ========================================= */}
-          {/* DESKTOP MENU (INTOCÁVEL - lg:flex)        */}
-          {/* ========================================= */}
-          <div className="hidden lg:flex items-start justify-between w-full">
-            <Link href="/" className="flex-shrink-0 mt-1 transition-opacity hover:opacity-80">
-              <img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-10 w-auto object-contain" />
-            </Link>
-            
-            <div className="flex-1 flex flex-wrap justify-center gap-x-4 gap-y-2 px-6">
-              {CATEGORIAS.map(cat => (
-                <Link key={cat.slug} href={`/categoria/${cat.slug}`} className={`text-[11px] font-medium uppercase tracking-widest ${cat.class}`}>
-                  {cat.nome}
-                </Link>
-              ))}
-            </div>
-
-            <div className="flex flex-shrink-0 items-center gap-6 mt-1">
-              <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-white hover:text-[#F59E0B] transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              </button>
-              <UserDropdown session={session} />
-              <button onClick={handleCartClick} className="text-white hover:text-[#F59E0B] relative">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                {cartCount > 0 && <span className="absolute -top-2 -right-2 bg-[#F59E0B] text-[#000000] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">{cartCount}</span>}
-              </button>
-            </div>
-          </div>
-
-          {/* ========================================= */}
-          {/* MOBILE MENU (SOMENTE MOBILE - lg:hidden)  */}
-          {/* ========================================= */}
-          <div className="flex lg:hidden items-center justify-between w-full">
-            <div className="flex items-center">
-              {/* Botão Menu Hambúrguer */}
-              <button onClick={() => setIsMobileMenuOpen(true)} className="text-white hover:text-[#F59E0B] p-2 -ml-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-              </button>
-              
-              {/* Ícone da Lupa Restaurado no Mobile! */}
-              <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-white hover:text-[#F59E0B] p-2 ml-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              </button>
-            </div>
-
-            <Link href="/" className="absolute left-1/2 -translate-x-1/2 hover:opacity-80">
-              <img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-7 w-auto object-contain" />
-            </Link>
-
-            <div className="flex items-center gap-3">
-              <UserDropdown session={session} />
-              <button onClick={handleCartClick} className="text-white hover:text-[#F59E0B] relative p-2 -mr-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-[#F59E0B] text-[#000000] text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">{cartCount}</span>}
-              </button>
-            </div>
-          </div>
+      <div className="bg-black text-white border-b border-zinc-800 py-2 px-4 text-center font-mono text-[10px] md:text-[11px] uppercase tracking-widest">
+        <div className="max-w-[1400px] mx-auto flex items-center justify-center md:justify-between">
+          <span className="hidden md:inline text-zinc-400">B.SKW® // HEAVYWEIGHT STREETWEAR</span>
+          <span className="font-bold text-[#a3e635]">FRETE GRÁTIS ACIMA DE R$ 299 • DESCONTO PROGRESSIVO NOS KITS 2 E 3</span>
+          <span className="hidden md:inline text-zinc-400">ENVIO PARA TODO O BRASIL</span>
         </div>
-
-        {/* BARRA DE PESQUISA (Funciona nos dois, responsivo) */}
-        <div className={`absolute top-full left-0 w-full bg-[#111111] border-b border-zinc-800 transition-all duration-300 overflow-hidden shadow-2xl ${isSearchOpen ? 'max-h-[500px] py-4 md:py-6' : 'max-h-0 py-0 border-transparent'}`}>
-           <div className="max-w-[800px] mx-auto px-4 relative">
-              <form onSubmit={handleSearch} className="relative">
-                 <input 
-                    type="text" 
-                    placeholder="O que procura, meu chapa?" 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    autoFocus={isSearchOpen}
-                    className="w-full bg-transparent border-b-2 border-zinc-700 text-white text-lg md:text-3xl font-anton uppercase outline-none py-2 placeholder:text-zinc-600 focus:border-[#F59E0B] transition-colors pr-10"
-                 />
-                 <button type="submit" className="absolute right-0 top-1/2 -translate-y-1/2 text-[#F59E0B]">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
-                 </button>
-              </form>
-
-              {searchQuery.length > 1 && (
-                <div className="mt-4 flex flex-col gap-2">
-                  {produtosFiltrados.length > 0 ? (
-                    produtosFiltrados.map(produto => (
-                      <Link 
-                        key={produto.id} 
-                        href={`/produto/${produto.id}`}
-                        onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
-                        className="flex justify-between items-center bg-zinc-900 p-3 rounded-md hover:bg-zinc-800 transition-colors group"
-                      >
-                        <div>
-                          <span className="text-white font-bold uppercase text-xs md:text-sm block group-hover:text-[#F59E0B] transition-colors">{produto.nome}</span>
-                          <span className="text-zinc-400 text-[10px] md:text-xs">Cor: {produto.cor}</span>
-                        </div>
-                        <span className="text-[#F59E0B] font-bold text-sm">R$ {produto.preco.toFixed(2).replace('.', ',')}</span>
-                      </Link>
-                    ))
-                  ) : (
-                    <p className="text-zinc-500 font-medium text-center text-sm py-4">Puts, não encontramos nada com "{searchQuery}".</p>
-                  )}
-                </div>
-              )}
-           </div>
-        </div>
-      </nav>
-
-      {/* ========================================= */}
-      {/* DRAWER DO MENU MOBILE (Novo!)             */}
-      {/* ========================================= */}
-      <div className={`fixed inset-0 z-[100] transition-opacity duration-300 lg:hidden ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
-         <div className={`absolute inset-y-0 left-0 w-[80%] max-w-sm bg-[#000000] border-r border-zinc-800 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
-              <img src="/files/BSKW_horizontal_cor-branco-ambar.png" alt="B.SKW" className="h-6 w-auto object-contain" />
-              <button onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-400 hover:text-[#F59E0B] p-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto py-4 px-4 flex flex-col">
-              <span className="text-zinc-500 font-anton uppercase text-xl mb-4 pl-2">Categorias</span>
-              {CATEGORIAS.map(cat => (
-                <Link 
-                  key={cat.slug} 
-                  href={`/categoria/${cat.slug}`} 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-sm font-medium uppercase tracking-widest block py-4 px-2 border-b border-zinc-900 ${cat.class}`}
-                >
-                  {cat.nome}
-                </Link>
-              ))}
-            </div>
-         </div>
       </div>
 
-      {/* DRAWER DO CARRINHO (Mantido idêntico) */}
-      <div className={`fixed inset-0 z-[100] transition-opacity duration-300 ${isCartOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setIsCartOpen(false)} />
-         <div className={`absolute inset-y-0 right-0 w-full sm:w-[400px] bg-[#000000] border-l border-zinc-800 shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
-              <span className="font-anton text-2xl tracking-wide text-white uppercase">Seu Carrinho</span>
-              <button onClick={() => setIsCartOpen(false)} className="text-zinc-400 hover:text-[#F59E0B] p-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200 font-outfit">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between gap-4">
+          <button type="button" onClick={() => setMenuMobileAberto(true)} className="lg:hidden p-2 -ml-2 text-zinc-900 hover:bg-zinc-100 active:scale-95 transition-all">
+            <Menu size={22} />
+          </button>
+
+          <Link href="/" className="font-anton text-3xl md:text-4xl tracking-wider uppercase text-zinc-900 leading-none select-none">
+            B.SKW<span className="text-xs font-mono align-top ml-0.5 text-zinc-400">®</span>
+          </Link>
+
+          <nav className="hidden lg:flex items-center gap-8">
+            {linksNavegacao.map((link) => (
+              <Link key={link.href} href={link.href} className="text-xs font-bold uppercase tracking-widest text-zinc-600 hover:text-black transition-colors py-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-black hover:after:w-full after:transition-all">
+                {link.nome}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2 md:gap-3">
+            <button type="button" onClick={() => setBuscaAberta(!buscaAberta)} className="p-2.5 text-zinc-900 hover:bg-zinc-100 active:scale-95 transition-all">
+              <Search size={19} />
+            </button>
+            <button type="button" onClick={() => setCarrinhoAberto(true)} className="relative flex items-center gap-2.5 bg-black text-white px-3.5 py-2.5 md:px-4 md:py-2.5 rounded-none hover:bg-zinc-800 active:scale-95 transition-all">
+              <ShoppingBag size={16} />
+              <span className="font-mono text-xs font-bold">[{totalPecas}]</span>
+            </button>
+          </div>
+        </div>
+
+        {buscaAberta && (
+          <div className="border-t border-zinc-200 bg-[#FAFAFA] px-4 md:px-6 py-3 animate-in slide-in-from-top-2 duration-150">
+            <div className="max-w-[1400px] mx-auto flex items-center gap-3">
+              <Search size={16} className="text-zinc-400 shrink-0" />
+              <input type="text" value={termoBusca} onChange={(e) => setTermoBusca(e.target.value)} placeholder="Buscar por modelagem..." className="w-full bg-transparent text-base md:text-xs font-mono uppercase tracking-wider text-zinc-900 outline-none placeholder:text-zinc-400" autoFocus />
+              <button type="button" onClick={() => setBuscaAberta(false)} className="text-zinc-400 hover:text-black p-1"><X size={18} /></button>
             </div>
-            <div className="flex-1 flex flex-col p-6 overflow-y-auto">
-              {cartItems.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-center">
-                  <h2 className="text-2xl font-anton uppercase tracking-wide text-white mb-2">Carrinho Vazio</h2>
-                  <button onClick={() => setIsCartOpen(false)} className="w-full bg-[#F59E0B] text-[#000000] font-bold uppercase tracking-wide py-4 rounded-md hover:bg-amber-400 mt-8">Continuar Comprando</button>
+          </div>
+        )}
+      </header>
+
+      {menuMobileAberto && (
+        <div className="fixed inset-0 z-50 lg:hidden flex">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-xs animate-in fade-in duration-200" onClick={() => setMenuMobileAberto(false)} />
+          <div className="relative z-10 w-[85%] max-w-xs bg-white h-full flex flex-col justify-between border-r border-zinc-900 animate-in slide-in-from-left duration-200 font-outfit">
+            <div>
+              <div className="p-5 border-b border-zinc-200 flex items-center justify-between bg-zinc-50">
+                <span className="font-anton text-2xl uppercase tracking-wider">B.SKW // MENU</span>
+                <button onClick={() => setMenuMobileAberto(false)} className="p-1.5 text-zinc-500 hover:text-black"><X size={22} /></button>
+              </div>
+              <nav className="flex flex-col divide-y divide-zinc-100">
+                {linksNavegacao.map((link) => (
+                  <Link key={link.href} href={link.href} onClick={() => setMenuMobileAberto(false)} className="p-4 text-xs font-bold uppercase tracking-widest text-zinc-900 hover:bg-zinc-50 flex items-center justify-between">
+                    {link.nome} <ArrowRight size={14} className="text-zinc-400" />
+                  </Link>
+                ))}
+              </nav>
+            </div>
+            <div className="p-5 border-t border-zinc-200 bg-zinc-950 text-white">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[#a3e635] block mb-1">DICA DE SETUP</span>
+              <p className="text-xs text-zinc-300 leading-relaxed">Adicione 3 peças no carrinho para destravar automaticamente o maior desconto do catálogo.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {carrinhoAberto && (
+        <div className="fixed inset-0 z-50 flex justify-end font-outfit">
+          <div className="fixed inset-0 bg-black/75 backdrop-blur-xs animate-in fade-in duration-200" onClick={() => setCarrinhoAberto(false)} />
+          <div className="relative z-10 w-full max-w-md bg-white h-full flex flex-col justify-between border-l border-zinc-900 shadow-2xl animate-in slide-in-from-right duration-200">
+            <div>
+              <div className="p-5 border-b border-zinc-200 flex items-center justify-between bg-white">
+                <div className="flex items-center gap-2.5">
+                  <ShoppingBag size={18} className="text-black" />
+                  <h2 className="font-anton text-2xl uppercase tracking-wide text-zinc-900">Teu Setup</h2>
+                  <span className="font-mono text-xs font-bold bg-zinc-100 border border-zinc-300 px-2 py-0.5">{totalPecas} {totalPecas === 1 ? 'PEÇA' : 'PEÇAS'}</span>
+                </div>
+                <button type="button" onClick={() => setCarrinhoAberto(false)} className="p-1.5 text-zinc-400 hover:text-black transition-colors"><X size={22} /></button>
+              </div>
+
+              <div className="px-5 py-3.5 bg-zinc-950 text-white border-b border-zinc-800">
+                <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-wider mb-2">
+                  {faltaParaFrete === 0 ? (
+                    <span className="text-[#a3e635] font-bold flex items-center gap-1.5"><Truck size={14} /> Frete Grátis Desbloqueado!</span>
+                  ) : (
+                    <span className="text-zinc-300">Faltam <strong className="text-white">R$ {faltaParaFrete.toFixed(2).replace('.', ',')}</strong> p/ <strong className="text-[#a3e635]">Frete Grátis</strong></span>
+                  )}
+                  <span className="text-zinc-400">{Math.round(progressoFrete)}%</span>
+                </div>
+                <div className="w-full h-1.5 bg-zinc-800 overflow-hidden">
+                  <div className="h-full bg-[#a3e635] transition-all duration-500 ease-out" style={{ width: `${progressoFrete}%` }} />
+                </div>
+              </div>
+
+              <div className="px-5 py-2.5 bg-zinc-100 border-b border-zinc-200 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-zinc-800">
+                  <Flame size={14} className={totalPecas >= 2 ? "text-black fill-[#a3e635]" : "text-zinc-400"} />
+                  {totalPecas === 0 && <span>Adicione 2+ peças para ativar desconto de Kit</span>}
+                  {totalPecas === 1 && <span>Adicione <strong className="underline">mais 1 peça</strong> p/ ativar o <strong>Kit 2 (-11%)</strong></span>}
+                  {totalPecas === 2 && <span>Kit 2 Ativo! Adicione <strong className="underline">+1 peça</strong> p/ o <strong>Kit 3 (-15%)</strong></span>}
+                  {totalPecas >= 3 && <span className="font-bold text-black">Desconto Máximo de Kit 3 Ativado!</span>}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-5 divide-y divide-zinc-200 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-zinc-300">
+              {itens.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center text-center py-12">
+                  <div className="w-16 h-16 bg-zinc-100 border border-zinc-200 flex items-center justify-center mb-4"><ShoppingBag size={24} className="text-zinc-400" /></div>
+                  <h3 className="font-anton text-xl uppercase tracking-wide text-zinc-900 mb-1">Teu carrinho está vazio</h3>
+                  <p className="text-xs text-zinc-500 max-w-[240px] mb-6">Comece a montar o seu kit com nossas camisetas de alta gramatura.</p>
+                  <button type="button" onClick={() => setCarrinhoAberto(false)} className="bg-black text-white px-6 py-3.5 text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 active:scale-95 transition-all rounded-none">Explorar Catálogo</button>
                 </div>
               ) : (
-                <div className="flex flex-col gap-6 h-full">
-                  <div className="flex-1 overflow-y-auto pr-2 space-y-6">
-                    {cartItems.map((item, idx) => (
-                      <div key={idx} className="flex gap-4 border-b border-zinc-800 pb-4">
-                        <div className="flex-1 flex flex-col">
-                          <div className="flex justify-between items-start">
-                            <h4 className="text-white font-bold text-sm uppercase line-clamp-2 pr-2">{item.titulo}</h4>
-                            <button onClick={() => removeFromCart(item.titulo, item.cor, item.tamanho)} className="text-zinc-500 hover:text-red-500">Excluir</button>
-                          </div>
-                          <p className="text-zinc-400 text-xs mt-1">Cor: {item.cor} | Tam: {item.tamanho}</p>
-                          <div className="mt-auto flex justify-between items-center pt-2">
-                            <span className="text-[#F59E0B] font-bold">R$ {item.preco.toFixed(2).replace('.', ',')}</span>
-                            <span className="text-zinc-400 text-xs bg-zinc-900 px-2 py-1 rounded-sm">Qtd: {item.quantidade}</span>
-                          </div>
+                itens.map((item) => (
+                  <div key={`${item.sku}-${item.tamanho}`} className="py-4 first:pt-0 last:pb-0 flex gap-4">
+                    <div className="w-20 h-24 bg-zinc-100 border border-zinc-200 shrink-0 flex items-center justify-center relative overflow-hidden">
+                      {item.imagem ? <img src={item.imagem} alt={item.nome} className="w-full h-full object-cover" /> : <span className="font-anton text-xs text-zinc-400 uppercase tracking-widest">B.SKW</span>}
+                      <span className="absolute bottom-1 right-1 bg-black text-white font-mono text-[9px] font-bold px-1.5 py-0.5">{item.tamanho}</span>
+                    </div>
+
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900 line-clamp-1">{item.nome}</h4>
+                          <button type="button" onClick={() => removerItem(item.sku, item.tamanho)} className="text-zinc-400 hover:text-red-600 transition-colors p-0.5"><Trash2 size={14} /></button>
+                        </div>
+                        <p className="font-mono text-[10px] uppercase text-zinc-500 mt-0.5">Cor: {item.cor} • Tam: {item.tamanho}</p>
+                      </div>
+
+                      <div className="flex items-end justify-between mt-3">
+                        <div className="flex items-center border border-zinc-300 bg-white">
+                          <button type="button" onClick={() => alterarQuantidade(item.sku, item.tamanho, -1)} className="w-7 h-7 flex items-center justify-center text-zinc-600 hover:bg-zinc-100 active:scale-90"><Minus size={12} /></button>
+                          <span className="w-8 text-center font-mono text-xs font-bold text-zinc-900">{item.quantidade}</span>
+                          <button type="button" onClick={() => alterarQuantidade(item.sku, item.tamanho, 1)} className="w-7 h-7 flex items-center justify-center text-zinc-600 hover:bg-zinc-100 active:scale-90"><Plus size={12} /></button>
+                        </div>
+                        <div className="text-right">
+                          <span className="font-anton text-base tracking-wide text-zinc-900">R$ {(item.preco * item.quantidade).toFixed(2).replace('.', ',')}</span>
                         </div>
                       </div>
-                    ))}
+                    </div>
                   </div>
-                  <div className="mt-auto pt-4 border-t border-zinc-800">
-                     <div className="flex justify-between text-white font-bold mb-2"><span>Subtotal</span><span className="text-[#F59E0B]">R$ {cartTotal.toFixed(2).replace('.', ',')}</span></div>
-                     <button onClick={() => { setIsCartOpen(false); router.push('/checkout'); }} className="w-full bg-[#F59E0B] text-[#000000] font-bold uppercase tracking-wide py-4 rounded-md hover:bg-amber-400 mt-4">Finalizar Compra</button>
-                  </div>
-                </div>
+                ))
               )}
             </div>
-         </div>
-      </div>
+
+            {itens.length > 0 && (
+              <div className="p-5 bg-[#FAFAFA] border-t border-zinc-200">
+                <div className="space-y-2 mb-4">
+                  <div className="flex justify-between text-xs text-zinc-600">
+                    <span className="uppercase tracking-wider font-medium">Subtotal ({totalPecas} un)</span>
+                    <span className="font-mono">R$ {subtotalBruto.toFixed(2).replace('.', ',')}</span>
+                  </div>
+                  {descontoKitValor > 0 && (
+                    <div className="flex justify-between text-xs font-bold text-zinc-900 bg-[#a3e635]/30 px-2 py-1 border border-[#a3e635]">
+                      <span className="font-mono uppercase text-[11px]">Desconto Prog. (Kit {totalPecas >= 3 ? '3+' : '2'})</span>
+                      <span className="font-mono">- R$ {descontoKitValor.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-xs text-zinc-600">
+                    <span className="uppercase tracking-wider font-medium">Entrega</span>
+                    <span className="font-mono font-bold uppercase text-zinc-900">{faltaParaFrete === 0 ? 'GRÁTIS' : 'No Checkout'}</span>
+                  </div>
+                  <div className="pt-3 border-t border-zinc-200 flex justify-between items-baseline">
+                    <span className="font-bold text-xs uppercase tracking-widest text-zinc-900">Total Estimado</span>
+                    <div className="text-right">
+                      <span className="font-anton text-2xl tracking-wide text-zinc-900 block leading-none">R$ {subtotalFinal.toFixed(2).replace('.', ',')}</span>
+                      <span className="font-mono text-[10px] text-zinc-500 uppercase">ou 3x R$ {(subtotalFinal / 3).toFixed(2).replace('.', ',')} s/ j</span>
+                    </div>
+                  </div>
+                </div>
+
+                <Link href="/checkout" onClick={() => setCarrinhoAberto(false)} className="w-full bg-black text-white h-14 flex items-center justify-center gap-3 font-bold text-xs uppercase tracking-widest hover:bg-zinc-800 active:scale-[0.98] transition-all rounded-none">
+                  Finalizar Compra <ArrowRight size={16} />
+                </Link>
+
+                <div className="mt-3 flex items-center justify-center gap-2 text-[10px] font-mono uppercase tracking-widest text-zinc-400">
+                  <ShieldCheck size={13} className="text-zinc-600" /> Checkout Seguro • PIX
+                </div>
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
     </>
   );
 }
