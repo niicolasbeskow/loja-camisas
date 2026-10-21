@@ -15,13 +15,10 @@ export interface Produto {
 const estoqueZerado: Estoque = { P: 0, M: 0, G: 0, GG: 0, XG: 0, G1: 0, G2: 0 };
 const tamanhosPadrao: Tamanho[] = ['P', 'M', 'G', 'GG', 'XG', 'G1', 'G2'];
 
-// FUNÇÃO DE PRECIFICAÇÃO E ARREDONDAMENTO B.SKW
-// Arredonda para o final 4,90 ou 9,90 mais próximo.
 const arredondar = (valor: number): number => {
   return Math.round(valor / 5) * 5 - 0.10;
 };
 
-// DADOS BRUTOS DA PIONERA (Preço Normal / Preço Atacado)
 const dadosBrutos = [
   // BÁSICAS
   { cat: 'camiseta-basica', nome: 'Camiseta Básica B.SKW Preto', cor: 'Preto', espec: '200 g/m² Fio 26.1 • 100% Algodão', sku: 'BAS-PRT-01', hex: '#18181b', n: 48.90, a: 34.90 },
@@ -99,11 +96,10 @@ const dadosBrutos = [
 ];
 
 export const produtosIniciais: Produto[] = dadosBrutos.map((d, i) => {
-  // A Matemática Automática B.SKW
   const precoCalculado = arredondar(d.a * 2.25);
   const precoRiscado = arredondar(d.n * 2.25);
-  const valorKit2 = arredondar(d.a * 2.00); // 100%
-  const valorKit3 = arredondar(d.a * 1.90); // 90%
+  const valorKit2 = arredondar(d.a * 2.00);
+  const valorKit3 = arredondar(d.a * 1.90);
 
   return {
     id: String(i + 1),
@@ -119,10 +115,10 @@ export const produtosIniciais: Produto[] = dadosBrutos.map((d, i) => {
     cor: d.cor,
     hex: d.hex,
     especificacaoTecnica: d.espec,
-    tags: ['Lançamento'],
-    tag: 'Lançamento',
+    tags: [],
+    tag: '',
     tamanhos: tamanhosPadrao,
-    promocao: precoRiscado > precoCalculado,
+    promocao: false,
     imagens: [],
     estoque: { ...estoqueZerado },
     descricao: `Peça oficial B.SKW desenvolvida para máxima qualidade e durabilidade. \n\n${d.espec}`,
@@ -133,7 +129,7 @@ export const produtosIniciais: Produto[] = dadosBrutos.map((d, i) => {
 
 export let produtos: Produto[] = [...produtosIniciais];
 
-const STORAGE_KEY = 'bskw_catalogo_v4'; // FORÇA A ATUALIZAÇÃO NO NAVEGADOR
+const STORAGE_KEY = 'bskw_catalogo_v5';
 
 export const carregarProdutosStorage = (): Produto[] => {
   if (typeof window === 'undefined') return produtos;
@@ -158,7 +154,7 @@ export const atualizarProdutoStorage = (produtoEditado: Produto) => {
     precoOriginal: produtoEditado.precoAntigo,
     precoKit: produtoEditado.precoKit2,
     tag: produtoEditado.tags[0] || '',
-    promocao: produtoEditado.precoAntigo > produtoEditado.preco
+    promocao: produtoEditado.precoAntigo > produtoEditado.preco && produtoEditado.tags.length > 0
   };
 
   if (idx >= 0) { lista[idx] = produtoSincronizado; } else { lista.push(produtoSincronizado); }
