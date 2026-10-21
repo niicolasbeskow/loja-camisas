@@ -80,6 +80,9 @@ export default function ProdutoDetalhes() {
   const mediaAvaliacoes = avaliacoes.length > 0 ? (avaliacoes.reduce((acc, curr) => acc + curr.nota, 0) / avaliacoes.length).toFixed(1) : '0.0';
 
   const specsArray = produto.especificacaoTecnica.split('•').map(s => s.trim()).filter(Boolean);
+  
+  // FUNÇÃO REINSERIDA AQUI:
+  const formataTexto = (txt: string) => txt ? txt.replace(/-/g, '•') : '';
 
   const handleFotoAvaliacao = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) setNovaAvaliacao({ ...novaAvaliacao, imagem: URL.createObjectURL(e.target.files[0]) });
@@ -101,7 +104,6 @@ export default function ProdutoDetalhes() {
 
   const rolarParaTamanhos = () => {
     document.getElementById('seletor-tamanho')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    // Feedback visual sutil piscar border
     const el = document.getElementById('seletor-tamanho');
     if(el) {
       el.classList.add('ring-2', 'ring-black', 'ring-offset-4');
@@ -109,7 +111,7 @@ export default function ProdutoDetalhes() {
     }
   };
 
-  const renderEstrelas = (nota: number, size = 14) => Array(5).fill(0).map((_, i) => <Star key={i} size={size} className={i < nota ? "text-zinc-900 fill-zinc-900" : "text-zinc-300"} />);
+  const renderEstrelas = (nota: number, size = 14) => Array(5).fill(0).map((_, i) => <Star key={i} size={size} className={i < nota ? "text-black fill-black" : "text-zinc-200"} />);
 
   return (
     <main className="min-h-screen bg-[#FAFAFA] font-outfit pb-32 md:pb-24">
@@ -135,7 +137,6 @@ export default function ProdutoDetalhes() {
               </div>
               <div>
                 <label className="text-[11px] font-bold uppercase tracking-widest text-zinc-700 block mb-2">O seu nome</label>
-                {/* text-base para evitar zoom no iOS */}
                 <input type="text" required value={novaAvaliacao.nome} onChange={e => setNovaAvaliacao({...novaAvaliacao, nome: e.target.value})} className="w-full border-2 border-zinc-200 p-3 text-base md:text-sm focus:border-black outline-none rounded-none" placeholder="Como quer ser identificado?" />
               </div>
               <div>
@@ -177,7 +178,6 @@ export default function ProdutoDetalhes() {
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-6 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-start">
           
-          {/* IMAGEM STICKY NO DESKTOP */}
           <div className="lg:sticky lg:top-24 lg:h-fit relative aspect-[4/5] bg-zinc-100 rounded-none overflow-hidden flex items-center justify-center border border-zinc-200 w-full">
             {produto.imagens && produto.imagens.length > 0 ? (
                <img src={produto.imagens[0]} alt={produto.nome} className="absolute inset-0 w-full h-full object-cover object-center" />
@@ -198,7 +198,6 @@ export default function ProdutoDetalhes() {
             <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-zinc-400 mb-3 block">SKU: {produto.codigo.replace(/-/g, '')}</span>
             <h1 className="text-3xl md:text-5xl font-anton uppercase text-zinc-900 tracking-wide mb-3 md:mb-4 leading-none">{produto.nome}</h1>
             
-            {/* Ficha Técnica / Pills */}
             <div className="flex flex-wrap gap-2 mb-6">
               {specsArray.map((spec, i) => (
                 <span key={i} className="border border-zinc-300 text-zinc-600 px-3 py-1 font-mono text-[11px] uppercase tracking-widest bg-white">
@@ -214,7 +213,6 @@ export default function ProdutoDetalhes() {
               </a>
             </div>
 
-            {/* PRECIFICAÇÃO (Foco na Unidade) */}
             <div className="mb-8 p-4 md:p-6 bg-white border border-zinc-200 rounded-none shadow-sm">
               <div className="flex flex-col mb-1 md:mb-2">
                 <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1">
@@ -300,7 +298,6 @@ export default function ProdutoDetalhes() {
               </div>
             </div>
 
-            {/* BOTÃO COMPRAR DESKTOP */}
             <button 
               onClick={() => { if(!tamanhoAtivo) rolarParaTamanhos(); }}
               className="hidden md:flex w-full bg-black text-white h-16 items-center justify-center gap-3 font-bold text-sm uppercase tracking-widest hover:bg-zinc-800 active:scale-[0.98] transition-all rounded-none shadow-none"
