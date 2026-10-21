@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import { carregarProdutosStorage, produtosIniciais, Produto, Tamanho } from '@/data/produtos';
-import { ShoppingCart, Truck, ShieldCheck, Star, MessageSquare, X } from 'lucide-react';
+import { ShoppingCart, Truck, ShieldCheck, Star, MessageSquare, X, Camera } from 'lucide-react';
 import QuickBuyCard from '@/components/QuickBuyCard';
 
 const normalizar = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
 
-// ESTRUTURA PARA AVALIAÇÕES (Base para futura integração com Google Shopping)
+// ESTRUTURA PARA AVALIAÇÕES (Agora suporta imagem)
 interface Avaliacao {
   id: string;
   sku: string;
@@ -17,6 +17,7 @@ interface Avaliacao {
   nota: number;
   comentario: string;
   data: string;
+  imagem?: string;
 }
 
 const coresHex: Record<string, string> = {
@@ -66,18 +67,16 @@ export default function ProdutoDetalhes() {
   // ESTADOS DAS AVALIAÇÕES
   const [avaliacoes, setAvaliacoes] = useState<Avaliacao[]>([]);
   const [modalAvaliacaoAberto, setModalAvaliacaoAberto] = useState(false);
-  const [novaAvaliacao, setNovaAvaliacao] = useState({ nome: '', nota: 5, comentario: '' });
+  const [novaAvaliacao, setNovaAvaliacao] = useState({ nome: '', nota: 5, comentario: '', imagem: '' });
 
   useEffect(() => {
     const produtosSalvos = carregarProdutosStorage();
     setCatalogo(produtosSalvos);
     
-    // Carrega as avaliações salvas no LocalStorage para este SKU específico
     const avaliacoesSalvas = localStorage.getItem('bskw_avaliacoes');
     if (avaliacoesSalvas) {
       try {
         const todas: Avaliacao[] = JSON.parse(avaliacoesSalvas);
-        // Filtra apenas as avaliações do produto atual (SKU)
         const paramClean = paramId;
         const avaliacoesDesteProduto = todas.filter(a => a.sku.replace(/-/g, '').toUpperCase() === paramClean);
         setAvaliacoes(avaliacoesDesteProduto);
@@ -117,10 +116,16 @@ export default function ProdutoDetalhes() {
   const variacoesDaMesmaCategoria = catalogo.filter(p => p.categoria === produto.categoria);
   const formataTexto = (txt: string) => txt.replace(/-/g, '•');
 
-  // LÓGICA DE CÁLCULO DE AVALIAÇÕES
   const mediaAvaliacoes = avaliacoes.length > 0 
     ? (avaliacoes.reduce((acc, curr) => acc + curr.nota, 0) / avaliacoes.length).toFixed(1)
     : '0.0';
+
+  const handleFotoAvaliacao = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const url = URL.createObjectURL(e.target.files[0]);
+      setNovaAvaliacao({ ...novaAvaliacao, imagem: url });
+    }
+  };
 
   const salvarAvaliacao = (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,28 +134,25 @@ export default function ProdutoDetalhes() {
     const dataAtual = new Date().toLocaleDateString('pt-BR');
     const avaliacaoFormatada: Avaliacao = {
       id: String(Date.now()),
-      sku: produto.codigo, // SKU essencial para o Google Shopping
+      sku: produto.codigo,
       nome: novaAvaliacao.nome,
       nota: novaAvaliacao.nota,
       comentario: novaAvaliacao.comentario,
-      data: dataAtual
+      data: dataAtual,
+      imagem: novaAvaliacao.imagem
     };
 
-    // Atualiza a lista atual na tela
     const novaLista = [avaliacaoFormatada, ...avaliacoes];
     setAvaliacoes(novaLista);
 
-    // Salva globalmente no navegador
     const avaliacoesGerais = JSON.parse(localStorage.getItem('bskw_avaliacoes') || '[]');
     avaliacoesGerais.push(avaliacaoFormatada);
     localStorage.setItem('bskw_avaliacoes', JSON.stringify(avaliacoesGerais));
 
-    // Fecha o modal e limpa o form
     setModalAvaliacaoAberto(false);
-    setNovaAvaliacao({ nome: '', nota: 5, comentario: '' });
+    setNovaAvaliacao({ nome: '', nota: 5, comentario: '', imagem: '' });
   };
 
-  // Renderiza as estrelas baseadas na nota
   const renderEstrelas = (nota: number, size = 14) => {
     return Array(5).fill(0).map((_, i) => (
       <Star key={i} size={size} className={i < nota ? "text-amber-500 fill-amber-500" : "text-zinc-300"} />
@@ -160,11 +162,11 @@ export default function ProdutoDetalhes() {
   return (
     <main className="min-h-screen bg-white font-outfit pb-24">
       
-      {/* MODAL DE AVALIAÇÃO (POP-UP) */}
+      {/* MODAL DE AVALIAÇÃO (POP-UP COM FOTO) */}
       {modalAvaliacaoAberto && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-lg rounded-sm shadow-2xl relative flex flex-col">
-            <button onClick={() => setModalAvaliacaoAberto(false)} className="absolute top-4 right-4 text-zinc-400 hover:text-black transition-colors">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-lg rounded-sm shadow-2xl relative flex flex-col max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden">
+            <button onClick={() => setModalAvaliacaoAberto(false)} className="absolute top-4 right-4 text-zinc-400 hover:text-black transition-colors z-10 bg-white rounded-full p-1">
               <X size={24} />
             </button>
             
@@ -175,7 +177,6 @@ export default function ProdutoDetalhes() {
             
             <form onSubmit={salvarAvaliacao} className="p-8 flex flex-col gap-6">
               
-              {/* Seleção de Nota */}
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-700 block mb-3">A sua nota</label>
                 <div className="flex gap-2">
@@ -192,7 +193,6 @@ export default function ProdutoDetalhes() {
                 </div>
               </div>
 
-              {/* Nome */}
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-700 block mb-2">O seu nome</label>
                 <input 
@@ -205,17 +205,40 @@ export default function ProdutoDetalhes() {
                 />
               </div>
 
-              {/* Comentário */}
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-700 block mb-2">Comentário sobre a peça</label>
                 <textarea 
                   required 
-                  rows={4}
+                  rows={3}
                   value={novaAvaliacao.comentario}
                   onChange={e => setNovaAvaliacao({...novaAvaliacao, comentario: e.target.value})}
                   className="w-full border-2 border-zinc-200 p-3 text-sm focus:border-black outline-none transition-colors resize-none" 
                   placeholder="Fale sobre o caimento, a qualidade do tecido, a cor..." 
                 ></textarea>
+              </div>
+
+              {/* UPLOAD DE FOTO NA AVALIAÇÃO */}
+              <div>
+                <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-700 block mb-2">Adicionar Foto (Opcional)</label>
+                
+                {novaAvaliacao.imagem ? (
+                  <div className="relative w-32 h-32 rounded-sm border border-zinc-200 overflow-hidden group">
+                    <img src={novaAvaliacao.imagem} alt="Preview" className="w-full h-full object-cover" />
+                    <button 
+                      type="button" 
+                      onClick={() => setNovaAvaliacao({...novaAvaliacao, imagem: ''})}
+                      className="absolute inset-0 bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X size={24} />
+                    </button>
+                  </div>
+                ) : (
+                  <label className="border-2 border-dashed border-zinc-300 rounded-sm p-6 flex flex-col items-center justify-center bg-zinc-50 hover:bg-zinc-100 transition-colors cursor-pointer group">
+                    <Camera size={24} className="text-zinc-400 group-hover:text-black mb-2 transition-colors" />
+                    <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest text-center">Tirar foto ou escolher</p>
+                    <input type="file" accept="image/*" onChange={handleFotoAvaliacao} className="hidden" />
+                  </label>
+                )}
               </div>
 
               <button type="submit" className="w-full bg-black text-white h-14 mt-2 font-bold text-xs uppercase tracking-widest hover:bg-zinc-800 transition-colors">
@@ -226,7 +249,7 @@ export default function ProdutoDetalhes() {
         </div>
       )}
 
-      {/* BREADCRUMB */}
+      {/* BREADCRUMB E CONTEÚDO PRINCIPAL (MANTIDO) */}
       <div className="bg-zinc-50 border-b border-zinc-200">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-4 flex justify-between items-center text-[10px] md:text-xs font-bold uppercase tracking-widest text-zinc-400">
           <div className="flex gap-2">
@@ -274,7 +297,6 @@ export default function ProdutoDetalhes() {
               {produto.nome}
             </h1>
             
-            {/* ESTRELAS NO TOPO DA PÁGINA (DINÂMICAS) */}
             <div className="flex items-center gap-2 mb-8">
               <div className="flex text-zinc-900">
                 {renderEstrelas(Number(mediaAvaliacoes), 14)}
@@ -394,7 +416,6 @@ export default function ProdutoDetalhes() {
           </div>
         </div>
 
-        {/* ABAS (DESCRIÇÃO E INFORMAÇÕES TÉCNICAS) */}
         <div className="mt-24 pt-12 border-t border-zinc-200 max-w-4xl">
           <div className="flex gap-8 md:gap-12 border-b border-zinc-200 mb-8 overflow-x-auto [&::-webkit-scrollbar]:hidden">
             <button 
@@ -430,7 +451,7 @@ export default function ProdutoDetalhes() {
           </div>
         </div>
 
-        {/* MÓDULO DE AVALIAÇÕES DE CLIENTES (FUNCIONAL) */}
+        {/* LISTA E MODULO DE AVALIAÇÕES */}
         <div id="avaliacoes" className="mt-24 pt-16 border-t border-zinc-200 scroll-mt-20">
           <h2 className="text-3xl md:text-4xl font-anton uppercase tracking-wide text-zinc-900 mb-8">Avaliações de Clientes</h2>
           
@@ -460,20 +481,30 @@ export default function ProdutoDetalhes() {
             </div>
           </div>
 
-          {/* LISTA DE AVALIAÇÕES */}
+          {/* LISTA DE AVALIAÇÕES COM FOTOS */}
           {avaliacoes.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {avaliacoes.map(aval => (
-                <div key={aval.id} className="p-6 border border-zinc-200 rounded-sm bg-white">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex text-zinc-300">
-                      {renderEstrelas(aval.nota, 14)}
+                <div key={aval.id} className="p-6 border border-zinc-200 rounded-sm bg-white flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex text-zinc-300">
+                        {renderEstrelas(aval.nota, 14)}
+                      </div>
+                      <span className="text-[10px] font-bold text-zinc-400">{aval.data}</span>
                     </div>
-                    <span className="text-[10px] font-bold text-zinc-400">{aval.data}</span>
+                    <h4 className="font-bold text-sm text-zinc-900 mb-2">{aval.nome}</h4>
+                    <p className="text-sm text-zinc-600 font-medium mb-4">"{aval.comentario}"</p>
+                    
+                    {/* EXIBE A FOTO DA AVALIAÇÃO SE EXISTIR */}
+                    {aval.imagem && (
+                      <div className="mt-4 mb-4 rounded-sm overflow-hidden border border-zinc-200 w-32 h-32 cursor-pointer hover:opacity-90 transition-opacity">
+                        <img src={aval.imagem} alt="Foto enviada pelo cliente" className="w-full h-full object-cover" />
+                      </div>
+                    )}
                   </div>
-                  <h4 className="font-bold text-sm text-zinc-900 mb-2">{aval.nome}</h4>
-                  <p className="text-sm text-zinc-600 font-medium">"{aval.comentario}"</p>
-                  <div className="mt-4 flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-green-600 bg-green-50 px-2 py-1 w-fit rounded-sm">
+                  
+                  <div className="mt-2 flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-green-600 bg-green-50 px-2 py-1 w-fit rounded-sm">
                     <ShieldCheck size={12} /> Comprador Verificado
                   </div>
                 </div>
@@ -481,10 +512,9 @@ export default function ProdutoDetalhes() {
             </div>
           )}
         </div>
-
       </div>
 
-      {/* CROSS SELLING INTELIGENTE E ALEATÓRIO (Completa o teu Kit) */}
+      {/* CROSS SELLING */}
       {sugestoesInteligentes.length > 0 && (
         <section className="bg-zinc-50 border-t border-zinc-200 py-16 md:py-24 mt-12">
           <div className="max-w-[1400px] mx-auto px-4 md:px-6">
