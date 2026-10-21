@@ -90,8 +90,10 @@ export default function EditarProduto() {
   ];
 
   const coresDisponiveis = [
-    "Preto", "Branco", "Off-White", "Marrom", "Areia", "Cinza", "Chumbo", 
-    "Azul Marinho", "Verde Militar", "Verde Musgo", "Bordô", "Rosa Pastel", "Azul Bebê"
+    'Areia', 'Azul Bebê', 'Azul Envelhecido', 'Azul Estonado', 'Azul Marinho', 
+    'Bordô', 'Branco', 'Chumbo', 'Cinza', 'Cinza Claro', 'Cinza Envelhecido', 
+    'Cinza Escuro', 'Destroyed', 'Marrom', 'Off-White', 'Preto', 'Preto Estonado', 
+    'Preto Vintage', 'Rosa Pastel', 'Roxo', 'Verde Claro', 'Verde Militar', 'Verde Musgo'
   ];
   
   const tamanhos: Tamanho[] = ["P", "M", "G", "GG", "XG", "G1", "G2"];
