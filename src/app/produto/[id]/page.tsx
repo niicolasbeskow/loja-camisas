@@ -36,6 +36,16 @@ const coresHex: Record<string, string> = {
   'Destroyed': 'bg-[#3f3f46]'
 };
 
+// Função para misturar array (Fisher-Yates) para exibir produtos aleatórios
+function shuffleArray<T>(array: T[]): T[] {
+  const newArr = [...array];
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+}
+
 export default function ProdutoDetalhes() {
   const router = useRouter();
   const params = useParams();
@@ -43,9 +53,11 @@ export default function ProdutoDetalhes() {
   const paramId = decodeURIComponent(rawId).replace(/-/g, '').toUpperCase();
 
   const [catalogo, setCatalogo] = useState<Produto[]>(produtosIniciais);
+  const [sugestoesInteligentes, setSugestoesInteligentes] = useState<Produto[]>([]);
 
   useEffect(() => {
-    setCatalogo(carregarProdutosStorage());
+    const produtosSalvos = carregarProdutosStorage();
+    setCatalogo(produtosSalvos);
   }, []);
 
   const produto = catalogo.find(p => 
@@ -53,6 +65,22 @@ export default function ProdutoDetalhes() {
     p.id === rawId || 
     normalizar(p.nome).includes(normalizar(decodeURIComponent(rawId)))
   ) || catalogo[0];
+
+  useEffect(() => {
+    if (catalogo.length > 0) {
+      // 1. Pega os produtos que não são do mesmo SKU e cujas cores sejam Preto ou Branco
+      const candidatos = catalogo.filter(p => 
+        p.id !== produto.id && 
+        (p.cor === 'Preto' || p.cor === 'Branco')
+      );
+      
+      // 2. Mistura os candidatos de forma aleatória
+      const candidatosMisturados = shuffleArray(candidatos);
+      
+      // 3. Pega os 4 primeiros
+      setSugestoesInteligentes(candidatosMisturados.slice(0, 4));
+    }
+  }, [catalogo, produto.id]);
 
   const [tamanhoAtivo, setTamanhoAtivo] = useState<Tamanho | ''>('');
   const [kitSelecionado, setKitSelecionado] = useState<1 | 2 | 3>(1);
@@ -63,29 +91,14 @@ export default function ProdutoDetalhes() {
                      produto.preco;
   
   const precoTotal = precoAtual * kitSelecionado;
+  
+  // Calcula o valor riscado multiplicado pela quantidade de kits
+  const precoRiscadoTotal = produto.precoAntigo * kitSelecionado;
+  
   const parcela = (precoTotal / 3).toFixed(2).replace('.', ',');
 
   const variacoesDaMesmaCategoria = catalogo.filter(p => p.categoria === produto.categoria);
   const formataTexto = (txt: string) => txt.replace(/-/g, '•');
-
-  // Lógica Inteligente: COMPLETA O TEU KIT (Cross-Selling)
-  // 1. Ignora produtos da mesma categoria que o cliente já está a ver
-  // 2. Procura peças complementares nas cores universais (Preto, Branco, Off-White)
-  const produtosComplementares = catalogo.filter(p => 
-    p.categoria !== produto.categoria && 
-    (p.cor === 'Preto' || p.cor === 'Branco' || p.cor === 'Off-White')
-  );
-  
-  // 3. Garante que sugerimos categorias variadas (ex: 1 calça, 1 regata, 1 shorts)
-  const sugestoesInteligentes: Produto[] = [];
-  const categoriasUsadas = new Set<string>();
-  
-  for (const item of produtosComplementares) {
-    if (!categoriasUsadas.has(item.categoria) && sugestoesInteligentes.length < 4) {
-      sugestoesInteligentes.push(item);
-      categoriasUsadas.add(item.categoria);
-    }
-  }
 
   return (
     <main className="min-h-screen bg-white font-outfit pb-24">
@@ -154,17 +167,17 @@ export default function ProdutoDetalhes() {
             </div>
 
             <div className="mb-8 p-6 bg-zinc-50 border border-zinc-200 rounded-sm">
-              <div className="flex items-end gap-3 mb-2">
-                {produto.precoAntigo > 0 && kitSelecionado === 1 && (
-                  <span className="text-lg text-zinc-400 line-through font-medium">
-                    R$ {produto.precoAntigo.toFixed(2).replace('.', ',')}
+              <div className="flex flex-col mb-2">
+                {produto.precoAntigo > 0 && (
+                  <span className="text-lg text-zinc-400 line-through font-medium mb-1">
+                    R$ {precoRiscadoTotal.toFixed(2).replace('.', ',')}
                   </span>
                 )}
                 <span className="text-4xl font-anton tracking-wide text-zinc-900">
                   R$ {precoTotal.toFixed(2).replace('.', ',')}
                 </span>
               </div>
-              <p className="text-xs text-zinc-600 font-bold uppercase tracking-widest">
+              <p className="text-xs text-zinc-600 font-bold uppercase tracking-widest mt-2">
                 em até <strong className="text-black">3x de R$ {parcela}</strong> s/ juros
               </p>
             </div>
@@ -343,7 +356,7 @@ export default function ProdutoDetalhes() {
 
       </div>
 
-      {/* CROSS SELLING INTELIGENTE (Completa o teu Kit) */}
+      {/* CROSS SELLING INTELIGENTE E ALEATÓRIO (Completa o teu Kit) */}
       {sugestoesInteligentes.length > 0 && (
         <section className="bg-zinc-50 border-t border-zinc-200 py-16 md:py-24 mt-12">
           <div className="max-w-[1400px] mx-auto px-4 md:px-6">
