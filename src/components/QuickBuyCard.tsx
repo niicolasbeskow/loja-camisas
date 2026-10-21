@@ -11,8 +11,8 @@ interface QuickBuyCardProps {
 }
 
 const coresHex: Record<string, string> = {
-  'Preto': 'bg-[#18181b]', 'Branco': 'bg-[#FFFFFF] border-zinc-300', 'Off-White': 'bg-[#F5F5F0] border-zinc-300',
-  'Marrom': 'bg-[#4A3728]', 'Areia': 'bg-[#E3DAC9]', 'Cinza': 'bg-[#a1a1aa]', 'Chumbo': 'bg-[#3f3f46]',
+  'Preto': 'bg-[#000000]', 'Branco': 'bg-[#FFFFFF]', 'Off-White': 'bg-[#F5F5F0]',
+  'Marrom': 'bg-[#4A3728]', 'Areia': 'bg-[#E3DAC9]', 'Cinza': 'bg-[#9A9A9A]', 'Chumbo': 'bg-[#3f3f46]',
   'Azul Marinho': 'bg-[#1e3a8a]', 'Verde Militar': 'bg-[#3f6212]', 'Verde Musgo': 'bg-[#3b4426]',
   'Bordô': 'bg-[#7f1d1d]', 'Rosa Pastel': 'bg-[#f4c2c2]', 'Azul Bebê': 'bg-[#89cff0]',
   'Cinza Envelhecido': 'bg-[#71717a]', 'Preto Estonado': 'bg-[#27272a]', 'Verde Claro': 'bg-[#a3e635]',
@@ -38,9 +38,6 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: QuickBuyC
     : '';
 
   const temDesconto = produtoAtivo.precoAntigo > produtoAtivo.preco;
-  const porcentagemOff = temDesconto
-    ? Math.round(((produtoAtivo.precoAntigo - produtoAtivo.preco) / produtoAtivo.precoAntigo) * 100)
-    : 0;
 
   const handleQuickBuy = (e: React.MouseEvent, tam: Tamanho) => {
     e.preventDefault();
@@ -57,7 +54,7 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: QuickBuyC
         tamanho: tam,
         cor: produtoAtivo.cor,
         quantidade: 1,
-        adicionadoEm: new Date().toISOString()
+        imagem: produtoAtivo.imagens?.[0] || ''
       });
       localStorage.setItem('bskw_carrinho', JSON.stringify(carrinhoAtual));
       window.dispatchEvent(new Event('storage'));
@@ -70,10 +67,15 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: QuickBuyC
   };
 
   return (
-    <div className="group relative flex flex-col bg-white border border-zinc-200 hover:border-zinc-900 transition-colors duration-200 rounded-none font-outfit select-none">
+    <div className="group relative flex flex-col bg-[#161616] border border-[#2a2a2a] hover:border-[#F59E0B] transition-colors duration-200 rounded-none font-outfit text-white select-none">
       
-      <div className="relative aspect-[4/5] w-full bg-zinc-100 overflow-hidden border-b border-zinc-200">
-        
+      <div
+        className="relative aspect-[4/5] w-full overflow-hidden border-b border-[#2a2a2a]"
+        style={{
+          backgroundColor: '#000000',
+          backgroundImage: 'repeating-linear-gradient(90deg, #1c1c1c 0 3px, transparent 3px 9px)'
+        }}
+      >
         <Link href={urlProduto} className="block w-full h-full">
           {produtoAtivo.imagens && produtoAtivo.imagens.length > 0 ? (
             <img
@@ -82,30 +84,25 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: QuickBuyC
               className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center opacity-30 p-4 text-center">
-              <span className="font-anton text-2xl md:text-3xl uppercase tracking-widest text-zinc-600">
-                B.SKW
+            <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center">
+              <span className="font-anton text-3xl uppercase text-white">
+                B<span className="text-[#F59E0B]">.</span>SKW
               </span>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-500 mt-1">
+              <span className="text-[12px] text-[#9A9A9A] mt-1">
                 {produtoAtivo.cor}
               </span>
             </div>
           )}
         </Link>
 
-        <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1.5 pointer-events-none">
-          {produtoAtivo.tag ? (
-            <span className="bg-black text-white font-mono text-[10px] font-bold uppercase px-2 py-0.5 tracking-widest border border-zinc-800">
+        <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5 pointer-events-none">
+          {produtoAtivo.tag && (
+            <span className="bg-[#000000] text-[#F59E0B] text-[11px] font-semibold uppercase tracking-[0.2em] px-2.5 py-1 border border-[#2a2a2a]">
               {produtoAtivo.tag}
             </span>
-          ) : temDesconto && porcentagemOff >= 15 ? (
-            <span className="bg-black text-[#a3e635] font-mono text-[10px] font-bold uppercase px-2 py-0.5 tracking-widest">
-              -{porcentagemOff}%
-            </span>
-          ) : null}
-
+          )}
           {specPrincipal && (
-            <span className="bg-white/90 backdrop-blur-xs text-zinc-900 font-mono text-[9px] md:text-[10px] font-bold uppercase px-2 py-0.5 tracking-wider border border-zinc-300 w-fit">
+            <span className="bg-[#000000]/90 text-white text-[11px] font-semibold uppercase tracking-[0.15em] px-2.5 py-1 border border-[#2a2a2a] w-fit">
               {specPrincipal}
             </span>
           )}
@@ -117,31 +114,28 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: QuickBuyC
             e.preventDefault();
             setGavetaMobileAberta(!gavetaMobileAberta);
           }}
-          aria-label="Compra rápida"
-          className="md:hidden absolute bottom-2.5 right-2.5 z-20 w-9 h-9 bg-black text-white border border-zinc-700 flex items-center justify-center active:scale-90 transition-transform rounded-none shadow-md"
+          aria-label="Adicionar rápido"
+          className="md:hidden absolute bottom-3 right-3 z-20 w-9 h-9 bg-[#000000] text-white border border-[#2a2a2a] flex items-center justify-center active:scale-90 transition-transform rounded-none"
         >
-          {gavetaMobileAberta ? <X size={15} /> : <Plus size={16} />}
+          {gavetaMobileAberta ? <X size={16} /> : <Plus size={16} className="text-[#F59E0B]" />}
         </button>
 
         <div
-          className={`absolute inset-x-0 bottom-0 z-20 bg-white/95 backdrop-blur-md border-t border-zinc-900 p-2.5 md:p-3 transition-transform duration-200 ease-out ${
+          className={`absolute inset-x-0 bottom-0 z-20 bg-[#000000]/95 backdrop-blur-md border-t border-[#2a2a2a] p-3 transition-transform duration-200 ease-out ${
             gavetaMobileAberta
               ? 'translate-y-0'
               : 'translate-y-full md:group-hover:translate-y-0'
           }`}
         >
           {tamanhoAdicionado ? (
-            <div className="h-14 flex items-center justify-center gap-2 bg-[#a3e635] text-black border border-black font-mono text-[11px] font-bold uppercase tracking-widest animate-in fade-in duration-150">
-              <Check size={15} strokeWidth={3} /> Tam. {tamanhoAdicionado} Adicionado
+            <div className="h-14 flex items-center justify-center gap-2 bg-[#F59E0B] text-[#000000] font-semibold text-[12px] uppercase tracking-[0.15em]">
+              <Check size={16} strokeWidth={3} /> Tam. {tamanhoAdicionado} Adicionado
             </div>
           ) : (
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-900 flex items-center gap-1.5">
-                  <ShoppingBag size={11} /> Quick Add:
-                </span>
-                <span className="font-mono text-[9px] uppercase text-zinc-400">
-                  Toque no tamanho
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white flex items-center gap-1.5">
+                  <ShoppingBag size={12} className="text-[#F59E0B]" /> Compra Rápida
                 </span>
               </div>
 
@@ -157,10 +151,10 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: QuickBuyC
                       type="button"
                       disabled={esgotado}
                       onClick={(e) => handleQuickBuy(e, tam)}
-                      className={`relative h-7 md:h-8 border font-mono text-[10px] font-bold uppercase flex items-center justify-center rounded-none transition-all overflow-hidden ${
+                      className={`relative h-8 border font-anton text-xs uppercase flex items-center justify-center rounded-none transition-all overflow-hidden ${
                         esgotado
-                          ? 'border-zinc-200 text-zinc-300 bg-zinc-50 cursor-not-allowed after:content-[""] after:absolute after:w-[140%] after:h-[1px] after:bg-zinc-300 after:-rotate-45'
-                          : 'border-zinc-300 bg-white text-zinc-900 hover:bg-black hover:text-white hover:border-black active:scale-95'
+                          ? 'border-[#2a2a2a] text-[#9A9A9A]/30 bg-[#000000] cursor-not-allowed after:content-[""] after:absolute after:w-[140%] after:h-[1px] after:bg-[#2a2a2a] after:-rotate-45'
+                          : 'border-[#2a2a2a] bg-[#161616] text-white hover:bg-[#F59E0B] hover:text-[#000000] hover:border-[#F59E0B] active:scale-95'
                       }`}
                     >
                       {tam}
@@ -173,8 +167,7 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: QuickBuyC
         </div>
       </div>
 
-      <div className="p-3 md:p-4 flex flex-col flex-1 justify-between gap-2">
-        
+      <div className="p-4 flex flex-col flex-1 justify-between gap-3">
         <div>
           {produtosDoGrupo.length > 1 ? (
             <div className="flex items-center gap-1.5 mb-2">
@@ -186,58 +179,50 @@ export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: QuickBuyC
                   title={variante.cor}
                   className={`w-4 h-4 rounded-none border transition-transform ${
                     idx === indiceAtivo
-                      ? 'ring-1 ring-offset-1 ring-black border-black scale-110'
-                      : 'border-zinc-300 hover:border-black'
-                  } ${coresHex[variante.cor] || 'bg-zinc-300'}`}
+                      ? 'ring-1 ring-offset-1 ring-offset-[#161616] ring-[#F59E0B] border-white scale-110'
+                      : 'border-[#2a2a2a] hover:border-white'
+                  } ${coresHex[variante.cor] || 'bg-[#000000]'}`}
                 />
               ))}
-              {produtosDoGrupo.length > 6 && (
-                <span className="font-mono text-[10px] text-zinc-400 ml-1">
-                  +{produtosDoGrupo.length - 6}
-                </span>
-              )}
             </div>
           ) : (
-            <div className="flex items-center gap-1.5 mb-1.5">
+            <div className="flex items-center gap-2 mb-1.5">
               <span
-                className={`w-3 h-3 rounded-none border border-zinc-300 ${
-                  coresHex[produtoAtivo.cor] || 'bg-zinc-800'
+                className={`w-3 h-3 rounded-none border border-[#2a2a2a] ${
+                  coresHex[produtoAtivo.cor] || 'bg-[#000000]'
                 }`}
               />
-              <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-500">
+              <span className="text-[12px] text-[#9A9A9A]">
                 {produtoAtivo.cor}
               </span>
             </div>
           )}
 
-          <Link href={urlProduto} className="block group-hover:underline decoration-zinc-900 underline-offset-4">
-            <h3 className="font-bold text-xs md:text-sm uppercase tracking-wider text-zinc-900 line-clamp-1">
+          <Link href={urlProduto} className="block group-hover:text-[#F59E0B] transition-colors">
+            <h3 className="font-semibold text-[13px] uppercase tracking-[0.08em] text-white line-clamp-1">
               {tituloGrupo || produtoAtivo.nome}
             </h3>
           </Link>
         </div>
 
-        <div className="pt-2 border-t border-zinc-100 flex flex-col gap-1">
-          <div className="flex items-baseline gap-2">
-            <span className="font-anton text-lg md:text-xl tracking-wide text-zinc-900">
+        <div className="pt-3 border-t border-[#2a2a2a] flex flex-col gap-1">
+          <div className="flex items-baseline gap-2.5">
+            <span className="font-anton text-2xl text-white leading-none">
               R$ {produtoAtivo.preco.toFixed(2).replace('.', ',')}
             </span>
             {temDesconto && (
-              <span className="font-mono text-[11px] text-zinc-400 line-through">
+              <span className="text-[13px] text-[#9A9A9A] line-through">
                 R$ {produtoAtivo.precoAntigo.toFixed(2).replace('.', ',')}
               </span>
             )}
           </div>
 
           {produtoAtivo.precoKit3 > 0 && (
-            <div className="flex items-center">
-              <span className="bg-zinc-900 text-[#a3e635] font-mono text-[10px] font-bold uppercase px-1.5 py-0.5 tracking-wider">
-                R$ {produtoAtivo.precoKit3.toFixed(2).replace('.', ',')} /un no Kit 3
-              </span>
-            </div>
+            <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#F59E0B] mt-0.5">
+              R$ {produtoAtivo.precoKit3.toFixed(2).replace('.', ',')} /un no Kit 3
+            </span>
           )}
         </div>
-
       </div>
     </div>
   );

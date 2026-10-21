@@ -28,9 +28,9 @@ const tabelasMedidas: Record<ModelagemKey, {
   medidas: MedidaLinha[];
 }> = {
   oversized: {
-    titulo: 'Oversized Heavyweight',
-    subtitulo: 'Ombros deslocados • Modelagem ampla • Gola canelada 3cm',
-    notaCaimento: 'A modelagem Oversized B.SKW já possui corte amplo de fábrica. Para o caimento streetwear original, escolha o seu tamanho habitual.',
+    titulo: 'Oversized Heavy Suedine',
+    subtitulo: 'Gola canelada de 3 cm · Ombros deslocados · Trama pesada',
+    notaCaimento: 'A modelagem Oversized B.SKW já possui corte amplo. Para o caimento autoral da marca, escolha o seu tamanho habitual.',
     medidas: [
       { tam: 'P', torax: 56, comprimento: 72, manga: 24 },
       { tam: 'M', torax: 59, comprimento: 75, manga: 25 },
@@ -43,8 +43,8 @@ const tabelasMedidas: Record<ModelagemKey, {
   },
   boxy: {
     titulo: 'Boxy Fit',
-    subtitulo: 'Tórax largo • Comprimento levemente reduzido (cropped sutil)',
-    notaCaimento: 'Corte quadrado inspirado nos anos 90: estrutura larga nos ombros e comprimento que termina exatamente na linha do cinto.',
+    subtitulo: 'Tórax amplo · Comprimento na linha do cinto',
+    notaCaimento: 'Estrutura quadrada com ombros marcados e comprimento levemente reduzido.',
     medidas: [
       { tam: 'P', torax: 58, comprimento: 67, manga: 23 },
       { tam: 'M', torax: 61, comprimento: 69, manga: 24 },
@@ -56,9 +56,9 @@ const tabelasMedidas: Record<ModelagemKey, {
     ]
   },
   basica: {
-    titulo: 'Regular / Básica',
-    subtitulo: 'Corte clássico alinhado ao corpo • Conforto diário',
-    notaCaimento: 'Caimento tradicional alinhado ao ombro. Se preferir um visual mais solto nesta linha, recomendamos pegar 1 tamanho acima.',
+    titulo: 'Corte Clássico B.SKW',
+    subtitulo: '200 g/m² · Alinhada ao corpo · Zero encolhimento',
+    notaCaimento: 'Caimento reto tradicional. Se preferir mais folga no tórax, selecione 1 tamanho acima.',
     medidas: [
       { tam: 'P', torax: 51, comprimento: 70, manga: 20 },
       { tam: 'M', torax: 54, comprimento: 72, manga: 21 },
@@ -71,8 +71,8 @@ const tabelasMedidas: Record<ModelagemKey, {
   },
   moletom: {
     titulo: 'Moletom 320 g/m²',
-    subtitulo: 'Estrutura pesada • Punhos de alta compressão',
-    notaCaimento: 'Desenvolvido para sobreposição (layering). Possui espaço interno confortável para usar com camiseta por baixo.',
+    subtitulo: 'Alta gramatura · Punhos canelados firmes',
+    notaCaimento: 'Construído como armadura térmica para sobreposição com camiseta por baixo.',
     medidas: [
       { tam: 'P', torax: 58, comprimento: 71, manga: 61 },
       { tam: 'M', torax: 61, comprimento: 74, manga: 62 },
@@ -143,87 +143,92 @@ export default function SizeGuideModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-xs p-3 md:p-6 font-outfit animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-[#000000]/85 backdrop-blur-xs p-3 md:p-6 font-outfit text-white animate-in fade-in duration-200">
       
-      <div className="bg-white w-full max-w-2xl rounded-none border-2 border-zinc-900 shadow-2xl relative flex flex-col max-h-[92vh] overflow-hidden">
+      <div className="bg-[#161616] w-full max-w-2xl rounded-none border border-[#2a2a2a] shadow-2xl relative flex flex-col max-h-[92vh] overflow-hidden">
         
-        <div className="p-5 md:p-6 bg-zinc-950 text-white flex items-center justify-between border-b border-zinc-800">
+        <div
+          className="p-6 flex items-center justify-between border-b border-[#2a2a2a]"
+          style={{
+            backgroundColor: '#000000',
+            backgroundImage: 'repeating-linear-gradient(90deg, #1c1c1c 0 3px, transparent 3px 9px)'
+          }}
+        >
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#a3e635] block mb-0.5">
-              B.SKW® // FIT LAB
+            <span className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B] block mb-1">
+              B.SKW · PROPORÇÕES E MEDIDAS
             </span>
-            <h2 className="font-anton text-2xl md:text-3xl uppercase tracking-wide leading-none">
-              Guia de Medidas & Provador
+            <h2 className="font-anton text-3xl uppercase leading-none text-white">
+              Dimensões da Armadura
             </h2>
           </div>
           <button
             type="button"
             onClick={aoFechar}
-            className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors active:scale-95"
-            aria-label="Fechar Guia de Medidas"
+            className="p-2 text-[#9A9A9A] hover:text-white transition-colors"
+            aria-label="Fechar"
           >
             <X size={22} />
           </button>
         </div>
 
-        <div className="grid grid-cols-2 border-b border-zinc-200 bg-zinc-100">
+        <div className="grid grid-cols-2 border-b border-[#2a2a2a] bg-[#000000]">
           <button
             type="button"
             onClick={() => setAbaModal('provador')}
-            className={`py-3.5 px-4 flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-widest transition-all ${
+            className={`py-4 px-4 flex items-center justify-center gap-2 font-semibold text-[12px] uppercase tracking-[0.2em] transition-all border-b-2 ${
               abaModal === 'provador'
-                ? 'bg-white text-black border-b-2 border-black'
-                : 'text-zinc-500 hover:text-black hover:bg-zinc-50'
+                ? 'bg-[#161616] text-[#F59E0B] border-[#F59E0B]'
+                : 'text-[#9A9A9A] border-transparent hover:text-white'
             }`}
           >
-            <Sparkles size={14} /> Descobrir Meu Tamanho
+            <Sparkles size={14} /> Simulador de Caimento
           </button>
           <button
             type="button"
             onClick={() => setAbaModal('tabela')}
-            className={`py-3.5 px-4 flex items-center justify-center gap-2 font-bold text-xs uppercase tracking-widest transition-all ${
+            className={`py-4 px-4 flex items-center justify-center gap-2 font-semibold text-[12px] uppercase tracking-[0.2em] transition-all border-b-2 ${
               abaModal === 'tabela'
-                ? 'bg-white text-black border-b-2 border-black'
-                : 'text-zinc-500 hover:text-black hover:bg-zinc-50'
+                ? 'bg-[#161616] text-[#F59E0B] border-[#F59E0B]'
+                : 'text-[#9A9A9A] border-transparent hover:text-white'
             }`}
           >
             <Ruler size={14} /> Tabela em Centímetros
           </button>
         </div>
 
-        <div className="px-5 md:px-6 py-3 bg-[#FAFAFA] border-b border-zinc-200 flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          <span className="font-mono text-[10px] uppercase text-zinc-400 shrink-0 mr-1">
-            Corte:
+        <div className="px-6 py-3.5 bg-[#000000] border-b border-[#2a2a2a] flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          <span className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#9A9A9A] shrink-0 mr-2">
+            Modelagem:
           </span>
           {(Object.keys(tabelasMedidas) as ModelagemKey[]).map((key) => (
             <button
               key={key}
               type="button"
               onClick={() => setModelagemAtiva(key)}
-              className={`px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider border rounded-none shrink-0 transition-all ${
+              className={`px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-[0.15em] border rounded-none shrink-0 transition-all ${
                 modelagemAtiva === key
-                  ? 'bg-black text-white border-black'
-                  : 'bg-white text-zinc-600 border-zinc-300 hover:border-black'
+                  ? 'bg-[#F59E0B] text-[#000000] border-[#F59E0B]'
+                  : 'bg-[#161616] text-[#9A9A9A] border-[#2a2a2a] hover:text-white'
               }`}
             >
-              {key === 'basica' ? 'Básica' : key}
+              {key === 'basica' ? 'Clássica' : key}
             </button>
           ))}
         </div>
 
-        <div className="p-5 md:p-6 overflow-y-auto space-y-6 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-zinc-300">
+        <div className="p-6 overflow-y-auto space-y-6">
           
           {abaModal === 'provador' ? (
-            <div className="space-y-6 animate-in fade-in duration-200">
-              
+            <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="p-4 border border-zinc-200 bg-[#FAFAFA]">
+                <div className="p-5 border border-[#2a2a2a] bg-[#000000]">
                   <div className="flex justify-between items-baseline mb-3">
-                    <label className="text-xs font-bold uppercase tracking-widest text-zinc-700">
-                      1. Tua Altura
+                    <label className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#9A9A9A]">
+                      01 · Altura
                     </label>
-                    <span className="font-mono text-lg font-bold text-black bg-white px-2.5 py-0.5 border border-zinc-300">
-                      {(altura / 100).toFixed(2).replace('.', ',')} m
+                    <span className="font-anton text-2xl text-white">
+                      {(altura / 100).toFixed(2).replace('.', ',')} M
                     </span>
                   </div>
                   <input
@@ -232,22 +237,22 @@ export default function SizeGuideModal({
                     max={205}
                     value={altura}
                     onChange={(e) => setAltura(Number(e.target.value))}
-                    className="w-full accent-black cursor-pointer h-1.5 bg-zinc-300 rounded-none"
+                    className="w-full accent-[#F59E0B] cursor-pointer h-1.5 bg-[#161616] rounded-none"
                   />
-                  <div className="flex justify-between font-mono text-[10px] text-zinc-400 mt-1.5">
+                  <div className="flex justify-between text-[12px] text-[#9A9A9A] mt-2">
                     <span>1,50m</span>
                     <span>1,75m</span>
                     <span>2,05m</span>
                   </div>
                 </div>
 
-                <div className="p-4 border border-zinc-200 bg-[#FAFAFA]">
+                <div className="p-5 border border-[#2a2a2a] bg-[#000000]">
                   <div className="flex justify-between items-baseline mb-3">
-                    <label className="text-xs font-bold uppercase tracking-widest text-zinc-700">
-                      2. Teu Peso
+                    <label className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#9A9A9A]">
+                      02 · Peso
                     </label>
-                    <span className="font-mono text-lg font-bold text-black bg-white px-2.5 py-0.5 border border-zinc-300">
-                      {peso} kg
+                    <span className="font-anton text-2xl text-white">
+                      {peso} KG
                     </span>
                   </div>
                   <input
@@ -256,9 +261,9 @@ export default function SizeGuideModal({
                     max={140}
                     value={peso}
                     onChange={(e) => setPeso(Number(e.target.value))}
-                    className="w-full accent-black cursor-pointer h-1.5 bg-zinc-300 rounded-none"
+                    className="w-full accent-[#F59E0B] cursor-pointer h-1.5 bg-[#161616] rounded-none"
                   />
-                  <div className="flex justify-between font-mono text-[10px] text-zinc-400 mt-1.5">
+                  <div className="flex justify-between text-[12px] text-[#9A9A9A] mt-2">
                     <span>45kg</span>
                     <span>90kg</span>
                     <span>140kg</span>
@@ -267,30 +272,30 @@ export default function SizeGuideModal({
               </div>
 
               <div>
-                <label className="text-xs font-bold uppercase tracking-widest text-zinc-700 block mb-2.5">
-                  3. Como preferes o caimento no corpo?
+                <label className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#9A9A9A] block mb-3">
+                  03 · Preferência de Caimento
                 </label>
-                <div className="grid grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-3 gap-3">
                   {[
-                    { id: 'justo', label: 'Mais Alinhado', desc: 'Menos sobra' },
-                    { id: 'padrao', label: 'Fit Original', desc: 'Recomendado' },
-                    { id: 'baggy', label: 'Extra Baggy', desc: 'Bem largo' }
+                    { id: 'justo', label: 'Alinhado', desc: 'Menos sobra' },
+                    { id: 'padrao', label: 'Autoral B.SKW', desc: 'Recomendado' },
+                    { id: 'baggy', label: 'Extra Amplo', desc: 'Mais pesado' }
                   ].map((item) => (
                     <button
                       key={item.id}
                       type="button"
                       onClick={() => setPreferencia(item.id as PreferenciaFit)}
-                      className={`p-3 border-2 text-left transition-all rounded-none active:scale-[0.98] ${
+                      className={`p-4 border text-left transition-all rounded-none ${
                         preferencia === item.id
-                          ? 'border-black bg-black text-white'
-                          : 'border-zinc-200 bg-white text-zinc-800 hover:border-zinc-900'
+                          ? 'border-[#F59E0B] bg-[#000000] text-white'
+                          : 'border-[#2a2a2a] bg-[#000000] text-[#9A9A9A] hover:border-white'
                       }`}
                     >
-                      <span className="block font-bold text-[10px] md:text-xs uppercase tracking-wider leading-tight">
+                      <span className="block font-anton text-lg uppercase text-white">
                         {item.label}
                       </span>
-                      <span className={`block font-mono text-[9px] md:text-[10px] mt-1 ${
-                        preferencia === item.id ? 'text-[#a3e635]' : 'text-zinc-400'
+                      <span className={`block text-[12px] mt-0.5 ${
+                        preferencia === item.id ? 'text-[#F59E0B]' : 'text-[#9A9A9A]'
                       }`}>
                         {item.desc}
                       </span>
@@ -299,20 +304,26 @@ export default function SizeGuideModal({
                 </div>
               </div>
 
-              <div className="p-5 bg-zinc-950 text-white border border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-5">
+              <div
+                className="p-6 border border-[#2a2a2a] flex flex-col md:flex-row items-center justify-between gap-5"
+                style={{
+                  backgroundColor: '#000000',
+                  backgroundImage: 'repeating-linear-gradient(90deg, #1c1c1c 0 3px, transparent 3px 9px)'
+                }}
+              >
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-[#a3e635] text-black font-anton text-4xl flex items-center justify-center shrink-0 border border-white">
+                  <div className="w-16 h-16 bg-[#F59E0B] text-[#000000] font-anton text-4xl flex items-center justify-center shrink-0">
                     {tamanhoRecomendado}
                   </div>
                   <div>
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-[#a3e635] block mb-0.5">
-                      MATCH IDEAL PARA {(altura / 100).toFixed(2)}M / {peso}KG
+                    <span className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B] block mb-1">
+                      TAMANHO RECOMENDADO
                     </span>
-                    <h4 className="font-anton text-xl uppercase tracking-wide text-white">
-                      Tam. {tamanhoRecomendado} na {dadosModelagem.titulo}
+                    <h4 className="font-anton text-2xl uppercase text-white">
+                      {dadosModelagem.titulo} · Tam. {tamanhoRecomendado}
                     </h4>
-                    <p className="font-mono text-[10px] md:text-[11px] text-zinc-400 mt-1">
-                      Medidas: Tórax {medidasRecomendadas.torax}cm • Compr. {medidasRecomendadas.comprimento}cm
+                    <p className="text-[13px] text-[#9A9A9A] mt-0.5">
+                      Tórax: {medidasRecomendadas.torax} cm · Comprimento: {medidasRecomendadas.comprimento} cm
                     </p>
                   </div>
                 </div>
@@ -320,57 +331,38 @@ export default function SizeGuideModal({
                 <button
                   type="button"
                   onClick={() => handleAplicarTamanho(tamanhoRecomendado)}
-                  className="w-full md:w-auto bg-white text-black px-5 py-3.5 font-bold text-xs uppercase tracking-widest hover:bg-[#a3e635] active:scale-95 transition-all shrink-0 flex items-center justify-center gap-2"
+                  className="w-full md:w-auto bg-[#F59E0B] text-[#000000] px-6 py-4 font-semibold text-[12px] uppercase tracking-[0.08em] hover:brightness-110 active:scale-95 transition-all shrink-0 flex items-center justify-center gap-2"
                 >
-                  <Check size={15} strokeWidth={3} /> Usar {tamanhoRecomendado}
+                  <Check size={16} strokeWidth={3} /> Selecionar {tamanhoRecomendado}
                 </button>
               </div>
-
             </div>
           ) : (
-            <div className="space-y-6 animate-in fade-in duration-200">
-              
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-[#FAFAFA] p-4 border border-zinc-200">
-                <div className="md:col-span-8 space-y-1.5">
-                  <h3 className="font-anton text-xl uppercase tracking-wide text-zinc-900">
-                    {dadosModelagem.titulo}
-                  </h3>
-                  <p className="font-mono text-[11px] font-bold uppercase text-zinc-500">
-                    {dadosModelagem.subtitulo}
-                  </p>
-                  <p className="text-xs text-zinc-600 leading-relaxed pt-1">
-                    {dadosModelagem.notaCaimento}
-                  </p>
-                </div>
-
-                <div className="md:col-span-4 flex flex-col items-center justify-center bg-white p-3 border border-zinc-200">
-                  <svg viewBox="0 0 120 110" className="w-24 h-24 stroke-zinc-900 fill-none" strokeWidth="2">
-                    <path d="M35,15 L50,15 C50,22 70,22 70,15 L85,15 L110,35 L95,52 L85,42 L85,95 L35,95 L35,42 L25,52 L10,35 Z" fill="#f4f4f5" />
-                    <line x1="35" y1="55" x2="85" y2="55" stroke="#000" strokeDasharray="3 2" />
-                    <circle cx="60" cy="55" r="7" fill="#000" stroke="none" />
-                    <text x="60" y="58" textAnchor="middle" fill="#a3e635" fontSize="8" fontFamily="monospace" fontWeight="bold" stroke="none">A</text>
-                    <line x1="74" y1="15" x2="74" y2="95" stroke="#000" strokeDasharray="3 2" />
-                    <circle cx="74" cy="78" r="7" fill="#000" stroke="none" />
-                    <text x="74" y="81" textAnchor="middle" fill="#a3e635" fontSize="8" fontFamily="monospace" fontWeight="bold" stroke="none">B</text>
-                  </svg>
-                  <span className="font-mono text-[9px] uppercase text-zinc-500 mt-1">
-                    A: Largura • B: Altura
-                  </span>
-                </div>
+            <div className="space-y-6">
+              <div className="p-5 bg-[#000000] border border-[#2a2a2a]">
+                <h3 className="font-anton text-2xl uppercase text-white mb-1">
+                  {dadosModelagem.titulo}
+                </h3>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B] mb-2">
+                  {dadosModelagem.subtitulo}
+                </p>
+                <p className="text-[14px] text-[#9A9A9A] leading-relaxed">
+                  {dadosModelagem.notaCaimento}
+                </p>
               </div>
 
-              <div className="overflow-x-auto border border-zinc-200">
-                <table className="w-full text-left border-collapse whitespace-nowrap">
+              <div className="overflow-x-auto border border-[#2a2a2a]">
+                <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-zinc-950 text-white font-mono text-[10px] uppercase tracking-widest">
-                      <th className="py-3 px-4">Tamanho</th>
-                      <th className="py-3 px-4">A // Tórax</th>
-                      <th className="py-3 px-4">B // Compr.</th>
-                      <th className="py-3 px-4">Manga</th>
-                      <th className="py-3 px-4 text-right">Ação</th>
+                    <tr className="bg-[#000000] text-[#9A9A9A] text-[12px] font-semibold uppercase tracking-[0.2em] border-b border-[#2a2a2a]">
+                      <th className="py-3.5 px-4">Tam.</th>
+                      <th className="py-3.5 px-4">Tórax (Largura)</th>
+                      <th className="py-3.5 px-4">Comprimento</th>
+                      <th className="py-3.5 px-4">Manga</th>
+                      <th className="py-3.5 px-4 text-right">Ação</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-200 font-mono text-xs">
+                  <tbody className="divide-y divide-[#2a2a2a] text-[14px]">
                     {dadosModelagem.medidas.map((linha) => {
                       const isRecomendado = linha.tam === tamanhoRecomendado;
                       return (
@@ -379,24 +371,24 @@ export default function SizeGuideModal({
                           onClick={() => handleAplicarTamanho(linha.tam)}
                           className={`cursor-pointer transition-colors ${
                             isRecomendado
-                              ? 'bg-[#a3e635]/20 hover:bg-[#a3e635]/30 font-bold'
-                              : 'bg-white hover:bg-zinc-50'
+                              ? 'bg-[#000000] text-white'
+                              : 'bg-[#161616] text-[#9A9A9A] hover:bg-[#000000] hover:text-white'
                           }`}
                         >
-                          <td className="py-3 px-4 font-bold text-zinc-900 flex items-center gap-2">
+                          <td className="py-3.5 px-4 font-anton text-lg text-white flex items-center gap-2.5">
                             {linha.tam}
                             {isRecomendado && (
-                              <span className="bg-black text-[#a3e635] text-[9px] px-1.5 py-0.5 uppercase tracking-wider">
-                                Teu Fit
+                              <span className="bg-[#F59E0B] text-[#000000] font-outfit font-semibold text-[10px] px-2 py-0.5 uppercase tracking-[0.15em]">
+                                Ideal
                               </span>
                             )}
                           </td>
-                          <td className="py-3 px-4 text-zinc-700">{linha.torax} cm</td>
-                          <td className="py-3 px-4 text-zinc-700">{linha.comprimento} cm</td>
-                          <td className="py-3 px-4 text-zinc-700">{linha.manga} cm</td>
-                          <td className="py-3 px-4 text-right">
-                            <span className="text-[10px] font-bold uppercase tracking-wider underline text-black hover:text-[#a3e635] transition-colors">
-                              Selecionar
+                          <td className="py-3.5 px-4">{linha.torax} cm</td>
+                          <td className="py-3.5 px-4">{linha.comprimento} cm</td>
+                          <td className="py-3.5 px-4">{linha.manga} cm</td>
+                          <td className="py-3.5 px-4 text-right">
+                            <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#F59E0B] underline underline-offset-4">
+                              Usar
                             </span>
                           </td>
                         </tr>
@@ -406,18 +398,16 @@ export default function SizeGuideModal({
                 </table>
               </div>
 
-              <div className="flex items-start gap-2.5 text-[11px] text-zinc-500 bg-zinc-100 p-3.5 border border-zinc-200">
-                <Info size={15} className="text-zinc-900 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 text-[13px] text-[#9A9A9A] bg-[#000000] p-4 border border-[#2a2a2a]">
+                <Info size={16} className="text-[#F59E0B] shrink-0 mt-0.5" />
                 <p>
-                  <strong>Dica de medição:</strong> Estenda uma camiseta sua que veste bem sobre uma superfície plana e meça apenas a parte frontal de uma axila à outra (Tórax). As medidas podem variar em até ±1,5 cm devido ao processo de lavanderia.
+                  Meça uma camiseta sua estendida em superfície plana, de uma costura lateral à outra na altura do peito (Tórax). Margem de tolerância: ±1,5 cm.
                 </p>
               </div>
-
             </div>
           )}
 
         </div>
-
       </div>
     </div>
   );

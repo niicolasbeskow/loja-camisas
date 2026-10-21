@@ -58,3 +58,13 @@ h1, h2, h3, h4, h5, h6 {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+/* Padrão Oficial B.SKW: O Canelado (3px a cada 9px em Grafite sobre Breu) */
+.bg-canelado {
+  background-color: #000000;
+  background-image: repeating-linear-gradient(90deg, #1c1c1c 0 3px, transparent 3px 9px);
+}
+
+:focus-visible {
+  outline: 3px solid #F59E0B;
+  outline-offset: 3px;
+}
