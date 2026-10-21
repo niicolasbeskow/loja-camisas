@@ -1,170 +1,291 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import Header from '@/components/Header';
+import HeroBanner from '@/components/HeroBanner';
+import ShopByCategory from '@/components/ShopByCategory';
 import QuickBuyCard from '@/components/QuickBuyCard';
-import { getProdutosPorCategoria } from '@/data/produtos';
+import { carregarProdutosStorage, produtosIniciais, Produto } from '@/data/produtos';
+import { ArrowRight } from 'lucide-react';
 
-export default function Home() {
-  const todasSuedine = getProdutosPorCategoria('camiseta-suedine');
-  const todasOversized = getProdutosPorCategoria('camiseta-oversized');
-  
-  // Vitrines
-  const produtosSuedine = todasSuedine.slice(0, 4);
-  const produtosOversized = todasOversized.slice(0, 4);
+type FiltroModelagem = 'todas' | 'camiseta-suedine' | 'camiseta-oversized' | 'camiseta-boxy' | 'moletom' | 'camiseta-basica';
+
+export default function HomePage() {
+  const [catalogo, setCatalogo] = useState<Produto[]>(produtosIniciais);
+  const [filtroAtivo, setFiltroAtivo] = useState<FiltroModelagem>('todas');
+
+  useEffect(() => {
+    setCatalogo(carregarProdutosStorage());
+  }, []);
+
+  const categoriasParaAgrupar: { slug: string; tituloGrupo: string }[] = [
+    { slug: 'camiseta-suedine', tituloGrupo: 'Camiseta Heavy Suedine B.SKW' },
+    { slug: 'camiseta-oversized', tituloGrupo: 'Camiseta Oversized B.SKW' },
+    { slug: 'camiseta-boxy', tituloGrupo: 'Camiseta Boxy B.SKW' },
+    { slug: 'moletom', tituloGrupo: 'Moletom Heavyweight B.SKW' },
+    { slug: 'camiseta-basica', tituloGrupo: 'Camiseta Clássica 200g B.SKW' },
+    { slug: 'manga-longa', tituloGrupo: 'Manga Longa Vintage B.SKW' },
+    { slug: 'camiseta-poliamida', tituloGrupo: 'Camiseta Ultra Tech B.SKW' },
+    { slug: 'shorts', tituloGrupo: 'Shorts Poliamida B.SKW' }
+  ];
+
+  const produtosExibidos = filtroAtivo === 'todas'
+    ? catalogo
+    : catalogo.filter(p => p.categoria === filtroAtivo);
 
   return (
-    <main className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#000000] text-white font-outfit">
       
-      {/* BANNER PRINCIPAL (HERO) - RESTAURADO COM A SUA IMAGEM */}
-      <section className="relative h-[85vh] w-full bg-zinc-100 flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0 flex justify-end">
-          {/* A SUA IMAGEM DO MODELO AGACHADO */}
-          <div 
-            className="w-full h-full md:w-[70%] bg-cover bg-center md:bg-right" 
-            style={{ backgroundImage: "url('/files/hero-modelo.jpg')" }} 
-          ></div>
-        </div>
-        
-        {/* Degradê para garantir a leitura do texto */}
-        <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-900/80 to-transparent z-10"></div>
+      {/* NAVBAR + CART DRAWER */}
+      <Header />
 
-        <div className="relative z-20 max-w-[1400px] mx-auto px-6 w-full flex flex-col items-start mt-20">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-anton uppercase text-white tracking-wide leading-none mb-6 max-w-4xl drop-shadow-lg">
-            Feito para os reais.
-          </h1>
-          <p className="text-zinc-200 text-sm md:text-base max-w-xl font-medium mb-10 leading-relaxed drop-shadow-md">
-            Mais do que roupa, é um mindset. B.SKW é para quem faz acontecer e se mantém sólido.
-          </p>
-          <Link href="/categoria/camiseta-basica" className="border-2 border-white text-white px-8 py-4 font-bold text-xs md:text-sm uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
-            Comprar Agora
-          </Link>
-        </div>
-      </section>
+      {/* HERO BANNER: ARMADURA, NÃO ANÚNCIO */}
+      <HeroBanner />
 
-      {/* 4 CAIXAS DE CATEGORIAS ESTRATÉGICAS */}
-      <section className="bg-white py-8 md:py-12 border-b border-zinc-200">
+      {/* NAVEGAÇÃO POR MODELAGEM E COLLAB TRECE */}
+      <ShopByCategory />
+
+      {/* VITRINE PRINCIPAL DE EDIÇÕES E PEÇAS */}
+      <section id="edicoes" className="py-20 md:py-28 border-b border-[#2a2a2a] scroll-mt-20">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-            
-            {/* KITS */}
-            <Link href="/categoria/kits" className="group relative aspect-square md:aspect-[4/5] bg-zinc-900 overflow-hidden flex flex-col justify-end p-4 md:p-6 cursor-pointer rounded-sm">
-              <div className="absolute inset-0 bg-zinc-800 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/files/bg-kits.jpg')" }}></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
-              <div className="relative z-20">
-                <h3 className="text-white font-anton text-xl md:text-3xl uppercase tracking-wide mb-1">Kits</h3>
-                <span className="text-white/80 text-[9px] md:text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 group-hover:text-white transition-colors">
-                  Shop Now <ArrowRight size={12} />
-                </span>
-              </div>
-            </Link>
-
-            {/* OVERSIZED */}
-            <Link href="/categoria/camiseta-oversized" className="group relative aspect-square md:aspect-[4/5] bg-zinc-900 overflow-hidden flex flex-col justify-end p-4 md:p-6 cursor-pointer rounded-sm">
-              <div className="absolute inset-0 bg-zinc-800 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/files/bg-oversized.jpg')" }}></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
-              <div className="relative z-20">
-                <h3 className="text-white font-anton text-xl md:text-3xl uppercase tracking-wide mb-1">Oversized</h3>
-                <span className="text-white/80 text-[9px] md:text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 group-hover:text-white transition-colors">
-                  Shop Now <ArrowRight size={12} />
-                </span>
-              </div>
-            </Link>
-
-            {/* MOLETONS */}
-            <Link href="/categoria/moletom" className="group relative aspect-square md:aspect-[4/5] bg-zinc-900 overflow-hidden flex flex-col justify-end p-4 md:p-6 cursor-pointer rounded-sm">
-              <div className="absolute inset-0 bg-zinc-800 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/files/bg-moletom.jpg')" }}></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
-              <div className="relative z-20">
-                <h3 className="text-white font-anton text-xl md:text-3xl uppercase tracking-wide mb-1">Moletons</h3>
-                <span className="text-white/80 text-[9px] md:text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 group-hover:text-white transition-colors">
-                  Shop Now <ArrowRight size={12} />
-                </span>
-              </div>
-            </Link>
-
-            {/* COLLABS */}
-            <Link href="/categoria/collab" className="group relative aspect-square md:aspect-[4/5] bg-zinc-900 overflow-hidden flex flex-col justify-end p-4 md:p-6 cursor-pointer rounded-sm">
-              <div className="absolute inset-0 bg-zinc-950 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: "url('/files/bg-collabs.jpg')" }}></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
-              <div className="relative z-20">
-                <h3 className="text-white font-anton text-xl md:text-3xl uppercase tracking-wide mb-1">Collabs</h3>
-                <span className="text-white/80 text-[9px] md:text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 group-hover:text-white transition-colors">
-                  Em Breve <ArrowRight size={12} />
-                </span>
-              </div>
-            </Link>
-
-          </div>
-        </div>
-      </section>
-
-      {/* VITRINE 1: DESTAQUES (SUEDINE) - MUDADO CONFORME PEDIDO */}
-      <section className="py-20 md:py-32 border-b border-zinc-200">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-anton uppercase text-zinc-900 tracking-wide">Coleções</h2>
-              <p className="text-zinc-500 text-sm mt-2 font-medium">O essencial para o seu corre diário.</p>
-            </div>
-            <Link href="/categoria/camiseta-suedine" className="text-xs font-bold uppercase tracking-widest text-zinc-900 hover:text-amber-600 transition-colors border-b-2 border-black pb-1 hover:border-amber-600">
-              Ver Toda a Linha Suedine
-            </Link>
-          </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {produtosSuedine.length > 0 ? (
-              produtosSuedine.map(p => <QuickBuyCard key={p.id} tituloGrupo={p.nome} produtosDoGrupo={[p]} />)
-            ) : (
-              <div className="col-span-2 md:col-span-4 py-12 text-center text-zinc-400 font-bold uppercase tracking-widest text-xs">
-                Nenhum produto cadastrado nesta categoria.
-              </div>
-            )}
+          {/* CABEÇALHO E FILTROS DE LINHA */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-6">
+            <div>
+              <span className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B] block mb-2">
+                02 · Catálogo Autoral
+              </span>
+              <h2 className="font-anton text-4xl md:text-[56px] md:leading-[60px] uppercase text-white">
+                Heavy Suedine, Zero Encolhimento
+              </h2>
+            </div>
+
+            {/* PILLS DE FILTRO EM GRAFITE E ÂMBAR */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 [&::-webkit-scrollbar]:hidden">
+              {[
+                { id: 'todas', label: 'Todas as Linhas' },
+                { id: 'camiseta-suedine', label: 'Heavy Suedine 250g' },
+                { id: 'camiseta-oversized', label: 'Oversized' },
+                { id: 'camiseta-boxy', label: 'Boxy' },
+                { id: 'moletom', label: 'Moletons 320g' },
+                { id: 'camiseta-basica', label: 'Clássicas 200g' }
+              ].map((aba) => (
+                <button
+                  key={aba.id}
+                  type="button"
+                  onClick={() => setFiltroAtivo(aba.id as FiltroModelagem)}
+                  className={`px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.15em] border rounded-none shrink-0 transition-all ${
+                    filtroAtivo === aba.id
+                      ? 'bg-[#F59E0B] text-[#000000] border-[#F59E0B]'
+                      : 'bg-[#161616] text-[#9A9A9A] border-[#2a2a2a] hover:text-white hover:border-white'
+                  }`}
+                >
+                  {aba.label}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* GRID DE PRODUTOS */}
+          {filtroAtivo === 'todas' ? (
+            <div className="space-y-16">
+              <div>
+                <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#2a2a2a]">
+                  <h3 className="font-anton text-[28px] leading-[32px] uppercase text-white">
+                    Modelagens por Linha (Selecione a Tonalidade)
+                  </h3>
+                  <span className="text-[13px] text-[#9A9A9A] hidden sm:inline">
+                    {catalogo.length} SKUs disponíveis
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                  {categoriasParaAgrupar.map((grupo) => {
+                    const pecasDoGrupo = catalogo.filter(p => p.categoria === grupo.slug);
+                    if (pecasDoGrupo.length === 0) return null;
+                    return (
+                      <QuickBuyCard
+                        key={grupo.slug}
+                        tituloGrupo={grupo.tituloGrupo}
+                        produtosDoGrupo={pecasDoGrupo}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#2a2a2a]">
+                  <h3 className="font-anton text-[28px] leading-[32px] uppercase text-white">
+                    Destaques em Preto Profundo & Neutros
+                  </h3>
+                  <Link
+                    href="/categoria/camiseta-oversized"
+                    className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B] hover:underline underline-offset-4 flex items-center gap-1.5"
+                  >
+                    Ver Todos <ArrowRight size={14} />
+                  </Link>
+                </div>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                  {catalogo.slice(0, 8).map((peca) => (
+                    <QuickBuyCard
+                      key={peca.id}
+                      tituloGrupo={peca.nome}
+                      produtosDoGrupo={[peca]}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {produtosExibidos.map((peca) => (
+                <QuickBuyCard
+                  key={peca.id}
+                  tituloGrupo={peca.nome}
+                  produtosDoGrupo={[peca]}
+                />
+              ))}
+            </div>
+          )}
+
         </div>
       </section>
 
-      {/* BANNER SECUNDÁRIO (MEIO DE PÁGINA) - DESIGN PRETO E BRANCO RESTAURADO */}
-      <section className="relative py-32 bg-zinc-900 flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-black z-0"></div>
-        <div className="relative z-20 text-center px-4 max-w-3xl">
-          <h2 className="text-4xl md:text-6xl font-anton uppercase text-white tracking-wide mb-6">
-            Conforto Extremo.<br/>Design Sólido.
+      {/* SECÇÃO DE ENGENHARIA TÊXTIL */}
+      <section className="py-20 md:py-28 border-b border-[#2a2a2a] bg-[#000000]">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6">
+          <span className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B] block mb-2">
+            03 · Especificação de Construção
+          </span>
+          <h2 className="font-anton text-4xl md:text-[56px] md:leading-[60px] uppercase text-white mb-12">
+            Nada Decora, Tudo Sustenta o Peso
           </h2>
-          <p className="text-zinc-300 text-sm md:text-base font-medium mb-10">
-            Conheça a nossa linha premium de Suedine. O toque aveludado que eleva qualquer look básico para o próximo nível.
-          </p>
-          <Link href="/categoria/camiseta-suedine" className="inline-block bg-white text-black px-8 py-4 font-bold text-xs uppercase tracking-widest hover:bg-amber-500 transition-colors">
-            Explorar Linha Suedine
-          </Link>
-        </div>
-      </section>
 
-      {/* VITRINE 2: OVERSIZED (MOVIDA PARA BAIXO DO BANNER) */}
-      <section className="py-20 md:py-32">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-anton uppercase text-zinc-900 tracking-wide">Streetwear Premium</h2>
-              <p className="text-zinc-500 text-sm mt-2 font-medium">Caimento estruturado, atitude máxima.</p>
-            </div>
-            <Link href="/categoria/camiseta-oversized" className="text-xs font-bold uppercase tracking-widest text-zinc-900 hover:text-amber-600 transition-colors border-b-2 border-black pb-1 hover:border-amber-600">
-              Ver Toda a Linha Oversized
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {produtosOversized.length > 0 ? (
-              produtosOversized.map(p => <QuickBuyCard key={p.id} tituloGrupo={p.nome} produtosDoGrupo={[p]} />)
-            ) : (
-              <div className="col-span-2 md:col-span-4 py-12 text-center text-zinc-400 font-bold uppercase tracking-widest text-xs">
-                Nenhum produto cadastrado nesta categoria.
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[#161616] border border-[#2a2a2a] p-8 flex flex-col justify-between">
+              <div>
+                <div
+                  className="h-24 mb-6 border border-[#2a2a2a] flex items-end p-3"
+                  style={{
+                    backgroundColor: '#000000',
+                    backgroundImage: 'repeating-linear-gradient(90deg, #1c1c1c 0 3px, transparent 3px 9px)'
+                  }}
+                >
+                  <span className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B]">
+                    01 · ASSINATURA
+                  </span>
+                </div>
+                <h3 className="font-anton text-[28px] leading-[32px] uppercase text-white mb-3">
+                  Gola Canelada de 3 cm
+                </h3>
+                <p className="text-[17px] leading-[28px] text-[#9A9A9A]">
+                  Construída com ribana de alta densidade que abraça o pescoço sem ceder. O canelado é o único ornamento da peça.
+                </p>
               </div>
-            )}
+            </div>
+
+            <div className="bg-[#161616] border border-[#2a2a2a] p-8 flex flex-col justify-between">
+              <div>
+                <div
+                  className="h-24 mb-6 border border-[#2a2a2a] flex items-end p-3"
+                  style={{
+                    backgroundColor: '#000000',
+                    backgroundImage: 'repeating-linear-gradient(90deg, #1c1c1c 0 3px, transparent 3px 9px)'
+                  }}
+                >
+                  <span className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B]">
+                    02 · MATÉRIA-PRIMA
+                  </span>
+                </div>
+                <h3 className="font-anton text-[28px] leading-[32px] uppercase text-white mb-3">
+                  Heavy Suedine 250 g/m²
+                </h3>
+                <p className="text-[17px] leading-[28px] text-[#9A9A9A]">
+                  Fio 40.1 100% algodão com toque aveludado e estrutura encorpada. Mantém o caimento armado longe do corpo.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-[#161616] border border-[#2a2a2a] p-8 flex flex-col justify-between">
+              <div>
+                <div
+                  className="h-24 mb-6 border border-[#2a2a2a] flex items-end p-3"
+                  style={{
+                    backgroundColor: '#000000',
+                    backgroundImage: 'repeating-linear-gradient(90deg, #1c1c1c 0 3px, transparent 3px 9px)'
+                  }}
+                >
+                  <span className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B]">
+                    03 · ECONOMIA DE ESCALA
+                  </span>
+                </div>
+                <h3 className="font-anton text-[28px] leading-[32px] uppercase text-white mb-3">
+                  Kits Progressivos 2 e 3
+                </h3>
+                <p className="text-[17px] leading-[28px] text-[#9A9A9A]">
+                  Monte a sua rotação semanal de essenciais em Breu, Branco e Off-White com valor unitário reduzido automaticamente.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-    </main>
+      {/* RODAPÉ OFICIAL */}
+      <footer className="bg-[#000000] text-[#9A9A9A] py-16 md:py-24">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-[#2a2a2a]">
+            
+            <div className="md:col-span-5 flex flex-col items-start">
+              <div className="inline-flex flex-col items-center">
+                <span className="font-anton text-6xl uppercase text-white leading-none tracking-normal">
+                  B<span className="text-[#F59E0B]">.</span>SKW
+                </span>
+                <div className="w-full h-[3px] bg-[#F59E0B] my-2.5" />
+                <span className="text-[12px] font-semibold uppercase tracking-[0.35em] text-white">
+                  STREETWEAR PREMIUM
+                </span>
+              </div>
+              <p className="text-[15px] text-[#9A9A9A] mt-6 max-w-sm leading-relaxed">
+                Uma armadura de tecido para quem veste a rua com respeito. Desenvolvido em Florianópolis, Santa Catarina.
+              </p>
+            </div>
+
+            <div className="md:col-span-3 space-y-3">
+              <span className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B] block mb-4">
+                Modelagens
+              </span>
+              <ul className="space-y-2.5 text-[14px]">
+                <li><Link href="/categoria/camiseta-suedine" className="hover:text-white transition-colors">Heavy Suedine 250g</Link></li>
+                <li><Link href="/categoria/camiseta-oversized" className="hover:text-white transition-colors">Oversized 200g</Link></li>
+                <li><Link href="/categoria/camiseta-boxy" className="hover:text-white transition-colors">Boxy Fit</Link></li>
+                <li><Link href="/categoria/moletom" className="hover:text-white transition-colors">Moletons 320g</Link></li>
+                <li><Link href="/categoria/camiseta-basica" className="hover:text-white transition-colors">Clássicas 200g</Link></li>
+              </ul>
+            </div>
+
+            <div className="md:col-span-4 space-y-3">
+              <span className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B] block mb-4">
+                Diretrizes B.SKW
+              </span>
+              <p className="text-[14px] text-[#9A9A9A] leading-relaxed">
+                Pagamentos processados com segurança. Desconto de Kit 2 e Kit 3 aplicado diretamente na seleção da peça ou na gaveta de compras.
+              </p>
+              <div className="pt-2 text-[13px] text-white">
+                loja-camisas-two.vercel.app · Florianópolis, SC
+              </div>
+            </div>
+
+          </div>
+
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-[#9A9A9A]">
+            <span>© {new Date().getFullYear()} B.SKW · Todos os direitos reservados.</span>
+            <span>Brand Book v1.0 · Breu, Grafite, Concreto & Âmbar.</span>
+          </div>
+        </div>
+      </footer>
+
+    </div>
   );
 }
