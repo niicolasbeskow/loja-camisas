@@ -63,7 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <CartProvider>
             <Marquee />
-            <Header session={null} />
+            <Header />
             <CartSidebar />
             {children}
           </CartProvider>
