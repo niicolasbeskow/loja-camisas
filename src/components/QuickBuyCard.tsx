@@ -1,107 +1,243 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { ShoppingCart } from 'lucide-react';
-import { useCart } from '@/contexts/CartContext';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+
+import { useState } from 'react';
+import Link from 'next/link';
 import { Produto, Tamanho } from '@/data/produtos';
+import { ShoppingBag, Check, Plus, X } from 'lucide-react';
 
-const TAMANHOS: Tamanho[] = ['P', 'M', 'G', 'GG', 'G1', 'G2'];
+interface QuickBuyCardProps {
+  tituloGrupo?: string;
+  produtosDoGrupo: Produto[];
+}
 
-export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: { tituloGrupo: string, produtosDoGrupo: Produto[] }) {
-  const [corSelecionadaId, setCorSelecionadaId] = useState<string | null>(null);
-  const [corHoverId, setCorHoverId] = useState<string | null>(null);
-  const [tamanhoSelecionado, setTamanhoSelecionado] = useState<Tamanho | null>(null);
+const coresHex: Record<string, string> = {
+  'Preto': 'bg-[#18181b]', 'Branco': 'bg-[#FFFFFF] border-zinc-300', 'Off-White': 'bg-[#F5F5F0] border-zinc-300',
+  'Marrom': 'bg-[#4A3728]', 'Areia': 'bg-[#E3DAC9]', 'Cinza': 'bg-[#a1a1aa]', 'Chumbo': 'bg-[#3f3f46]',
+  'Azul Marinho': 'bg-[#1e3a8a]', 'Verde Militar': 'bg-[#3f6212]', 'Verde Musgo': 'bg-[#3b4426]',
+  'Bordô': 'bg-[#7f1d1d]', 'Rosa Pastel': 'bg-[#f4c2c2]', 'Azul Bebê': 'bg-[#89cff0]',
+  'Cinza Envelhecido': 'bg-[#71717a]', 'Preto Estonado': 'bg-[#27272a]', 'Verde Claro': 'bg-[#a3e635]',
+  'Roxo': 'bg-[#581c87]', 'Azul Envelhecido': 'bg-[#3b82f6]', 'Azul Estonado': 'bg-[#60a5fa]',
+  'Preto Vintage': 'bg-[#27272a]', 'Cinza Escuro': 'bg-[#3f3f46]', 'Cinza Claro': 'bg-[#d4d4d8]',
+  'Destroyed': 'bg-[#3f3f46]'
+};
 
-  const { addToCart } = useCart();
-  const { data: session } = useSession();
-  const router = useRouter();
+const listaTamanhos: Tamanho[] = ['P', 'M', 'G', 'GG', 'XG', 'G1', 'G2'];
 
-  useEffect(() => { setTamanhoSelecionado(null); }, [corSelecionadaId]);
+export default function QuickBuyCard({ tituloGrupo, produtosDoGrupo }: QuickBuyCardProps) {
+  const [indiceAtivo, setIndiceAtivo] = useState(0);
+  const [gavetaMobileAberta, setGavetaMobileAberta] = useState(false);
+  const [tamanhoAdicionado, setTamanhoAdicionado] = useState<Tamanho | null>(null);
 
-  const idAtivo = corHoverId || corSelecionadaId || (produtosDoGrupo[0]?.id);
-  const produtoAtivo = produtosDoGrupo.find(p => p.id === idAtivo) || produtosDoGrupo[0];
+  if (!produtosDoGrupo || produtosDoGrupo.length === 0) return null;
 
-  const isProntoParaComprar = corSelecionadaId !== null && tamanhoSelecionado !== null;
-  const isEsgotado = Object.values(produtoAtivo.estoque).every(qtd => qtd === 0);
+  const produtoAtivo = produtosDoGrupo[indiceAtivo] || produtosDoGrupo[0];
+  const urlProduto = `/produto/${produtoAtivo.codigo.replace(/-/g, '')}`;
 
-  const handleComprar = () => {
-    if (!session) { alert('Faça login para adicionar itens à sua armadura.'); router.push('/login'); return; }
-    if (isProntoParaComprar) {
-      const produtoReal = produtosDoGrupo.find(p => p.id === corSelecionadaId);
-      if (!produtoReal) return;
-      addToCart({ titulo: produtoReal.nome, preco: produtoReal.preco, cor: produtoReal.cor, tamanho: tamanhoSelecionado, quantidade: 1 });
-      setCorSelecionadaId(null);
-      setTamanhoSelecionado(null);
-    }
+  const specPrincipal = produtoAtivo.especificacaoTecnica
+    ? produtoAtivo.especificacaoTecnica.split('•')[0].trim()
+    : '';
+
+  const temDesconto = produtoAtivo.precoAntigo > produtoAtivo.preco;
+  const porcentagemOff = temDesconto
+    ? Math.round(((produtoAtivo.precoAntigo - produtoAtivo.preco) / produtoAtivo.precoAntigo) * 100)
+    : 0;
+
+  const handleQuickBuy = (e: React.MouseEvent, tam: Tamanho) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setTamanhoAdicionado(tam);
+
+    try {
+      const carrinhoAtual = JSON.parse(localStorage.getItem('bskw_carrinho') || '[]');
+      carrinhoAtual.push({
+        sku: produtoAtivo.codigo,
+        nome: produtoAtivo.nome,
+        preco: produtoAtivo.preco,
+        tamanho: tam,
+        cor: produtoAtivo.cor,
+        quantidade: 1,
+        adicionadoEm: new Date().toISOString()
+      });
+      localStorage.setItem('bskw_carrinho', JSON.stringify(carrinhoAtual));
+      window.dispatchEvent(new Event('storage'));
+    } catch (err) {}
+
+    setTimeout(() => {
+      setTamanhoAdicionado(null);
+      setGavetaMobileAberta(false);
+    }, 1400);
   };
 
-  if (!produtoAtivo) return null;
-
   return (
-    <div className="flex flex-col border border-zinc-200 rounded-md overflow-hidden bg-white hover:shadow-lg transition-shadow duration-300 relative group">
+    <div className="group relative flex flex-col bg-white border border-zinc-200 hover:border-zinc-900 transition-colors duration-200 rounded-none font-outfit select-none">
       
-      <div className="absolute top-2 left-2 md:top-3 md:left-3 flex flex-col gap-1 z-10">
-        {isEsgotado && (
-          <span className="bg-zinc-900 text-white text-[8px] md:text-[10px] font-bold px-1.5 py-0.5 md:px-2 md:py-1 rounded-sm shadow-md uppercase tracking-wide">
-             ESGOTADO
-          </span>
-        )}
-        {produtoAtivo.promocao && (
-          <span className="bg-red-600 text-white text-[8px] md:text-[10px] font-bold px-1.5 py-0.5 md:px-2 md:py-1 rounded-sm shadow-md flex items-center gap-1">
-             🔥 20% OFF
-          </span>
-        )}
-      </div>
-
-      <div className="w-full aspect-[4/5] bg-zinc-100 relative flex items-center justify-center transition-colors duration-300">
-        <div className="text-center px-2 md:px-4">
-          <span className="text-zinc-400 font-medium text-xs md:text-sm block mb-1.5 line-clamp-1">{produtoAtivo.nome}</span>
-          <span className="text-[10px] md:text-xs font-bold px-2 py-1 rounded-sm shadow-sm" 
-                style={{ backgroundColor: produtoAtivo.hex, color: ['#ffffff', '#faf9f6'].includes(produtoAtivo.hex.toLowerCase()) ? 'black' : 'white' }}>
-            {produtoAtivo.cor}
-          </span>
-        </div>
-      </div>
-      
-      <div className="p-2 md:p-4 flex flex-col gap-2 md:gap-3">
-        <div>
-          <h3 className="font-bold text-zinc-900 uppercase text-xs md:text-sm line-clamp-1" title={produtoAtivo.nome}>{produtoAtivo.nome}</h3>
-          <div className="flex items-center gap-1.5 md:gap-2">
-            {produtoAtivo.promocao && <span className="text-xs text-zinc-400 line-through">R$ {produtoAtivo.precoOriginal.toFixed(2).replace('.', ',')}</span>}
-            <span className="font-bold text-black text-sm md:text-lg">R$ {produtoAtivo.preco.toFixed(2).replace('.', ',')}</span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-1.5 flex-wrap h-auto min-h-[1.5rem]">
-          {produtosDoGrupo.map((produto) => (
-            <button 
-              key={produto.id} onMouseEnter={() => setCorHoverId(produto.id)} onMouseLeave={() => setCorHoverId(null)} onClick={() => setCorSelecionadaId(produto.id)} 
-              className={`w-5 h-5 md:w-6 md:h-6 rounded-full border-2 transition-all ${corSelecionadaId === produto.id ? 'border-[#F59E0B] scale-110' : 'border-zinc-300 hover:border-zinc-400'}`} 
-              style={{ backgroundColor: produto.hex }} aria-label={`Cor ${produto.cor}`} title={produto.cor} 
+      <div className="relative aspect-[4/5] w-full bg-zinc-100 overflow-hidden border-b border-zinc-200">
+        
+        <Link href={urlProduto} className="block w-full h-full">
+          {produtoAtivo.imagens && produtoAtivo.imagens.length > 0 ? (
+            <img
+              src={produtoAtivo.imagens[0]}
+              alt={produtoAtivo.nome}
+              className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
             />
-          ))}
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center opacity-30 p-4 text-center">
+              <span className="font-anton text-2xl md:text-3xl uppercase tracking-widest text-zinc-600">
+                B.SKW
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-500 mt-1">
+                {produtoAtivo.cor}
+              </span>
+            </div>
+          )}
+        </Link>
+
+        <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1.5 pointer-events-none">
+          {produtoAtivo.tag ? (
+            <span className="bg-black text-white font-mono text-[10px] font-bold uppercase px-2 py-0.5 tracking-widest border border-zinc-800">
+              {produtoAtivo.tag}
+            </span>
+          ) : temDesconto && porcentagemOff >= 15 ? (
+            <span className="bg-black text-[#a3e635] font-mono text-[10px] font-bold uppercase px-2 py-0.5 tracking-widest">
+              -{porcentagemOff}%
+            </span>
+          ) : null}
+
+          {specPrincipal && (
+            <span className="bg-white/90 backdrop-blur-xs text-zinc-900 font-mono text-[9px] md:text-[10px] font-bold uppercase px-2 py-0.5 tracking-wider border border-zinc-300 w-fit">
+              {specPrincipal}
+            </span>
+          )}
         </div>
-        
-        <div className="flex items-center gap-1 mt-1">
-          {TAMANHOS.map((tam) => {
-            const emEstoque = produtoAtivo.estoque[tam] > 0;
-            return (
-              <button 
-                key={tam} onClick={() => emEstoque && setTamanhoSelecionado(tam)} disabled={!emEstoque} title={!emEstoque ? "Sem estoque" : ""}
-                className={`flex-1 py-1 md:py-1.5 text-[9px] md:text-xs font-bold border rounded-sm transition-colors ${!emEstoque ? 'bg-zinc-100 text-zinc-300 border-zinc-200 cursor-not-allowed line-through' : tamanhoSelecionado === tam ? 'bg-black text-white border-black' : 'bg-white text-zinc-600 border-zinc-300 hover:border-black'}`}
-              >{tam}</button>
-            );
-          })}
-        </div>
-        
-        <button 
-          onClick={handleComprar} disabled={(!isProntoParaComprar || isEsgotado) && !!session} 
-          className={`mt-1 md:mt-2 flex items-center justify-center gap-1.5 w-full py-2.5 md:py-3 text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-sm transition-all duration-300 ${!session ? 'bg-zinc-900 text-white hover:bg-black' : isEsgotado ? 'bg-zinc-300 text-zinc-500 cursor-not-allowed' : isProntoParaComprar ? 'bg-[#F59E0B] text-black hover:bg-amber-400' : 'bg-zinc-200 text-zinc-400 cursor-not-allowed'}`}
+
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            setGavetaMobileAberta(!gavetaMobileAberta);
+          }}
+          aria-label="Compra rápida"
+          className="md:hidden absolute bottom-2.5 right-2.5 z-20 w-9 h-9 bg-black text-white border border-zinc-700 flex items-center justify-center active:scale-90 transition-transform rounded-none shadow-md"
         >
-          <ShoppingCart className="w-3 h-3 md:w-4 md:h-4" />
-          {!session ? 'Login' : isEsgotado ? 'Esgotado' : isProntoParaComprar ? 'Comprar' : (!corSelecionadaId ? 'Cor' : 'Tamanho')}
+          {gavetaMobileAberta ? <X size={15} /> : <Plus size={16} />}
         </button>
+
+        <div
+          className={`absolute inset-x-0 bottom-0 z-20 bg-white/95 backdrop-blur-md border-t border-zinc-900 p-2.5 md:p-3 transition-transform duration-200 ease-out ${
+            gavetaMobileAberta
+              ? 'translate-y-0'
+              : 'translate-y-full md:group-hover:translate-y-0'
+          }`}
+        >
+          {tamanhoAdicionado ? (
+            <div className="h-14 flex items-center justify-center gap-2 bg-[#a3e635] text-black border border-black font-mono text-[11px] font-bold uppercase tracking-widest animate-in fade-in duration-150">
+              <Check size={15} strokeWidth={3} /> Tam. {tamanhoAdicionado} Adicionado
+            </div>
+          ) : (
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-900 flex items-center gap-1.5">
+                  <ShoppingBag size={11} /> Quick Add:
+                </span>
+                <span className="font-mono text-[9px] uppercase text-zinc-400">
+                  Toque no tamanho
+                </span>
+              </div>
+
+              <div className="grid grid-cols-7 gap-1">
+                {listaTamanhos.map((tam) => {
+                  const qtd = produtoAtivo.estoque ? produtoAtivo.estoque[tam] || 0 : 1;
+                  const todosZerados = Object.values(produtoAtivo.estoque || {}).every(v => v === 0);
+                  const esgotado = !todosZerados && qtd === 0;
+
+                  return (
+                    <button
+                      key={tam}
+                      type="button"
+                      disabled={esgotado}
+                      onClick={(e) => handleQuickBuy(e, tam)}
+                      className={`relative h-7 md:h-8 border font-mono text-[10px] font-bold uppercase flex items-center justify-center rounded-none transition-all overflow-hidden ${
+                        esgotado
+                          ? 'border-zinc-200 text-zinc-300 bg-zinc-50 cursor-not-allowed after:content-[""] after:absolute after:w-[140%] after:h-[1px] after:bg-zinc-300 after:-rotate-45'
+                          : 'border-zinc-300 bg-white text-zinc-900 hover:bg-black hover:text-white hover:border-black active:scale-95'
+                      }`}
+                    >
+                      {tam}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="p-3 md:p-4 flex flex-col flex-1 justify-between gap-2">
+        
+        <div>
+          {produtosDoGrupo.length > 1 ? (
+            <div className="flex items-center gap-1.5 mb-2">
+              {produtosDoGrupo.slice(0, 6).map((variante, idx) => (
+                <button
+                  key={variante.id}
+                  type="button"
+                  onClick={() => setIndiceAtivo(idx)}
+                  title={variante.cor}
+                  className={`w-4 h-4 rounded-none border transition-transform ${
+                    idx === indiceAtivo
+                      ? 'ring-1 ring-offset-1 ring-black border-black scale-110'
+                      : 'border-zinc-300 hover:border-black'
+                  } ${coresHex[variante.cor] || 'bg-zinc-300'}`}
+                />
+              ))}
+              {produtosDoGrupo.length > 6 && (
+                <span className="font-mono text-[10px] text-zinc-400 ml-1">
+                  +{produtosDoGrupo.length - 6}
+                </span>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <span
+                className={`w-3 h-3 rounded-none border border-zinc-300 ${
+                  coresHex[produtoAtivo.cor] || 'bg-zinc-800'
+                }`}
+              />
+              <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-500">
+                {produtoAtivo.cor}
+              </span>
+            </div>
+          )}
+
+          <Link href={urlProduto} className="block group-hover:underline decoration-zinc-900 underline-offset-4">
+            <h3 className="font-bold text-xs md:text-sm uppercase tracking-wider text-zinc-900 line-clamp-1">
+              {tituloGrupo || produtoAtivo.nome}
+            </h3>
+          </Link>
+        </div>
+
+        <div className="pt-2 border-t border-zinc-100 flex flex-col gap-1">
+          <div className="flex items-baseline gap-2">
+            <span className="font-anton text-lg md:text-xl tracking-wide text-zinc-900">
+              R$ {produtoAtivo.preco.toFixed(2).replace('.', ',')}
+            </span>
+            {temDesconto && (
+              <span className="font-mono text-[11px] text-zinc-400 line-through">
+                R$ {produtoAtivo.precoAntigo.toFixed(2).replace('.', ',')}
+              </span>
+            )}
+          </div>
+
+          {produtoAtivo.precoKit3 > 0 && (
+            <div className="flex items-center">
+              <span className="bg-zinc-900 text-[#a3e635] font-mono text-[10px] font-bold uppercase px-1.5 py-0.5 tracking-wider">
+                R$ {produtoAtivo.precoKit3.toFixed(2).replace('.', ',')} /un no Kit 3
+              </span>
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   );
