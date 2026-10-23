@@ -71,7 +71,7 @@ export default function HomePage() {
                 FEITO PARA<br />OS REAIS<span className="text-[#F59E0B]">.</span>
               </h1>
               <p className="text-[15px] md:text-[16px] leading-[26px] text-[#9A9A9A] max-w-[48ch] mb-8 font-medium drop-shadow-sm">
-                Mais do que roupa — é um mindset. B.SKW é para quem faz acontecer e se mantém sólido. Construído para durar.
+                O peso da rua exige uma estrutura à altura. Construímos peças sólidas em alta gramatura para quem dita o próprio ritmo.
               </p>
               <Link
                 href="#destaques"
