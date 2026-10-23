@@ -40,7 +40,7 @@ export default function HomePage() {
         <div 
           className="absolute inset-0 bg-center bg-no-repeat opacity-60 z-0"
           style={{
-            backgroundImage: "url('/files/capa-principal (2).jpg')",
+            backgroundImage: "url('/files/capa-principal-2.jpg')",
             backgroundSize: 'contain'
           }}
         />
