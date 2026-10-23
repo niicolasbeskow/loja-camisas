@@ -36,20 +36,17 @@ export default function HomePage() {
       {/* 1. HERO BANNER PRINCIPAL COM FOTO LIVRE E TEXTOS NOS CANTOS */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none flex items-center min-h-[75vh] lg:min-h-[85vh] py-16 md:py-24">
         
-        {/* IMAGEM DE FUNDO DO MODELO */}
+        {/* IMAGEM DE FUNDO DO MODELO ENCOSTADA À DIREITA (bg-right) */}
         <div 
-          className="absolute inset-0 bg-center bg-no-repeat opacity-60 z-0"
+          className="absolute inset-0 bg-right bg-no-repeat opacity-80 z-0"
           style={{
             backgroundImage: "url('/files/capa-principal-2.jpg')",
             backgroundSize: 'contain'
           }}
         />
 
-        {/* DEGRADÊ PARA LEITURA */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/70 to-transparent z-0" />
-
-        {/* TEXTURA CANELADA */}
-        <div className="absolute inset-0 bg-canelado opacity-30 pointer-events-none z-0" />
+        {/* DEGRADÊ PARA LEITURA (Escuro na esquerda, transparente na direita) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/80 to-transparent z-0" />
 
         {/* --- LETRINHAS TÉCNICAS NOS CANTOS (MOLDURA EDITORIAL) --- */}
         <div className="absolute top-6 right-6 md:top-8 md:right-10 font-mono text-[10px] text-[#9A9A9A] uppercase tracking-widest z-20 pointer-events-none">
@@ -252,7 +249,7 @@ export default function HomePage() {
                 Featured Products
               </h2>
             </div>
-            <Link href="/produtos" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-zinc-900 flex items-center gap-1.5 transition-colors">
+            <Link href="/produtos" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-[#F59E0B] flex items-center gap-1.5 transition-colors">
               View All <ArrowRight size={14} />
             </Link>
           </div>
