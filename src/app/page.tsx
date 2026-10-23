@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Header from '@/components/Header';
 import QuickBuyCard from '@/components/QuickBuyCard';
 import { carregarProdutosStorage, produtosIniciais, Produto } from '@/data/produtos';
 import { ArrowRight, Truck, ShieldCheck, RefreshCw, Award, Lock } from 'lucide-react';
@@ -35,8 +34,6 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#000000] text-white font-outfit">
       
-      <Header />
-
       {/* 1. HERO BANNER PRINCIPAL (ESTRUTURA REFERÊNCIA) */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none py-16 md:py-24">
         {/* TEXTURA DE FUNDO CANELADA OPACO */}
