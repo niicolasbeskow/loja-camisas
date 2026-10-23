@@ -36,7 +36,21 @@ export default function HomePage() {
 
       {/* 1. HERO BANNER PRINCIPAL (MANTÉM O DARK MODE PARA IMPACTO) */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none py-16 md:py-24">
-        <div className="absolute inset-0 bg-canelado opacity-40 pointer-events-none" />
+        
+        {/* A SUA IMAGEM DE FUNDO AQUI (AJUSTADA SEM CORTES) */}
+        <div 
+          className="absolute inset-0 bg-center bg-no-repeat opacity-60"
+          style={{
+            backgroundImage: "url('/files/capa-principal (2).jpg')",
+            backgroundSize: 'contain' // Contain = ajustada à tela sem cortes e sem esticar
+          }}
+        />
+
+        {/* DEGRADÊ PARA GARANTIR LEITURA DOS TEXTOS POR CIMA DA FOTO */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/60 to-transparent z-0" />
+
+        {/* TEXTURA CANELADA */}
+        <div className="absolute inset-0 bg-canelado opacity-40 pointer-events-none z-0" />
 
         <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
@@ -60,7 +74,7 @@ export default function HomePage() {
             </div>
 
             <div className="lg:col-span-6 flex justify-center lg:justify-end relative">
-              <div className="relative aspect-square md:aspect-[4/3] w-full max-w-lg bg-[#161616] border border-[#2a2a2a] p-8 flex flex-col justify-between overflow-hidden bg-canelado">
+              <div className="relative aspect-square md:aspect-[4/3] w-full max-w-lg bg-[#161616] text-white border border-[#2a2a2a] p-8 flex flex-col justify-between overflow-hidden bg-canelado shadow-2xl">
                 <div className="flex justify-between items-start">
                   <span className="font-anton text-4xl tracking-widest text-white">B<span className="text-[#F59E0B]">.</span>SKW</span>
                   <span className="font-mono text-[10px] text-[#9A9A9A] uppercase tracking-widest">EST. 2026</span>
