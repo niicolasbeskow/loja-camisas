@@ -151,9 +151,13 @@ export default function Header() {
           <Link
             href="/"
             aria-label="B.SKW — Ir para o início"
-            className="font-anton text-4xl md:text-5xl tracking-normal uppercase text-white leading-none select-none min-w-[88px]"
+            className="flex items-center shrink-0"
           >
-            B<span className="text-[#F59E0B]">.</span>SKW
+            <img
+              src="/files/BSKW_principal_fundo-preto.png"
+              alt="B.SKW Logo"
+              className="h-9 md:h-11 w-auto object-contain"
+            />
           </Link>
 
           {/* LINKS DE NAVEGAÇÃO DESKTOP (OUTFIT 500 13PX, TRACKING 0.12EM) */}
