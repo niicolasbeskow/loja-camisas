@@ -33,10 +33,10 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#000000] text-white font-outfit">
 
-      {/* 1. HERO BANNER PRINCIPAL COM IMAGEM DE FUNDO AJUSTADA */}
-      <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none py-16 md:py-24 lg:py-32">
+      {/* 1. HERO BANNER PRINCIPAL COM FOTO LIVRE E TEXTOS NOS CANTOS */}
+      <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none flex items-center min-h-[75vh] lg:min-h-[85vh] py-16 md:py-24">
         
-        {/* A SUA IMAGEM DE FUNDO AQUI (AJUSTADA SEM CORTES = contain) */}
+        {/* IMAGEM DE FUNDO DO MODELO */}
         <div 
           className="absolute inset-0 bg-center bg-no-repeat opacity-60 z-0"
           style={{
@@ -45,17 +45,28 @@ export default function HomePage() {
           }}
         />
 
-        {/* DEGRADÊ PARA GARANTIR LEITURA DOS TEXTOS POR CIMA DA FOTO */}
+        {/* DEGRADÊ PARA LEITURA */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/70 to-transparent z-0" />
 
-        {/* TEXTURA CANELADA SUAVE */}
+        {/* TEXTURA CANELADA */}
         <div className="absolute inset-0 bg-canelado opacity-30 pointer-events-none z-0" />
 
-        <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6">
+        {/* --- LETRINHAS TÉCNICAS NOS CANTOS (MOLDURA EDITORIAL) --- */}
+        <div className="absolute top-6 right-6 md:top-8 md:right-10 font-mono text-[10px] text-[#9A9A9A] uppercase tracking-widest z-20 pointer-events-none">
+          EST. 2026
+        </div>
+        <div className="absolute bottom-6 left-6 md:bottom-8 md:left-10 font-mono text-[10px] text-[#9A9A9A] tracking-widest z-20 pointer-events-none">
+          27.5954° S
+        </div>
+        <div className="absolute bottom-6 right-6 md:bottom-8 md:right-10 font-mono text-[10px] text-[#9A9A9A] tracking-widest z-20 pointer-events-none">
+          48.5480° W
+        </div>
+
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
             {/* TEXTOS À ESQUERDA */}
-            <div className="lg:col-span-6 flex flex-col items-start">
+            <div className="lg:col-span-7 flex flex-col items-start">
               <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-4 block">
                 STREETWEAR // CULTURE // YOU
               </span>
@@ -73,27 +84,8 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* BLOCO EDITORIAL À DIREITA */}
-            <div className="lg:col-span-6 flex justify-center lg:justify-end relative">
-              <div className="relative aspect-square md:aspect-[4/3] w-full max-w-lg bg-[#161616]/90 backdrop-blur-sm border border-[#2a2a2a] p-8 flex flex-col justify-between overflow-hidden bg-canelado shadow-2xl hidden md:flex">
-                <div className="flex justify-between items-start">
-                  <span className="font-anton text-4xl tracking-widest text-white">B<span className="text-[#F59E0B]">.</span>SKW</span>
-                  <span className="font-mono text-[10px] text-[#9A9A9A] uppercase tracking-widest">EST. 2026</span>
-                </div>
-                <div className="my-auto text-center">
-                  <span className="font-anton text-[120px] md:text-[160px] uppercase text-white/5 tracking-tighter block leading-none select-none">
-                    SOLID
-                  </span>
-                  <span className="absolute inset-0 flex items-center justify-center font-anton text-6xl text-white tracking-widest pointer-events-none">
-                    B.SKW
-                  </span>
-                </div>
-                <div className="pt-4 border-t border-[#2a2a2a] flex justify-between items-end font-mono text-[10px] text-[#9A9A9A]">
-                  <span>27.5954° S</span>
-                  <span>48.5480° W</span>
-                </div>
-              </div>
-            </div>
+            {/* COLUNA DIREITA VAZIA (Para não cobrir o modelo no desktop) */}
+            <div className="hidden lg:block lg:col-span-5"></div>
 
           </div>
         </div>
@@ -146,7 +138,7 @@ export default function HomePage() {
                       placeholder="WhatsApp ou E-mail"
                       className="w-full bg-[#000000] border border-[#2a2a2a] focus:border-[#F59E0B] text-white p-2 text-xs outline-none rounded-none"
                     />
-                    <button type="submit" className="w-full bg-[#F59E0B] text-black py-2 font-bold text-[10px] uppercase tracking-widest rounded-none">
+                    <button type="submit" className="w-full bg-[#F59E0B] text-[#000000] py-2 font-bold text-[10px] uppercase tracking-widest rounded-none">
                       Garantir Acesso
                     </button>
                   </form>
@@ -170,36 +162,42 @@ export default function HomePage() {
       </section>
 
       {/* 3. SEÇÃO "FRESH DROPS" */}
-      <section className="relative bg-[#161616] text-white border-b border-[#2a2a2a] py-20 md:py-28 bg-canelado">
+      <section className="relative bg-[#FAFAFA] text-zinc-900 border-b border-zinc-200 py-20 md:py-28">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
             
-            <div className="lg:col-span-6 flex flex-col items-start">
+            <div className="flex flex-col items-start order-2 md:order-1">
               <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
                 NEW ARRIVALS
               </span>
-              <h2 className="font-anton text-5xl md:text-7xl uppercase text-white tracking-normal leading-[0.95] mb-6">
+              <h2 className="font-anton text-5xl md:text-6xl lg:text-7xl uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
                 FRESH<br />DROPS
               </h2>
-              <p className="text-[15px] text-[#9A9A9A] max-w-[42ch] mb-8 font-medium">
-                The latest pieces from B.SKW. Limited stock. Don't miss out on our heavy cotton drops.
+              <p className="text-[14px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
+                The latest pieces from B.SKW. Limited stock. Don't miss out.
               </p>
               <Link
                 href="/categoria/camiseta-suedine"
-                className="bg-white text-black px-8 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] flex items-center gap-3 hover:bg-[#F59E0B] active:scale-[0.98] transition-all rounded-none"
+                className="bg-[#000000] text-white px-8 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] flex items-center gap-3 hover:bg-[#F59E0B] hover:text-[#000000] active:scale-[0.98] transition-all rounded-none"
               >
                 VIEW ALL <ArrowRight size={15} />
               </Link>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="p-8 md:p-12 border border-[#2a2a2a] bg-black flex flex-col justify-center items-center text-center relative overflow-hidden">
-                <span className="font-anton text-4xl md:text-6xl uppercase text-white/20 tracking-wider mb-4">
-                  SAME MINDSET.<br />DIFFERENT ENERGY.
-                </span>
-                <div className="w-12 h-[2px] bg-[#F59E0B] my-4" />
-                <span className="font-mono text-xs text-[#9A9A9A] uppercase tracking-widest">B.SKW EDITORIAL</span>
-              </div>
+            <div className="order-1 md:order-2 h-full min-h-[400px] bg-[#161616] border border-[#2a2a2a] bg-canelado flex items-center justify-center p-8 shadow-xl">
+              <span className="font-anton text-4xl uppercase text-white/10 tracking-widest text-center">
+                HEAVY<br/>SUEDINE
+              </span>
+            </div>
+
+            <div className="order-3 flex flex-col items-start md:items-end md:text-right">
+              <span className="font-anton text-3xl md:text-4xl uppercase text-zinc-900 tracking-wider mb-4">
+                SAME MINDSET.<br />DIFFERENT ENERGY.
+              </span>
+              <div className="w-12 h-[2px] bg-[#F59E0B] my-4" />
+              <span className="font-outfit text-xl text-zinc-500 italic">
+                B.SKW Editorial
+              </span>
             </div>
 
           </div>
@@ -207,35 +205,35 @@ export default function HomePage() {
       </section>
 
       {/* 4. ÍCONES DE BENEFÍCIOS */}
-      <section className="bg-[#000000] border-b border-[#2a2a2a] py-10">
+      <section className="bg-white border-b border-zinc-200 py-10">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
-            <div className="flex flex-col md:flex-row items-center gap-3">
-              <Truck size={24} className="text-[#F59E0B] shrink-0" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
+              <Truck size={28} className="text-zinc-900 shrink-0" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Fast Shipping</h4>
-                <p className="text-[11px] text-[#9A9A9A]">Worldwide Delivery</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900">Fast Shipping</h4>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Worldwide Delivery</p>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center gap-3">
-              <ShieldCheck size={24} className="text-[#F59E0B] shrink-0" />
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
+              <ShieldCheck size={28} className="text-zinc-900 shrink-0" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Secure Payments</h4>
-                <p className="text-[11px] text-[#9A9A9A]">Shop with Confidence</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900">Secure Payments</h4>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Shop with Confidence</p>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center gap-3">
-              <RefreshCw size={24} className="text-[#F59E0B] shrink-0" />
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
+              <RefreshCw size={28} className="text-zinc-900 shrink-0" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Easy Returns</h4>
-                <p className="text-[11px] text-[#9A9A9A]">Hassle-Free Returns</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900">Easy Returns</h4>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Hassle-Free Returns</p>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center gap-3">
-              <Award size={24} className="text-[#F59E0B] shrink-0" />
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
+              <Award size={28} className="text-zinc-900 shrink-0" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Premium Quality</h4>
-                <p className="text-[11px] text-[#9A9A9A]">Built to Last</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900">Premium Quality</h4>
+                <p className="text-[11px] text-zinc-500 mt-0.5">Built to Last</p>
               </div>
             </div>
           </div>
@@ -243,23 +241,23 @@ export default function HomePage() {
       </section>
 
       {/* 5. VITRINE DE PRODUTOS EM DESTAQUE */}
-      <section id="destaques" className="py-20 md:py-28 border-b border-[#2a2a2a] scroll-mt-20">
+      <section id="destaques" className="py-20 md:py-28 bg-[#FAFAFA]">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] block mb-2">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-zinc-500 block mb-2">
                 CATÁLOGO OFICIAL
               </span>
-              <h2 className="font-anton text-4xl md:text-5xl uppercase text-white">
+              <h2 className="font-anton text-4xl md:text-5xl uppercase text-zinc-900">
                 Featured Products
               </h2>
             </div>
-            <Link href="/categoria/camiseta-oversized" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B] hover:underline underline-offset-4 flex items-center gap-1.5">
+            <Link href="/produtos" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-zinc-900 flex items-center gap-1.5 transition-colors">
               View All <ArrowRight size={14} />
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5">
             {produtosDestaque.map((peca) => (
               <QuickBuyCard
                 key={peca.id}
