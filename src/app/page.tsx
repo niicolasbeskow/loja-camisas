@@ -16,7 +16,6 @@ export default function HomePage() {
     setCatalogo(carregarProdutosStorage());
   }, []);
 
-  // Seleciona 5 produtos para a vitrine de destaques (Featured Products)
   const produtosDestaque = catalogo.slice(0, 5);
 
   const handleInscreverDrop = (e: React.FormEvent) => {
@@ -32,37 +31,38 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 font-outfit">
+    <div className="min-h-screen bg-[#000000] text-white font-outfit">
 
-      {/* 1. HERO BANNER PRINCIPAL (MANTÉM O DARK MODE PARA IMPACTO) */}
-      <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none py-16 md:py-24">
+      {/* 1. HERO BANNER PRINCIPAL COM IMAGEM DE FUNDO AJUSTADA */}
+      <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none py-16 md:py-24 lg:py-32">
         
-        {/* A SUA IMAGEM DE FUNDO AQUI (AJUSTADA SEM CORTES) */}
+        {/* A SUA IMAGEM DE FUNDO AQUI (AJUSTADA SEM CORTES = contain) */}
         <div 
-          className="absolute inset-0 bg-center bg-no-repeat opacity-60"
+          className="absolute inset-0 bg-center bg-no-repeat opacity-60 z-0"
           style={{
             backgroundImage: "url('/files/capa-principal (2).jpg')",
-            backgroundSize: 'contain' // Contain = ajustada à tela sem cortes e sem esticar
+            backgroundSize: 'contain'
           }}
         />
 
         {/* DEGRADÊ PARA GARANTIR LEITURA DOS TEXTOS POR CIMA DA FOTO */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/60 to-transparent z-0" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/70 to-transparent z-0" />
 
-        {/* TEXTURA CANELADA */}
-        <div className="absolute inset-0 bg-canelado opacity-40 pointer-events-none z-0" />
+        {/* TEXTURA CANELADA SUAVE */}
+        <div className="absolute inset-0 bg-canelado opacity-30 pointer-events-none z-0" />
 
         <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
+            {/* TEXTOS À ESQUERDA */}
             <div className="lg:col-span-6 flex flex-col items-start">
               <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-4 block">
                 STREETWEAR // CULTURE // YOU
               </span>
-              <h1 className="font-anton text-6xl sm:text-7xl lg:text-[90px] uppercase text-white tracking-normal leading-[0.95] mb-6">
+              <h1 className="font-anton text-6xl sm:text-7xl lg:text-[90px] uppercase text-white tracking-normal leading-[0.95] mb-6 drop-shadow-md">
                 FEITO PARA<br />OS REAIS<span className="text-[#F59E0B]">.</span>
               </h1>
-              <p className="text-[15px] md:text-[16px] leading-[26px] text-[#9A9A9A] max-w-[48ch] mb-8 font-medium">
+              <p className="text-[15px] md:text-[16px] leading-[26px] text-[#9A9A9A] max-w-[48ch] mb-8 font-medium drop-shadow-sm">
                 Mais do que roupa — é um mindset. B.SKW é para quem faz acontecer e se mantém sólido. Construído para durar.
               </p>
               <Link
@@ -73,8 +73,9 @@ export default function HomePage() {
               </Link>
             </div>
 
+            {/* BLOCO EDITORIAL À DIREITA */}
             <div className="lg:col-span-6 flex justify-center lg:justify-end relative">
-              <div className="relative aspect-square md:aspect-[4/3] w-full max-w-lg bg-[#161616] text-white border border-[#2a2a2a] p-8 flex flex-col justify-between overflow-hidden bg-canelado shadow-2xl">
+              <div className="relative aspect-square md:aspect-[4/3] w-full max-w-lg bg-[#161616]/90 backdrop-blur-sm border border-[#2a2a2a] p-8 flex flex-col justify-between overflow-hidden bg-canelado shadow-2xl hidden md:flex">
                 <div className="flex justify-between items-start">
                   <span className="font-anton text-4xl tracking-widest text-white">B<span className="text-[#F59E0B]">.</span>SKW</span>
                   <span className="font-mono text-[10px] text-[#9A9A9A] uppercase tracking-widest">EST. 2026</span>
@@ -98,8 +99,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. 4 CAIXAS DE CATEGORIAS ESTRATÉGICAS (FUNDO BRANCO) */}
-      <section className="bg-white py-12 md:py-16">
+      {/* 2. 4 CAIXAS DE CATEGORIAS ESTRATÉGICAS */}
+      <section className="bg-[#000000] py-8 md:py-12 border-b border-[#2a2a2a]">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
             
@@ -123,6 +124,7 @@ export default function HomePage() {
               </Link>
             ))}
 
+            {/* CAIXA 4: COLLABS (CAPTURA DE LEAD) */}
             <div className="group relative aspect-[4/5] bg-[#161616] border border-[#2a2a2a] p-5 md:p-6 flex flex-col justify-between overflow-hidden rounded-none bg-canelado">
               <div className="relative z-20 flex justify-between items-center">
                 <span className="text-[10px] font-mono uppercase text-[#9A9A9A] flex items-center gap-1">
@@ -144,7 +146,7 @@ export default function HomePage() {
                       placeholder="WhatsApp ou E-mail"
                       className="w-full bg-[#000000] border border-[#2a2a2a] focus:border-[#F59E0B] text-white p-2 text-xs outline-none rounded-none"
                     />
-                    <button type="submit" className="w-full bg-[#F59E0B] text-[#000000] py-2 font-bold text-[10px] uppercase tracking-widest rounded-none">
+                    <button type="submit" className="w-full bg-[#F59E0B] text-black py-2 font-bold text-[10px] uppercase tracking-widest rounded-none">
                       Garantir Acesso
                     </button>
                   </form>
@@ -167,103 +169,97 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" (FUNDO CLARO) */}
-      <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 py-20 md:py-28">
+      {/* 3. SEÇÃO "FRESH DROPS" */}
+      <section className="relative bg-[#161616] text-white border-b border-[#2a2a2a] py-20 md:py-28 bg-canelado">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
-            <div className="flex flex-col items-start order-2 md:order-1">
-              <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-zinc-500 mb-3 block">
+            <div className="lg:col-span-6 flex flex-col items-start">
+              <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
                 NEW ARRIVALS
               </span>
-              <h2 className="font-anton text-5xl md:text-6xl lg:text-7xl uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
+              <h2 className="font-anton text-5xl md:text-7xl uppercase text-white tracking-normal leading-[0.95] mb-6">
                 FRESH<br />DROPS
               </h2>
-              <p className="text-[14px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
-                The latest pieces from B.SKW. Limited stock. Don't miss out.
+              <p className="text-[15px] text-[#9A9A9A] max-w-[42ch] mb-8 font-medium">
+                The latest pieces from B.SKW. Limited stock. Don't miss out on our heavy cotton drops.
               </p>
               <Link
                 href="/categoria/camiseta-suedine"
-                className="bg-black text-white px-8 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] flex items-center gap-3 hover:bg-zinc-800 active:scale-[0.98] transition-all rounded-none"
+                className="bg-white text-black px-8 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] flex items-center gap-3 hover:bg-[#F59E0B] active:scale-[0.98] transition-all rounded-none"
               >
                 VIEW ALL <ArrowRight size={15} />
               </Link>
             </div>
 
-            <div className="order-1 md:order-2 h-full min-h-[400px] bg-[#161616] border border-[#2a2a2a] bg-canelado flex items-center justify-center p-8">
-              <span className="font-anton text-4xl uppercase text-white/10 tracking-widest text-center">
-                HEAVY<br/>SUEDINE
-              </span>
-            </div>
-
-            <div className="order-3 flex flex-col items-start md:items-end md:text-right">
-              <span className="font-anton text-3xl md:text-4xl uppercase text-zinc-900 tracking-wider mb-4">
-                SAME MINDSET.<br />DIFFERENT ENERGY.
-              </span>
-              <div className="w-12 h-[2px] bg-zinc-300 my-4" />
-              <span className="font-outfit text-xl text-zinc-400 italic">
-                B.SKW Editorial
-              </span>
+            <div className="lg:col-span-6">
+              <div className="p-8 md:p-12 border border-[#2a2a2a] bg-black flex flex-col justify-center items-center text-center relative overflow-hidden">
+                <span className="font-anton text-4xl md:text-6xl uppercase text-white/20 tracking-wider mb-4">
+                  SAME MINDSET.<br />DIFFERENT ENERGY.
+                </span>
+                <div className="w-12 h-[2px] bg-[#F59E0B] my-4" />
+                <span className="font-mono text-xs text-[#9A9A9A] uppercase tracking-widest">B.SKW EDITORIAL</span>
+              </div>
             </div>
 
           </div>
         </div>
       </section>
 
-      {/* 4. ÍCONES DE BENEFÍCIOS (FUNDO BRANCO) */}
-      <section className="bg-white border-b border-zinc-200 py-10">
+      {/* 4. ÍCONES DE BENEFÍCIOS */}
+      <section className="bg-[#000000] border-b border-[#2a2a2a] py-10">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
-              <Truck size={28} className="text-zinc-900 shrink-0" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
+            <div className="flex flex-col md:flex-row items-center gap-3">
+              <Truck size={24} className="text-[#F59E0B] shrink-0" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900">Fast Shipping</h4>
-                <p className="text-[11px] text-zinc-500 mt-0.5">Worldwide Delivery</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Fast Shipping</h4>
+                <p className="text-[11px] text-[#9A9A9A]">Worldwide Delivery</p>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
-              <ShieldCheck size={28} className="text-zinc-900 shrink-0" />
+            <div className="flex flex-col md:flex-row items-center gap-3">
+              <ShieldCheck size={24} className="text-[#F59E0B] shrink-0" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900">Secure Payments</h4>
-                <p className="text-[11px] text-zinc-500 mt-0.5">Shop with Confidence</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Secure Payments</h4>
+                <p className="text-[11px] text-[#9A9A9A]">Shop with Confidence</p>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
-              <RefreshCw size={28} className="text-zinc-900 shrink-0" />
+            <div className="flex flex-col md:flex-row items-center gap-3">
+              <RefreshCw size={24} className="text-[#F59E0B] shrink-0" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900">Easy Returns</h4>
-                <p className="text-[11px] text-zinc-500 mt-0.5">Hassle-Free Returns</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Easy Returns</h4>
+                <p className="text-[11px] text-[#9A9A9A]">Hassle-Free Returns</p>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
-              <Award size={28} className="text-zinc-900 shrink-0" />
+            <div className="flex flex-col md:flex-row items-center gap-3">
+              <Award size={24} className="text-[#F59E0B] shrink-0" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-zinc-900">Premium Quality</h4>
-                <p className="text-[11px] text-zinc-500 mt-0.5">Built to Last</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Premium Quality</h4>
+                <p className="text-[11px] text-[#9A9A9A]">Built to Last</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. VITRINE DE PRODUTOS EM DESTAQUE (FUNDO CLARO) */}
-      <section id="destaques" className="py-20 md:py-28 bg-[#FAFAFA]">
+      {/* 5. VITRINE DE PRODUTOS EM DESTAQUE */}
+      <section id="destaques" className="py-20 md:py-28 border-b border-[#2a2a2a] scroll-mt-20">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-zinc-500 block mb-2">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] block mb-2">
                 CATÁLOGO OFICIAL
               </span>
-              <h2 className="font-anton text-4xl md:text-5xl uppercase text-zinc-900">
+              <h2 className="font-anton text-4xl md:text-5xl uppercase text-white">
                 Featured Products
               </h2>
             </div>
-            <Link href="/produtos" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-zinc-900 flex items-center gap-1.5 transition-colors">
+            <Link href="/categoria/camiseta-oversized" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-[#F59E0B] hover:underline underline-offset-4 flex items-center gap-1.5">
               View All <ArrowRight size={14} />
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
             {produtosDestaque.map((peca) => (
               <QuickBuyCard
                 key={peca.id}
@@ -275,7 +271,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. RODAPÉ (DARK) */}
+      {/* 6. RODAPÉ */}
       <footer className="bg-[#000000] text-[#9A9A9A] py-16 md:py-24">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-[#2a2a2a]">
