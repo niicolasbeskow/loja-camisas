@@ -155,21 +155,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL (ALINHAMENTO E MARGENS EXATAS DA REFERÊNCIA) */}
+      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL (ALINHAMENTO EXATO MS PAINT) */}
       <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 overflow-hidden py-16 md:py-24">
         
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           
-          {/* GRELHA FLEX COM ITEMS-STRETCH: Obriga a caixa cinza e a imagem a terem a mesma altura */}
-          <div className="flex flex-col md:flex-row items-stretch min-h-[450px] lg:min-h-[500px]">
+          <div className="flex flex-col md:flex-row items-stretch min-h-[400px] lg:min-h-[480px]">
             
             {/* BLOCO ESQUERDA: CAIXA CINZA (#EBEBEB) */}
-            <div className="relative w-full md:w-[35%] lg:w-[32%] flex flex-col justify-center py-12 md:py-16 z-20">
-              {/* Fundo que estica até ao canto esquerdo do ecrã e acompanha exata altura do bloco */}
+            <div className="relative w-full md:w-[35%] lg:w-[32%] flex flex-col justify-center py-10 md:py-16 z-20 bg-[#EBEBEB]">
               <div className="absolute inset-y-0 right-0 left-[-50vw] bg-[#EBEBEB] z-0" />
               
-              {/* Conteúdo da Caixa */}
-              <div className="relative z-10 lg:pr-8">
+              <div className="relative z-10 lg:pr-6">
                 <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
                   NEW ARRIVALS
                 </span>
@@ -189,24 +186,25 @@ export default function HomePage() {
             </div>
 
             {/* BLOCO DIREITA: IMAGEM + TEXTO */}
-            <div className="relative w-full md:w-[65%] lg:w-[68%] flex flex-col md:flex-row items-center justify-end py-12 md:py-16 z-10 mt-8 md:mt-0">
-              {/* Fundo de Imagem que acompanha exata altura da caixa cinza e estica até à direita */}
-              <div className="absolute inset-y-0 left-0 right-[-50vw] z-0">
+            <div className="relative w-full md:w-[65%] lg:w-[68%] flex flex-col md:flex-row items-stretch z-10">
+              
+              {/* IMAGEM SEM CORTES (bg-contain) */}
+              <div className="relative flex-1 min-h-[350px] md:min-h-full bg-[#FAFAFA]">
                 <div 
-                  className="absolute inset-0 bg-cover bg-[center_left] bg-no-repeat"
+                  className="absolute inset-0 bg-contain bg-left bg-no-repeat"
                   style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
                 />
-                {/* Degradê (Blush) que funde a imagem com o texto na direita */}
-                <div className="absolute inset-y-0 right-0 w-[65%] lg:w-[70%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/95 to-transparent" />
+                {/* BRUSH BEM FORTE NA DIREITA (cobre 80% da div da imagem para sumir com o corte reto) */}
+                <div className="absolute inset-y-0 right-0 w-[75%] lg:w-[85%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/80 to-transparent pointer-events-none" />
               </div>
 
-              {/* Texto da Direita (Diminuído para ornar melhor com o blush) */}
-              <div className="relative z-10 w-full md:w-[50%] lg:w-[45%] flex flex-col items-start md:items-end justify-center text-left md:text-right mt-10 md:mt-0">
-                <span className="font-anton text-3xl md:text-4xl lg:text-[42px] uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
+              {/* TEXTO DA DIREITA (Tamanho reduzido) */}
+              <div className="relative z-10 w-full md:w-[220px] lg:w-[320px] flex flex-col items-start md:items-end justify-center text-left md:text-right py-10 md:py-0 bg-[#FAFAFA]">
+                <span className="font-anton text-2xl md:text-3xl lg:text-4xl uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
                   SAME MINDSET.<br />DIFFERENT ENERGY.
                 </span>
-                <div className="w-12 h-[2px] bg-[#F59E0B] my-4 md:ml-auto" />
-                <span className="font-outfit text-lg lg:text-xl text-zinc-700 font-medium italic">
+                <div className="w-10 h-[2px] bg-[#F59E0B] my-3 md:ml-auto" />
+                <span className="font-outfit text-base lg:text-lg text-zinc-600 font-medium italic">
                   B.SKW Editorial
                 </span>
               </div>
