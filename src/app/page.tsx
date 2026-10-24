@@ -36,7 +36,6 @@ export default function HomePage() {
       {/* 1. HERO BANNER PRINCIPAL COM FOTO LIVRE E TEXTOS NOS CANTOS */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none flex items-center min-h-[75vh] lg:min-h-[85vh] py-16 md:py-24">
         
-        {/* IMAGEM DE FUNDO DO MODELO ENCOSTADA À DIREITA */}
         <div 
           className="absolute inset-0 bg-right bg-no-repeat opacity-80 z-0"
           style={{
@@ -45,10 +44,8 @@ export default function HomePage() {
           }}
         />
 
-        {/* DEGRADÊ PARA LEITURA */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/80 to-transparent z-0" />
 
-        {/* LETRINHAS TÉCNICAS NOS CANTOS (MOLDURA EDITORIAL) */}
         <div className="absolute top-6 right-6 md:top-8 md:right-10 font-mono text-[10px] text-[#9A9A9A] uppercase tracking-widest z-20 pointer-events-none">
           EST. 2026
         </div>
@@ -155,17 +152,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" (COM NOVA IMAGEM EDITORIAL AO CENTRO) */}
+      {/* 3. SEÇÃO "FRESH DROPS" (GRELHA 12 COLUNAS PARA IMAGEM MAIOR) */}
       <section className="relative bg-[#FAFAFA] text-zinc-900 border-b border-zinc-200 py-20 md:py-28 overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             
-            {/* TEXTO ESQUERDA */}
-            <div className="flex flex-col items-start order-2 md:order-1 relative z-20">
+            {/* TEXTO ESQUERDA (Ocupa 3 das 12 colunas no Desktop) */}
+            <div className="lg:col-span-3 flex flex-col items-start order-2 lg:order-1 relative z-20">
               <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
                 NEW ARRIVALS
               </span>
-              <h2 className="font-anton text-5xl md:text-6xl lg:text-7xl uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
+              <h2 className="font-anton text-5xl lg:text-7xl uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
                 FRESH<br />DROPS
               </h2>
               <p className="text-[14px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
@@ -179,8 +176,8 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* IMAGEM NO MEIO (AJUSTADA E COM BORDAS ESFUMADAS) */}
-            <div className="order-1 md:order-2 relative w-full h-[350px] md:h-[500px] flex items-center justify-center">
+            {/* IMAGEM NO MEIO (Ocupa 6 das 12 colunas = 50% do ecrã e muito mais alta) */}
+            <div className="lg:col-span-6 order-1 lg:order-2 relative w-full h-[400px] lg:h-[600px] flex items-center justify-center">
               <div
                 className="absolute inset-0 bg-center bg-no-repeat"
                 style={{
@@ -188,16 +185,16 @@ export default function HomePage() {
                   backgroundSize: 'contain'
                 }}
               />
-              {/* EFEITOS DE FADE - Funde as bordas da imagem com o fundo claro (#FAFAFA) */}
-              <div className="absolute inset-y-0 left-0 w-8 md:w-16 bg-gradient-to-r from-[#FAFAFA] to-transparent pointer-events-none" />
-              <div className="absolute inset-y-0 right-0 w-8 md:w-16 bg-gradient-to-l from-[#FAFAFA] to-transparent pointer-events-none" />
-              <div className="absolute inset-x-0 top-0 h-8 md:h-16 bg-gradient-to-b from-[#FAFAFA] to-transparent pointer-events-none" />
-              <div className="absolute inset-x-0 bottom-0 h-8 md:h-16 bg-gradient-to-t from-[#FAFAFA] to-transparent pointer-events-none" />
+              {/* FADES LATERAIS ALARGADOS PARA FUNDIR NA COR DO FUNDO */}
+              <div className="absolute inset-y-0 left-0 w-16 lg:w-32 bg-gradient-to-r from-[#FAFAFA] to-transparent pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-16 lg:w-32 bg-gradient-to-l from-[#FAFAFA] to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 top-0 h-16 lg:h-32 bg-gradient-to-b from-[#FAFAFA] to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-16 lg:h-32 bg-gradient-to-t from-[#FAFAFA] to-transparent pointer-events-none" />
             </div>
 
-            {/* TEXTO DIREITA */}
-            <div className="order-3 flex flex-col items-start md:items-end md:text-right relative z-20">
-              <span className="font-anton text-3xl md:text-4xl uppercase text-zinc-900 tracking-wider mb-4">
+            {/* TEXTO DIREITA (Ocupa 3 das 12 colunas) */}
+            <div className="lg:col-span-3 order-3 flex flex-col items-start lg:items-end lg:text-right relative z-20">
+              <span className="font-anton text-3xl lg:text-4xl uppercase text-zinc-900 tracking-wider mb-4">
                 SAME MINDSET.<br />DIFFERENT ENERGY.
               </span>
               <div className="w-12 h-[2px] bg-[#F59E0B] my-4" />
