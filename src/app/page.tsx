@@ -39,7 +39,6 @@ export default function HomePage() {
       {/* 1. HERO BANNER PRINCIPAL COM FOTO ENCOSTADA À DIREITA E SEM TEXTURA */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none flex items-center min-h-[75vh] lg:min-h-[85vh] py-16 md:py-24">
         
-        {/* IMAGEM DE FUNDO DO MODELO ENCOSTADA À DIREITA (bg-right) */}
         <div 
           className="absolute inset-0 bg-right bg-no-repeat opacity-80 z-0"
           style={{
@@ -48,10 +47,8 @@ export default function HomePage() {
           }}
         />
 
-        {/* DEGRADÊ PARA LEITURA (Escuro na esquerda, transparente na direita) */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/80 to-transparent z-0" />
 
-        {/* LETRINHAS TÉCNICAS NOS CANTOS (MOLDURA EDITORIAL) */}
         <div className="absolute top-6 right-6 md:top-8 md:right-10 font-mono text-[10px] text-[#9A9A9A] uppercase tracking-widest z-20 pointer-events-none">
           EST. 2026
         </div>
@@ -158,36 +155,33 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL WIDESCREEN (EXATAMENTE COMO O SEU PAINT) */}
+      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL (NOVO LAYOUT COM CAIXA SÓLIDA #EBEBEB) */}
       <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 overflow-hidden">
         
-        {/* IMAGEM CENTRAL COMO BACKGROUND (Ocupa 60% do ecrã e 100% da altura) */}
-        <div className="absolute inset-0 z-0 flex justify-center pointer-events-none">
-          <div className="relative w-full md:w-[65%] lg:w-[55%] h-full">
+        {/* IMAGEM CENTRAL COMO BACKGROUND */}
+        <div className="absolute inset-0 z-0 flex justify-end pointer-events-none">
+          <div className="relative w-full h-full">
             <div
               className="absolute inset-0 bg-center bg-cover bg-no-repeat"
               style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
             />
-            {/* FADES SUPER PESADOS NAS LATERAIS PARA FUNDIR COM O BRANCO (#FAFAFA) */}
-            <div className="absolute inset-y-0 left-0 w-24 md:w-32 lg:w-48 bg-gradient-to-r from-[#FAFAFA] via-[#FAFAFA]/90 to-transparent" />
-            <div className="absolute inset-y-0 right-0 w-24 md:w-32 lg:w-48 bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/90 to-transparent" />
-            <div className="absolute inset-x-0 top-0 h-12 md:h-20 bg-gradient-to-b from-[#FAFAFA] to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 h-12 md:h-20 bg-gradient-to-t from-[#FAFAFA] to-transparent" />
+            {/* FADE SUAVE APENAS NA DIREITA (Deixa a esquerda da imagem seca para encontrar a caixa #EBEBEB) */}
+            <div className="absolute inset-y-0 right-0 w-[40%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/90 to-transparent" />
           </div>
         </div>
 
-        {/* CONTEÚDO DE TEXTO (Afastado para as extremidades) */}
-        <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 py-24 md:py-32 lg:py-40 flex flex-col md:flex-row items-center justify-between gap-10">
+        {/* CONTEÚDO SOBREPOSTO */}
+        <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 py-16 md:py-24 flex flex-col md:flex-row items-stretch justify-between gap-10 min-h-[500px] lg:min-h-[600px]">
           
-          {/* TEXTO ESQUERDA (Alinhado à extrema esquerda) */}
-          <div className="w-full md:w-[35%] flex flex-col items-start text-left bg-[#FAFAFA]/80 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none p-6 md:p-0 rounded-lg">
+          {/* TEXTO ESQUERDA - DENTRO DA CAIXA SÓLIDA CINZA (#EBEBEB) */}
+          <div className="w-full md:w-[45%] lg:w-[35%] bg-[#EBEBEB] p-8 md:p-12 flex flex-col items-start justify-center shadow-2xl relative z-20">
             <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
               NEW ARRIVALS
             </span>
-            <h2 className="font-anton text-5xl md:text-6xl lg:text-[80px] uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
+            <h2 className="font-anton text-5xl md:text-6xl lg:text-[72px] uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
               FRESH<br />DROPS
             </h2>
-            <p className="text-[14px] lg:text-[16px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
+            <p className="text-[14px] lg:text-[15px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
               The latest pieces from B.SKW. Limited stock. Don't miss out.
             </p>
             <Link
@@ -198,16 +192,13 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* ESPAÇO VAZIO NO MEIO PARA A FOTO BRILHAR */}
-          <div className="hidden md:block md:w-[30%] h-[200px]"></div>
-
-          {/* TEXTO DIREITA (Alinhado à extrema direita) */}
-          <div className="w-full md:w-[35%] flex flex-col items-start md:items-end text-left md:text-right bg-[#FAFAFA]/80 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none p-6 md:p-0 rounded-lg">
-            <span className="font-anton text-3xl md:text-4xl lg:text-5xl uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
+          {/* TEXTO DIREITA (Flutuando sobre o fade branco) */}
+          <div className="w-full md:w-[40%] lg:w-[35%] flex flex-col items-start md:items-end justify-center text-left md:text-right relative z-20 mt-10 md:mt-0">
+            <span className="font-anton text-4xl lg:text-5xl uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
               SAME MINDSET.<br />DIFFERENT ENERGY.
             </span>
             <div className="w-12 h-[2px] bg-[#F59E0B] my-5 md:ml-auto" />
-            <span className="font-outfit text-xl lg:text-2xl text-zinc-500 font-light italic">
+            <span className="font-outfit text-xl lg:text-2xl text-zinc-700 font-medium italic">
               B.SKW Editorial
             </span>
           </div>
