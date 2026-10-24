@@ -36,7 +36,7 @@ export default function HomePage() {
 
       <Header />
 
-      {/* 1. HERO BANNER PRINCIPAL COM FOTO ENCOSTADA À DIREITA E SEM TEXTURA */}
+      {/* 1. HERO BANNER PRINCIPAL COM FOTO ENCOSTADA À DIREITA */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none flex items-center min-h-[75vh] lg:min-h-[85vh] py-16 md:py-24">
         
         <div 
@@ -155,45 +155,50 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL (NOVO LAYOUT COM CAIXA SÓLIDA #EBEBEB) */}
+      {/* 3. SEÇÃO "FRESH DROPS" (COM CAIXA SÓLIDA CINZA VAZANDO PARA A ESQUERDA) */}
       <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 overflow-hidden">
         
-        {/* IMAGEM CENTRAL COMO BACKGROUND */}
+        {/* IMAGEM CENTRAL COMO BACKGROUND (Largura total, cover) */}
         <div className="absolute inset-0 z-0 flex justify-end pointer-events-none">
           <div className="relative w-full h-full">
             <div
               className="absolute inset-0 bg-center bg-cover bg-no-repeat"
               style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
             />
-            {/* FADE SUAVE APENAS NA DIREITA (Deixa a esquerda da imagem seca para encontrar a caixa #EBEBEB) */}
-            <div className="absolute inset-y-0 right-0 w-[40%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/90 to-transparent" />
+            {/* FADE SUAVE APENAS NA DIREITA (Funde a imagem com o texto da direita) */}
+            <div className="absolute inset-y-0 right-0 w-[50%] lg:w-[60%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/90 to-transparent" />
           </div>
         </div>
 
-        {/* CONTEÚDO SOBREPOSTO */}
-        <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 py-16 md:py-24 flex flex-col md:flex-row items-stretch justify-between gap-10 min-h-[500px] lg:min-h-[600px]">
+        {/* CONTEÚDO SOBREPOSTO ALINHADO */}
+        <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 min-h-[500px] lg:min-h-[650px] flex flex-col md:flex-row items-center justify-between py-16 md:py-24">
           
-          {/* TEXTO ESQUERDA - DENTRO DA CAIXA SÓLIDA CINZA (#EBEBEB) */}
-          <div className="w-full md:w-[45%] lg:w-[35%] bg-[#EBEBEB] p-8 md:p-12 flex flex-col items-start justify-center shadow-2xl relative z-20">
-            <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
-              NEW ARRIVALS
-            </span>
-            <h2 className="font-anton text-5xl md:text-6xl lg:text-[72px] uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
-              FRESH<br />DROPS
-            </h2>
-            <p className="text-[14px] lg:text-[15px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
-              The latest pieces from B.SKW. Limited stock. Don't miss out.
-            </p>
-            <Link
-              href="/categoria/kits"
-              className="bg-[#000000] text-white px-10 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] flex items-center gap-3 hover:bg-[#F59E0B] hover:text-[#000000] active:scale-[0.98] transition-all rounded-none"
-            >
-              VIEW ALL <ArrowRight size={15} />
-            </Link>
+          {/* TEXTO ESQUERDA - DENTRO DA CAIXA SÓLIDA CINZA (#EBEBEB) QUE ENCOSTA NA TELA */}
+          <div className="relative w-full md:w-[45%] lg:w-[35%] z-20 mt-8 md:mt-0">
+            {/* O SEGREDO: Fundo absoluto que estica até ao infinito esquerdo para encostar na tela */}
+            <div className="absolute top-[-2rem] bottom-[-2rem] md:top-[-4rem] md:bottom-[-4rem] left-[-50vw] right-[-1rem] md:right-[-2rem] bg-[#EBEBEB] shadow-2xl -z-10" />
+            
+            <div className="relative z-10 py-4 md:py-0">
+              <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
+                NEW ARRIVALS
+              </span>
+              <h2 className="font-anton text-5xl md:text-6xl lg:text-[72px] uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
+                FRESH<br />DROPS
+              </h2>
+              <p className="text-[14px] lg:text-[15px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
+                The latest pieces from B.SKW. Limited stock. Don't miss out.
+              </p>
+              <Link
+                href="/categoria/kits"
+                className="bg-[#000000] text-white px-10 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] inline-flex items-center gap-3 hover:bg-[#F59E0B] hover:text-[#000000] active:scale-[0.98] transition-all rounded-none"
+              >
+                VIEW ALL <ArrowRight size={15} />
+              </Link>
+            </div>
           </div>
 
           {/* TEXTO DIREITA (Flutuando sobre o fade branco) */}
-          <div className="w-full md:w-[40%] lg:w-[35%] flex flex-col items-start md:items-end justify-center text-left md:text-right relative z-20 mt-10 md:mt-0">
+          <div className="w-full md:w-[45%] lg:w-[40%] flex flex-col items-start md:items-end justify-center text-left md:text-right relative z-20 mt-20 md:mt-0">
             <span className="font-anton text-4xl lg:text-5xl uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
               SAME MINDSET.<br />DIFFERENT ENERGY.
             </span>
@@ -254,7 +259,7 @@ export default function HomePage() {
                 Featured Products
               </h2>
             </div>
-            <Link href="/categoria/camiseta-oversized" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-[#F59E0B] flex items-center gap-1.5 transition-colors">
+            <Link href="/categoria/oversized" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-[#F59E0B] flex items-center gap-1.5 transition-colors">
               View All <ArrowRight size={14} />
             </Link>
           </div>
