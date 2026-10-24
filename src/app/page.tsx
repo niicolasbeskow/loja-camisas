@@ -155,58 +155,63 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL (NOVO LAYOUT: LADO A LADO PERFEITO) */}
-      <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 overflow-hidden">
+      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL (ALINHAMENTO E MARGENS EXATAS DA REFERÊNCIA) */}
+      <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 overflow-hidden py-16 md:py-24">
         
-        {/* CONTAINER FLEX: Mantém os três blocos exatamente da mesma altura (items-stretch) */}
-        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-stretch min-h-[500px] lg:min-h-[600px]">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           
-          {/* BLOCO 1: CAIXA SÓLIDA CINZA (#EBEBEB) */}
-          <div className="relative w-full lg:w-[35%] bg-[#EBEBEB] px-4 md:px-6 lg:pr-10 py-16 lg:py-24 flex flex-col justify-center z-20">
-            {/* Extensor absoluto para preencher a margem esquerda em ecrãs gigantes */}
-            <div className="hidden lg:block absolute inset-y-0 right-full w-[50vw] bg-[#EBEBEB] -z-10" />
+          {/* GRELHA FLEX COM ITEMS-STRETCH: Obriga a caixa cinza e a imagem a terem a mesma altura */}
+          <div className="flex flex-col md:flex-row items-stretch min-h-[450px] lg:min-h-[500px]">
             
-            <div className="relative z-10">
-              <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
-                NEW ARRIVALS
-              </span>
-              <h2 className="font-anton text-5xl md:text-6xl lg:text-[72px] uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
-                FRESH<br />DROPS
-              </h2>
-              <p className="text-[14px] lg:text-[15px] text-zinc-600 max-w-[28ch] mb-8 font-medium">
-                The latest pieces from B.SKW. Limited stock. Don't miss out.
-              </p>
-              <Link
-                href="/categoria/kits"
-                className="bg-[#000000] text-white px-10 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] inline-flex items-center gap-3 hover:bg-[#F59E0B] hover:text-[#000000] active:scale-[0.98] transition-all rounded-none"
-              >
-                VIEW ALL <ArrowRight size={15} />
-              </Link>
+            {/* BLOCO ESQUERDA: CAIXA CINZA (#EBEBEB) */}
+            <div className="relative w-full md:w-[35%] lg:w-[32%] flex flex-col justify-center py-12 md:py-16 z-20">
+              {/* Fundo que estica até ao canto esquerdo do ecrã e acompanha exata altura do bloco */}
+              <div className="absolute inset-y-0 right-0 left-[-50vw] bg-[#EBEBEB] z-0" />
+              
+              {/* Conteúdo da Caixa */}
+              <div className="relative z-10 lg:pr-8">
+                <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
+                  NEW ARRIVALS
+                </span>
+                <h2 className="font-anton text-5xl md:text-6xl lg:text-[72px] uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
+                  FRESH<br />DROPS
+                </h2>
+                <p className="text-[14px] lg:text-[15px] text-zinc-600 max-w-[28ch] mb-8 font-medium">
+                  The latest pieces from B.SKW. Limited stock. Don't miss out.
+                </p>
+                <Link
+                  href="/categoria/kits"
+                  className="bg-[#000000] text-white px-10 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] inline-flex items-center gap-3 hover:bg-[#F59E0B] hover:text-[#000000] active:scale-[0.98] transition-all rounded-none"
+                >
+                  VIEW ALL <ArrowRight size={15} />
+                </Link>
+              </div>
             </div>
-          </div>
 
-          {/* BLOCO 2: IMAGEM CENTRAL COLADA (Sem invadir a caixa cinza) */}
-          <div className="relative w-full lg:w-[40%] min-h-[400px] lg:min-h-full flex-shrink-0 bg-[#FAFAFA]">
-            <div
-              className="absolute inset-0 bg-cover bg-[center_left] bg-no-repeat"
-              style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
-            />
-            {/* BLUSH NA DIREITA (Funde a imagem com o branco do Bloco 3) */}
-            <div className="absolute inset-y-0 right-0 w-32 md:w-48 bg-gradient-to-l from-[#FAFAFA] to-transparent pointer-events-none" />
-          </div>
+            {/* BLOCO DIREITA: IMAGEM + TEXTO */}
+            <div className="relative w-full md:w-[65%] lg:w-[68%] flex flex-col md:flex-row items-center justify-end py-12 md:py-16 z-10 mt-8 md:mt-0">
+              {/* Fundo de Imagem que acompanha exata altura da caixa cinza e estica até à direita */}
+              <div className="absolute inset-y-0 left-0 right-[-50vw] z-0">
+                <div 
+                  className="absolute inset-0 bg-cover bg-[center_left] bg-no-repeat"
+                  style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
+                />
+                {/* Degradê (Blush) que funde a imagem com o texto na direita */}
+                <div className="absolute inset-y-0 right-0 w-[65%] lg:w-[70%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/95 to-transparent" />
+              </div>
 
-          {/* BLOCO 3: TEXTO DIREITA (Fundo Branco, Letras Reduzidas) */}
-          <div className="relative w-full lg:w-[25%] bg-[#FAFAFA] px-4 md:px-6 lg:pl-8 py-16 lg:py-24 flex flex-col items-start lg:items-end justify-center text-left lg:text-right z-20">
-            {/* Extensor absoluto para preencher a margem direita em ecrãs gigantes */}
-            <div className="hidden lg:block absolute inset-y-0 left-full w-[50vw] bg-[#FAFAFA] -z-10" />
+              {/* Texto da Direita (Diminuído para ornar melhor com o blush) */}
+              <div className="relative z-10 w-full md:w-[50%] lg:w-[45%] flex flex-col items-start md:items-end justify-center text-left md:text-right mt-10 md:mt-0">
+                <span className="font-anton text-3xl md:text-4xl lg:text-[42px] uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
+                  SAME MINDSET.<br />DIFFERENT ENERGY.
+                </span>
+                <div className="w-12 h-[2px] bg-[#F59E0B] my-4 md:ml-auto" />
+                <span className="font-outfit text-lg lg:text-xl text-zinc-700 font-medium italic">
+                  B.SKW Editorial
+                </span>
+              </div>
+            </div>
 
-            <span className="font-anton text-3xl lg:text-4xl uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
-              SAME MINDSET.<br />DIFFERENT ENERGY.
-            </span>
-            <div className="w-10 h-[2px] bg-[#F59E0B] my-4 lg:ml-auto" />
-            <span className="font-outfit text-lg lg:text-xl text-zinc-500 font-medium italic">
-              B.SKW Editorial
-            </span>
           </div>
 
         </div>
