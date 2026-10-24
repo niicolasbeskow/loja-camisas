@@ -36,7 +36,7 @@ export default function HomePage() {
 
       <Header />
 
-      {/* 1. HERO BANNER PRINCIPAL COM FOTO ENCOSTADA À DIREITA E SEM TEXTURA */}
+      {/* 1. HERO BANNER PRINCIPAL COM FOTO ENCOSTADA À DIREITA */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none flex items-center min-h-[75vh] lg:min-h-[85vh] py-16 md:py-24">
         
         <div 
@@ -155,30 +155,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" (CORRIGIDA: CAIXA MAIS ALTA E MAIS ESTREITA) */}
+      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL (NOVO LAYOUT: LADO A LADO PERFEITO) */}
       <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 overflow-hidden">
         
-        {/* IMAGEM CENTRAL COMO BACKGROUND (Largura total, cover) */}
-        <div className="absolute inset-0 z-0 flex justify-end pointer-events-none">
-          <div className="relative w-full h-full">
-            <div
-              className="absolute inset-0 bg-center bg-cover bg-no-repeat"
-              style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
-            />
-            {/* FADE SUAVE APENAS NA DIREITA (Funde a imagem com o texto da direita) */}
-            <div className="absolute inset-y-0 right-0 w-[50%] lg:w-[60%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/90 to-transparent" />
-          </div>
-        </div>
-
-        {/* CONTEÚDO SOBREPOSTO ALINHADO */}
-        <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 min-h-[500px] lg:min-h-[650px] flex flex-col md:flex-row items-center justify-between py-24 md:py-32">
+        {/* CONTAINER FLEX: Mantém os três blocos exatamente da mesma altura (items-stretch) */}
+        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-stretch min-h-[500px] lg:min-h-[600px]">
           
-          {/* TEXTO ESQUERDA - DENTRO DA CAIXA SÓLIDA CINZA (#EBEBEB) QUE ENCOSTA NA TELA E É MAIS ALTA */}
-          <div className="relative w-full md:w-[40%] lg:w-[28%] z-20 mt-8 md:mt-0">
-            {/* O SEGREDO: Fundo absoluto que estica para a esquerda, e tem muito mais altura no top e bottom */}
-            <div className="absolute top-[-3rem] bottom-[-3rem] lg:top-[-5rem] lg:bottom-[-5rem] left-[-50vw] right-0 bg-[#EBEBEB] shadow-2xl -z-10" />
+          {/* BLOCO 1: CAIXA SÓLIDA CINZA (#EBEBEB) */}
+          <div className="relative w-full lg:w-[35%] bg-[#EBEBEB] px-4 md:px-6 lg:pr-10 py-16 lg:py-24 flex flex-col justify-center z-20">
+            {/* Extensor absoluto para preencher a margem esquerda em ecrãs gigantes */}
+            <div className="hidden lg:block absolute inset-y-0 right-full w-[50vw] bg-[#EBEBEB] -z-10" />
             
-            <div className="relative z-10 py-2">
+            <div className="relative z-10">
               <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
                 NEW ARRIVALS
               </span>
@@ -197,13 +185,26 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* TEXTO DIREITA (Flutuando sobre o fade branco) */}
-          <div className="w-full md:w-[45%] lg:w-[40%] flex flex-col items-start md:items-end justify-center text-left md:text-right relative z-20 mt-20 md:mt-0">
-            <span className="font-anton text-4xl lg:text-5xl uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
+          {/* BLOCO 2: IMAGEM CENTRAL COLADA (Sem invadir a caixa cinza) */}
+          <div className="relative w-full lg:w-[40%] min-h-[400px] lg:min-h-full flex-shrink-0 bg-[#FAFAFA]">
+            <div
+              className="absolute inset-0 bg-cover bg-[center_left] bg-no-repeat"
+              style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
+            />
+            {/* BLUSH NA DIREITA (Funde a imagem com o branco do Bloco 3) */}
+            <div className="absolute inset-y-0 right-0 w-32 md:w-48 bg-gradient-to-l from-[#FAFAFA] to-transparent pointer-events-none" />
+          </div>
+
+          {/* BLOCO 3: TEXTO DIREITA (Fundo Branco, Letras Reduzidas) */}
+          <div className="relative w-full lg:w-[25%] bg-[#FAFAFA] px-4 md:px-6 lg:pl-8 py-16 lg:py-24 flex flex-col items-start lg:items-end justify-center text-left lg:text-right z-20">
+            {/* Extensor absoluto para preencher a margem direita em ecrãs gigantes */}
+            <div className="hidden lg:block absolute inset-y-0 left-full w-[50vw] bg-[#FAFAFA] -z-10" />
+
+            <span className="font-anton text-3xl lg:text-4xl uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
               SAME MINDSET.<br />DIFFERENT ENERGY.
             </span>
-            <div className="w-12 h-[2px] bg-[#F59E0B] my-5 md:ml-auto" />
-            <span className="font-outfit text-xl lg:text-2xl text-zinc-700 font-medium italic">
+            <div className="w-10 h-[2px] bg-[#F59E0B] my-4 lg:ml-auto" />
+            <span className="font-outfit text-lg lg:text-xl text-zinc-500 font-medium italic">
               B.SKW Editorial
             </span>
           </div>
