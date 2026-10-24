@@ -36,7 +36,7 @@ export default function HomePage() {
 
       <Header />
 
-      {/* 1. HERO BANNER PRINCIPAL COM FOTO ENCOSTADA À DIREITA */}
+      {/* 1. HERO BANNER PRINCIPAL COM FOTO ENCOSTADA À DIREITA E SEM TEXTURA */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none flex items-center min-h-[75vh] lg:min-h-[85vh] py-16 md:py-24">
         
         <div 
@@ -155,7 +155,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" (COM CAIXA SÓLIDA CINZA VAZANDO PARA A ESQUERDA) */}
+      {/* 3. SEÇÃO "FRESH DROPS" (CORRIGIDA: CAIXA MAIS ALTA E MAIS ESTREITA) */}
       <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 overflow-hidden">
         
         {/* IMAGEM CENTRAL COMO BACKGROUND (Largura total, cover) */}
@@ -171,21 +171,21 @@ export default function HomePage() {
         </div>
 
         {/* CONTEÚDO SOBREPOSTO ALINHADO */}
-        <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 min-h-[500px] lg:min-h-[650px] flex flex-col md:flex-row items-center justify-between py-16 md:py-24">
+        <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 min-h-[500px] lg:min-h-[650px] flex flex-col md:flex-row items-center justify-between py-24 md:py-32">
           
-          {/* TEXTO ESQUERDA - DENTRO DA CAIXA SÓLIDA CINZA (#EBEBEB) QUE ENCOSTA NA TELA */}
-          <div className="relative w-full md:w-[45%] lg:w-[35%] z-20 mt-8 md:mt-0">
-            {/* O SEGREDO: Fundo absoluto que estica até ao infinito esquerdo para encostar na tela */}
-            <div className="absolute top-[-2rem] bottom-[-2rem] md:top-[-4rem] md:bottom-[-4rem] left-[-50vw] right-[-1rem] md:right-[-2rem] bg-[#EBEBEB] shadow-2xl -z-10" />
+          {/* TEXTO ESQUERDA - DENTRO DA CAIXA SÓLIDA CINZA (#EBEBEB) QUE ENCOSTA NA TELA E É MAIS ALTA */}
+          <div className="relative w-full md:w-[40%] lg:w-[28%] z-20 mt-8 md:mt-0">
+            {/* O SEGREDO: Fundo absoluto que estica para a esquerda, e tem muito mais altura no top e bottom */}
+            <div className="absolute top-[-3rem] bottom-[-3rem] lg:top-[-5rem] lg:bottom-[-5rem] left-[-50vw] right-0 bg-[#EBEBEB] shadow-2xl -z-10" />
             
-            <div className="relative z-10 py-4 md:py-0">
+            <div className="relative z-10 py-2">
               <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
                 NEW ARRIVALS
               </span>
               <h2 className="font-anton text-5xl md:text-6xl lg:text-[72px] uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
                 FRESH<br />DROPS
               </h2>
-              <p className="text-[14px] lg:text-[15px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
+              <p className="text-[14px] lg:text-[15px] text-zinc-600 max-w-[28ch] mb-8 font-medium">
                 The latest pieces from B.SKW. Limited stock. Don't miss out.
               </p>
               <Link
