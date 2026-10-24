@@ -152,56 +152,57 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL */}
-      <section className="relative bg-[#F5F5F5] text-zinc-900 border-y border-zinc-200 py-24 md:py-32 overflow-hidden">
-        
-        {/* IMAGEM CENTRAL COMO BACKGROUND FLUIDO */}
-        <div className="absolute inset-0 z-0 flex justify-center pointer-events-none">
-          <div
-            className="w-full h-full md:w-[70%] bg-center bg-no-repeat"
-            style={{
-              backgroundImage: "url('/files/banner-meio-2.jpg')",
-              backgroundSize: 'cover' // COVER preenche a altura toda sem barras vazias
-            }}
-          />
-        </div>
-
-        {/* FADES LATERAIS PESADOS PARA FUNDIR COM A COR #F5F5F5 */}
-        <div className="absolute inset-0 z-0 flex pointer-events-none">
-          <div className="w-1/2 md:w-[40%] h-full bg-gradient-to-r from-[#F5F5F5] via-[#F5F5F5]/95 to-transparent" />
-          <div className="flex-1" />
-          <div className="w-1/2 md:w-[40%] h-full bg-gradient-to-l from-[#F5F5F5] via-[#F5F5F5]/95 to-transparent" />
-        </div>
-
-        {/* CONTEÚDO DE TEXTO SOBREPOSTO */}
-        <div className="max-w-[1400px] mx-auto px-4 md:px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL (FIX PROPORÇÕES) */}
+      <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 py-16 md:py-24 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 relative z-10">
           
-          <div className="w-full md:w-[35%] flex flex-col items-start text-left">
-            <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-zinc-500 mb-3 block">
-              NEW ARRIVALS
-            </span>
-            <h2 className="font-anton text-5xl md:text-6xl lg:text-[80px] uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
-              FRESH<br />DROPS
-            </h2>
-            <p className="text-[14px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
-              The latest pieces from B.SKW. Limited stock. Don't miss out.
-            </p>
-            <Link
-              href="/categoria/camiseta-suedine"
-              className="bg-black text-white px-10 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] flex items-center gap-3 hover:bg-[#F59E0B] hover:text-black active:scale-[0.98] transition-all rounded-none"
-            >
-              VIEW ALL <ArrowRight size={15} />
-            </Link>
-          </div>
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
+            
+            {/* TEXTO ESQUERDA (Ocupa ~30% do espaço) */}
+            <div className="w-full lg:w-[30%] flex flex-col items-start order-2 lg:order-1 relative z-20">
+              <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
+                NEW ARRIVALS
+              </span>
+              <h2 className="font-anton text-5xl md:text-6xl lg:text-7xl uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
+                FRESH<br />DROPS
+              </h2>
+              <p className="text-[14px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
+                The latest pieces from B.SKW. Limited stock. Don't miss out.
+              </p>
+              <Link
+                href="/categoria/camiseta-suedine"
+                className="bg-[#000000] text-white px-8 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] flex items-center gap-3 hover:bg-[#F59E0B] hover:text-[#000000] active:scale-[0.98] transition-all rounded-none"
+              >
+                VIEW ALL <ArrowRight size={15} />
+              </Link>
+            </div>
 
-          <div className="w-full md:w-[35%] flex flex-col items-start md:items-end text-left md:text-right mt-12 md:mt-0">
-            <span className="font-anton text-3xl md:text-4xl lg:text-5xl uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
-              SAME MINDSET.<br />DIFFERENT ENERGY.
-            </span>
-            <div className="w-12 h-[2px] bg-[#F59E0B] my-5" />
-            <span className="font-outfit text-xl lg:text-2xl text-zinc-500 font-light italic">
-              B.SKW Editorial
-            </span>
+            {/* IMAGEM CENTRAL (Ocupa ~40% do espaço, proporções fixas tipo poster) */}
+            <div className="w-full lg:w-[40%] order-1 lg:order-2 relative flex items-center justify-center">
+              <div className="relative w-full aspect-[4/3] md:aspect-video lg:aspect-[4/3] overflow-hidden">
+                <div
+                  className="absolute inset-0 bg-center bg-cover bg-no-repeat"
+                  style={{
+                    backgroundImage: "url('/files/banner-meio-2.jpg')"
+                  }}
+                />
+                {/* FADES LATERAIS (Esfumando a imagem para o fundo claro #FAFAFA) */}
+                <div className="absolute inset-y-0 left-0 w-12 md:w-20 lg:w-24 bg-gradient-to-r from-[#FAFAFA] to-transparent pointer-events-none" />
+                <div className="absolute inset-y-0 right-0 w-12 md:w-20 lg:w-24 bg-gradient-to-l from-[#FAFAFA] to-transparent pointer-events-none" />
+              </div>
+            </div>
+
+            {/* TEXTO DIREITA (Ocupa ~30% do espaço) */}
+            <div className="w-full lg:w-[30%] order-3 flex flex-col items-start lg:items-end lg:text-right relative z-20 mt-6 lg:mt-0">
+              <span className="font-anton text-3xl md:text-4xl uppercase text-zinc-900 tracking-wider mb-4">
+                SAME MINDSET.<br />DIFFERENT ENERGY.
+              </span>
+              <div className="w-12 h-[2px] bg-[#F59E0B] my-4" />
+              <span className="font-outfit text-xl text-zinc-500 italic">
+                B.SKW Editorial
+              </span>
+            </div>
+
           </div>
 
         </div>
