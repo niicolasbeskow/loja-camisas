@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Header from '@/components/Header';
 import QuickBuyCard from '@/components/QuickBuyCard';
 import { carregarProdutosStorage, produtosIniciais, Produto } from '@/data/produtos';
 import { ArrowRight, Truck, ShieldCheck, RefreshCw, Award, Lock } from 'lucide-react';
@@ -33,9 +34,12 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#000000] text-white font-outfit">
 
-      {/* 1. HERO BANNER PRINCIPAL COM FOTO LIVRE E TEXTOS NOS CANTOS */}
+      <Header />
+
+      {/* 1. HERO BANNER PRINCIPAL COM FOTO ENCOSTADA À DIREITA E SEM TEXTURA */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none flex items-center min-h-[75vh] lg:min-h-[85vh] py-16 md:py-24">
         
+        {/* IMAGEM DE FUNDO DO MODELO ENCOSTADA À DIREITA (bg-right) */}
         <div 
           className="absolute inset-0 bg-right bg-no-repeat opacity-80 z-0"
           style={{
@@ -44,8 +48,10 @@ export default function HomePage() {
           }}
         />
 
+        {/* DEGRADÊ PARA LEITURA (Escuro na esquerda, transparente na direita) */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/80 to-transparent z-0" />
 
+        {/* LETRINHAS TÉCNICAS NOS CANTOS (MOLDURA EDITORIAL) */}
         <div className="absolute top-6 right-6 md:top-8 md:right-10 font-mono text-[10px] text-[#9A9A9A] uppercase tracking-widest z-20 pointer-events-none">
           EST. 2026
         </div>
@@ -152,57 +158,58 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL (FIX PROPORÇÕES) */}
-      <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 py-16 md:py-24 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-6 relative z-10">
+      {/* 3. SEÇÃO "FRESH DROPS" EDITORIAL WIDESCREEN (EXATAMENTE COMO O SEU PAINT) */}
+      <section className="relative bg-[#FAFAFA] text-zinc-900 border-y border-zinc-200 overflow-hidden">
+        
+        {/* IMAGEM CENTRAL COMO BACKGROUND (Ocupa 60% do ecrã e 100% da altura) */}
+        <div className="absolute inset-0 z-0 flex justify-center pointer-events-none">
+          <div className="relative w-full md:w-[65%] lg:w-[55%] h-full">
+            <div
+              className="absolute inset-0 bg-center bg-cover bg-no-repeat"
+              style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
+            />
+            {/* FADES SUPER PESADOS NAS LATERAIS PARA FUNDIR COM O BRANCO (#FAFAFA) */}
+            <div className="absolute inset-y-0 left-0 w-24 md:w-32 lg:w-48 bg-gradient-to-r from-[#FAFAFA] via-[#FAFAFA]/90 to-transparent" />
+            <div className="absolute inset-y-0 right-0 w-24 md:w-32 lg:w-48 bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/90 to-transparent" />
+            <div className="absolute inset-x-0 top-0 h-12 md:h-20 bg-gradient-to-b from-[#FAFAFA] to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-12 md:h-20 bg-gradient-to-t from-[#FAFAFA] to-transparent" />
+          </div>
+        </div>
+
+        {/* CONTEÚDO DE TEXTO (Afastado para as extremidades) */}
+        <div className="relative z-10 max-w-[1400px] mx-auto px-4 md:px-6 py-24 md:py-32 lg:py-40 flex flex-col md:flex-row items-center justify-between gap-10">
           
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
-            
-            {/* TEXTO ESQUERDA (Ocupa ~30% do espaço) */}
-            <div className="w-full lg:w-[30%] flex flex-col items-start order-2 lg:order-1 relative z-20">
-              <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
-                NEW ARRIVALS
-              </span>
-              <h2 className="font-anton text-5xl md:text-6xl lg:text-7xl uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
-                FRESH<br />DROPS
-              </h2>
-              <p className="text-[14px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
-                The latest pieces from B.SKW. Limited stock. Don't miss out.
-              </p>
-              <Link
-                href="/categoria/camiseta-suedine"
-                className="bg-[#000000] text-white px-8 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] flex items-center gap-3 hover:bg-[#F59E0B] hover:text-[#000000] active:scale-[0.98] transition-all rounded-none"
-              >
-                VIEW ALL <ArrowRight size={15} />
-              </Link>
-            </div>
+          {/* TEXTO ESQUERDA (Alinhado à extrema esquerda) */}
+          <div className="w-full md:w-[35%] flex flex-col items-start text-left bg-[#FAFAFA]/80 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none p-6 md:p-0 rounded-lg">
+            <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
+              NEW ARRIVALS
+            </span>
+            <h2 className="font-anton text-5xl md:text-6xl lg:text-[80px] uppercase text-zinc-900 tracking-normal leading-[0.95] mb-6">
+              FRESH<br />DROPS
+            </h2>
+            <p className="text-[14px] lg:text-[16px] text-zinc-600 max-w-[32ch] mb-8 font-medium">
+              The latest pieces from B.SKW. Limited stock. Don't miss out.
+            </p>
+            <Link
+              href="/categoria/kits"
+              className="bg-[#000000] text-white px-10 py-4 font-semibold text-[12px] uppercase tracking-[0.2em] flex items-center gap-3 hover:bg-[#F59E0B] hover:text-[#000000] active:scale-[0.98] transition-all rounded-none"
+            >
+              VIEW ALL <ArrowRight size={15} />
+            </Link>
+          </div>
 
-            {/* IMAGEM CENTRAL (Ocupa ~40% do espaço, proporções fixas tipo poster) */}
-            <div className="w-full lg:w-[40%] order-1 lg:order-2 relative flex items-center justify-center">
-              <div className="relative w-full aspect-[4/3] md:aspect-video lg:aspect-[4/3] overflow-hidden">
-                <div
-                  className="absolute inset-0 bg-center bg-cover bg-no-repeat"
-                  style={{
-                    backgroundImage: "url('/files/banner-meio-2.jpg')"
-                  }}
-                />
-                {/* FADES LATERAIS (Esfumando a imagem para o fundo claro #FAFAFA) */}
-                <div className="absolute inset-y-0 left-0 w-12 md:w-20 lg:w-24 bg-gradient-to-r from-[#FAFAFA] to-transparent pointer-events-none" />
-                <div className="absolute inset-y-0 right-0 w-12 md:w-20 lg:w-24 bg-gradient-to-l from-[#FAFAFA] to-transparent pointer-events-none" />
-              </div>
-            </div>
+          {/* ESPAÇO VAZIO NO MEIO PARA A FOTO BRILHAR */}
+          <div className="hidden md:block md:w-[30%] h-[200px]"></div>
 
-            {/* TEXTO DIREITA (Ocupa ~30% do espaço) */}
-            <div className="w-full lg:w-[30%] order-3 flex flex-col items-start lg:items-end lg:text-right relative z-20 mt-6 lg:mt-0">
-              <span className="font-anton text-3xl md:text-4xl uppercase text-zinc-900 tracking-wider mb-4">
-                SAME MINDSET.<br />DIFFERENT ENERGY.
-              </span>
-              <div className="w-12 h-[2px] bg-[#F59E0B] my-4" />
-              <span className="font-outfit text-xl text-zinc-500 italic">
-                B.SKW Editorial
-              </span>
-            </div>
-
+          {/* TEXTO DIREITA (Alinhado à extrema direita) */}
+          <div className="w-full md:w-[35%] flex flex-col items-start md:items-end text-left md:text-right bg-[#FAFAFA]/80 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none p-6 md:p-0 rounded-lg">
+            <span className="font-anton text-3xl md:text-4xl lg:text-5xl uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
+              SAME MINDSET.<br />DIFFERENT ENERGY.
+            </span>
+            <div className="w-12 h-[2px] bg-[#F59E0B] my-5 md:ml-auto" />
+            <span className="font-outfit text-xl lg:text-2xl text-zinc-500 font-light italic">
+              B.SKW Editorial
+            </span>
           </div>
 
         </div>
