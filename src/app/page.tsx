@@ -36,7 +36,7 @@ export default function HomePage() {
       {/* 1. HERO BANNER PRINCIPAL COM FOTO LIVRE E TEXTOS NOS CANTOS */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none flex items-center min-h-[75vh] lg:min-h-[85vh] py-16 md:py-24">
         
-        {/* IMAGEM DE FUNDO DO MODELO ENCOSTADA À DIREITA (bg-right) */}
+        {/* IMAGEM DE FUNDO DO MODELO ENCOSTADA À DIREITA */}
         <div 
           className="absolute inset-0 bg-right bg-no-repeat opacity-80 z-0"
           style={{
@@ -45,10 +45,10 @@ export default function HomePage() {
           }}
         />
 
-        {/* DEGRADÊ PARA LEITURA (Escuro na esquerda, transparente na direita) */}
+        {/* DEGRADÊ PARA LEITURA */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/80 to-transparent z-0" />
 
-        {/* --- LETRINHAS TÉCNICAS NOS CANTOS (MOLDURA EDITORIAL) --- */}
+        {/* LETRINHAS TÉCNICAS NOS CANTOS (MOLDURA EDITORIAL) */}
         <div className="absolute top-6 right-6 md:top-8 md:right-10 font-mono text-[10px] text-[#9A9A9A] uppercase tracking-widest z-20 pointer-events-none">
           EST. 2026
         </div>
@@ -62,7 +62,6 @@ export default function HomePage() {
         <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
-            {/* TEXTOS À ESQUERDA */}
             <div className="lg:col-span-7 flex flex-col items-start">
               <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-4 block">
                 STREETWEAR // CULTURE // YOU
@@ -81,7 +80,6 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* COLUNA DIREITA VAZIA (Para não cobrir o modelo no desktop) */}
             <div className="hidden lg:block lg:col-span-5"></div>
 
           </div>
@@ -113,7 +111,6 @@ export default function HomePage() {
               </Link>
             ))}
 
-            {/* CAIXA 4: COLLABS (CAPTURA DE LEAD) */}
             <div className="group relative aspect-[4/5] bg-[#161616] border border-[#2a2a2a] p-5 md:p-6 flex flex-col justify-between overflow-hidden rounded-none bg-canelado">
               <div className="relative z-20 flex justify-between items-center">
                 <span className="text-[10px] font-mono uppercase text-[#9A9A9A] flex items-center gap-1">
@@ -158,12 +155,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SEÇÃO "FRESH DROPS" */}
-      <section className="relative bg-[#FAFAFA] text-zinc-900 border-b border-zinc-200 py-20 md:py-28">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-6">
+      {/* 3. SEÇÃO "FRESH DROPS" (COM NOVA IMAGEM EDITORIAL AO CENTRO) */}
+      <section className="relative bg-[#FAFAFA] text-zinc-900 border-b border-zinc-200 py-20 md:py-28 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
             
-            <div className="flex flex-col items-start order-2 md:order-1">
+            {/* TEXTO ESQUERDA */}
+            <div className="flex flex-col items-start order-2 md:order-1 relative z-20">
               <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#F59E0B] mb-3 block">
                 NEW ARRIVALS
               </span>
@@ -181,13 +179,24 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="order-1 md:order-2 h-full min-h-[400px] bg-[#161616] border border-[#2a2a2a] bg-canelado flex items-center justify-center p-8 shadow-xl">
-              <span className="font-anton text-4xl uppercase text-white/10 tracking-widest text-center">
-                HEAVY<br/>SUEDINE
-              </span>
+            {/* IMAGEM NO MEIO (AJUSTADA E COM BORDAS ESFUMADAS) */}
+            <div className="order-1 md:order-2 relative w-full h-[350px] md:h-[500px] flex items-center justify-center">
+              <div
+                className="absolute inset-0 bg-center bg-no-repeat"
+                style={{
+                  backgroundImage: "url('/files/banner-meio-2.jpg')",
+                  backgroundSize: 'contain'
+                }}
+              />
+              {/* EFEITOS DE FADE - Funde as bordas da imagem com o fundo claro (#FAFAFA) */}
+              <div className="absolute inset-y-0 left-0 w-8 md:w-16 bg-gradient-to-r from-[#FAFAFA] to-transparent pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-8 md:w-16 bg-gradient-to-l from-[#FAFAFA] to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 top-0 h-8 md:h-16 bg-gradient-to-b from-[#FAFAFA] to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-8 md:h-16 bg-gradient-to-t from-[#FAFAFA] to-transparent pointer-events-none" />
             </div>
 
-            <div className="order-3 flex flex-col items-start md:items-end md:text-right">
+            {/* TEXTO DIREITA */}
+            <div className="order-3 flex flex-col items-start md:items-end md:text-right relative z-20">
               <span className="font-anton text-3xl md:text-4xl uppercase text-zinc-900 tracking-wider mb-4">
                 SAME MINDSET.<br />DIFFERENT ENERGY.
               </span>
@@ -249,7 +258,7 @@ export default function HomePage() {
                 Featured Products
               </h2>
             </div>
-            <Link href="/produtos" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-[#F59E0B] flex items-center gap-1.5 transition-colors">
+            <Link href="/categoria/camiseta-oversized" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-zinc-500 hover:text-[#F59E0B] flex items-center gap-1.5 transition-colors">
               View All <ArrowRight size={14} />
             </Link>
           </div>
