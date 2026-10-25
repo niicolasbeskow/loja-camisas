@@ -36,7 +36,7 @@ export default function HomePage() {
 
       <Header />
 
-      {/* 1. HERO BANNER PRINCIPAL COM FOTO ENCOSTADA À DIREITA */}
+      {/* 1. HERO BANNER PRINCIPAL */}
       <section className="relative bg-[#000000] text-white border-b border-[#2a2a2a] overflow-hidden select-none flex items-center min-h-[75vh] lg:min-h-[85vh] py-16 md:py-24">
         
         <div 
@@ -86,7 +86,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. 4 CAIXAS DE CATEGORIAS ESTRATÉGICAS */}
+      {/* 2. 4 CAIXAS DE CATEGORIAS */}
       <section className="bg-[#000000] py-8 md:py-12 border-b border-[#2a2a2a]">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
@@ -188,13 +188,14 @@ export default function HomePage() {
             {/* BLOCO DIREITA: IMAGEM + TEXTO */}
             <div className="relative w-full md:w-[65%] lg:w-[68%] flex flex-col md:flex-row items-stretch z-10">
               
+              {/* IMAGEM COM ALTURA EXATA: Largura intacta, apenas o fade foi empurrado para a ponta direita */}
               <div className="relative flex-1 min-h-[350px] md:min-h-full bg-[#FAFAFA]">
                 <div 
                   className="absolute inset-0 bg-cover md:bg-[length:auto_100%] bg-left bg-no-repeat"
                   style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
                 />
-                {/* BLUSH MUITO MAIS SUAVE: Agora cobre apenas 25% a 35% do lado direito */}
-                <div className="absolute inset-y-0 right-0 w-[10%] lg:w-[15%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/80 to-transparent pointer-events-none" />
+                {/* BLUSH EXTREMAMENTE ENCURTADO E DESLOCADO PARA A DIREITA (w-[15%]) */}
+                <div className="absolute inset-y-0 right-0 w-[40%] md:w-[25%] lg:w-[15%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/90 to-transparent pointer-events-none" />
               </div>
 
               {/* TEXTO DA DIREITA */}
