@@ -188,25 +188,27 @@ export default function HomePage() {
             {/* BLOCO DIREITA: IMAGEM + TEXTO */}
             <div className="relative w-full md:w-[65%] lg:w-[68%] flex flex-col md:flex-row items-stretch z-10">
               
-              {/* IMAGEM COM ALTURA EXATA: O "bg-[length:auto_100%]" garante que a foto bate no teto e no chao exatos da caixa cinza */}
               <div className="relative flex-1 min-h-[350px] md:min-h-full bg-[#FAFAFA]">
                 <div 
                   className="absolute inset-0 bg-cover md:bg-[length:auto_100%] bg-left bg-no-repeat"
                   style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
                 />
-                {/* BRUSH BEM FORTE NA DIREITA */}
                 <div className="absolute inset-y-0 right-0 w-[75%] lg:w-[85%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/80 to-transparent pointer-events-none" />
               </div>
 
-              {/* TEXTO DA DIREITA */}
+              {/* TEXTO DA DIREITA (TAMANHOS REDUZIDOS) */}
               <div className="relative z-10 w-full md:w-[220px] lg:w-[320px] flex flex-col items-start md:items-end justify-center text-left md:text-right py-10 md:py-0 bg-[#FAFAFA]">
-                <span className="font-anton text-2xl md:text-3xl lg:text-4xl uppercase text-zinc-900 tracking-wider mb-4 leading-tight">
+                
+                <span className="font-semibold text-[12px] uppercase tracking-[0.25em] text-zinc-900 mb-4 leading-relaxed">
                   SAME MINDSET.<br />DIFFERENT ENERGY.
                 </span>
-                <div className="w-10 h-[2px] bg-[#F59E0B] my-3 md:ml-auto" />
-                <span className="font-outfit text-base lg:text-lg text-zinc-600 font-medium italic">
+                
+                <div className="w-10 h-[2px] bg-[#F59E0B] my-2 md:ml-auto" />
+                
+                <span className="font-medium text-[14px] lg:text-[15px] text-zinc-600 italic mt-2">
                   B.SKW Editorial
                 </span>
+
               </div>
             </div>
 
