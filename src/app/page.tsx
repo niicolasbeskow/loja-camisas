@@ -193,10 +193,11 @@ export default function HomePage() {
                   className="absolute inset-0 bg-cover md:bg-[length:auto_100%] bg-left bg-no-repeat"
                   style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
                 />
-                <div className="absolute inset-y-0 right-0 w-[75%] lg:w-[85%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/80 to-transparent pointer-events-none" />
+                {/* BLUSH MUITO MAIS SUAVE: Agora cobre apenas 25% a 35% do lado direito */}
+                <div className="absolute inset-y-0 right-0 w-[25%] lg:w-[35%] bg-gradient-to-l from-[#FAFAFA] to-transparent pointer-events-none" />
               </div>
 
-              {/* TEXTO DA DIREITA (TAMANHOS REDUZIDOS) */}
+              {/* TEXTO DA DIREITA */}
               <div className="relative z-10 w-full md:w-[220px] lg:w-[320px] flex flex-col items-start md:items-end justify-center text-left md:text-right py-10 md:py-0 bg-[#FAFAFA]">
                 
                 <span className="font-semibold text-[12px] uppercase tracking-[0.25em] text-zinc-900 mb-4 leading-relaxed">
