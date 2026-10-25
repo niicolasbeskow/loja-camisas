@@ -194,7 +194,7 @@ export default function HomePage() {
                   style={{ backgroundImage: "url('/files/banner-meio-2.jpg')" }}
                 />
                 {/* BLUSH MUITO MAIS SUAVE: Agora cobre apenas 25% a 35% do lado direito */}
-                <div className="absolute inset-y-0 right-0 w-[20%] lg:w-[25%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/60 to-transparent pointer-events-none" />
+                <div className="absolute inset-y-0 right-0 w-[10%] lg:w-[15%] bg-gradient-to-l from-[#FAFAFA] via-[#FAFAFA]/80 to-transparent pointer-events-none" />
               </div>
 
               {/* TEXTO DA DIREITA */}
